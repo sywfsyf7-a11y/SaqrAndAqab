@@ -15,6 +15,7 @@
   - Verified by batch compiling the project with Unity 6000.0.85f1 (0 errors, 0 warnings) and by a temporary editor check that logged `Config OK`, the loaded balance values and the built camera/canvas/EventSystem/Boot label. The temporary check file was deleted.
   - Note: the boot label uses `UnityEngine.UI.Text` with `LegacyRuntime.ttf`; it is temporary until task 02.
   - Note: the screen enum is named `Screen`, so code that also has `using UnityEngine;` must write `UnityEngine.Screen` for the real screen.
+  - Fix: the boot no longer creates a camera before the scene loads. It reuses the scene `Camera.main` (SampleScene already has a Main Camera + AudioListener), applies orthographic size from balance.json and a dark navy background, and guarantees exactly one AudioListener. `Debug.Log("Boot OK")` is printed on boot.
 - [ ] 02 arabic text
 - [ ] 03 battle world + hero movement
 - [ ] 04 combat core

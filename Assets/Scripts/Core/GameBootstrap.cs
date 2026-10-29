@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem.UI;
@@ -12,6 +13,7 @@ namespace SaqrAndAqab.Core
     {
         const string RootName = "GameRoot";
         const float CameraZ = -10f;
+        static Transform _root;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Boot()
@@ -30,11 +32,14 @@ namespace SaqrAndAqab.Core
 
             var root = new GameObject(RootName);
             UnityEngine.Object.DontDestroyOnLoad(root);
+            _root = root.transform;
 
-            CreateCamera(root.transform);
             var canvas = CreateCanvas(root.transform);
             CreateEventSystem(root.transform);
             CreateBootLabel(canvas);
+            EnsureCamera(root.transform);
+
+            Debug.Log("Boot OK");
         }
 
         static void ApplyLandscapeOrientation()
@@ -46,26 +51,69 @@ namespace SaqrAndAqab.Core
             UnityEngine.Screen.autorotateToLandscapeRight = true;
         }
 
-        static Camera CreateCamera(Transform parent)
+        // Uses the scene camera when there is one. Never creates a second camera or a second AudioListener.
+        static void EnsureCamera(Transform parent)
         {
             var existing = Camera.main;
-            if (existing != null) return existing;
+            if (existing != null)
+            {
+                ApplyCameraSettings(existing);
+                EnsureSingleAudioListener(existing);
+                return;
+            }
 
+            // We boot before the scene loads, so the scene camera does not exist yet.
+            // Check again right after the scene is loaded instead of creating a second camera.
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            var camera = Camera.main;
+            if (camera == null) camera = CreateCamera(_root);
+            if (camera == null) return;
+
+            ApplyCameraSettings(camera);
+            EnsureSingleAudioListener(camera);
+        }
+
+        static Camera CreateCamera(Transform parent)
+        {
             var go = new GameObject("Main Camera");
-            go.transform.SetParent(parent, false);
+            if (parent != null) go.transform.SetParent(parent, false);
             go.tag = "MainCamera";
+            go.transform.position = new Vector3(0f, 0f, CameraZ);
 
-            var camera = go.AddComponent<Camera>();
+            return go.AddComponent<Camera>();
+        }
+
+        static void ApplyCameraSettings(Camera camera)
+        {
             camera.orthographic = true;
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = new Color(0.06f, 0.08f, 0.12f, 1f);
-            go.transform.position = new Vector3(0f, 0f, CameraZ);
 
             var game = ConfigService.Balance != null ? ConfigService.Balance.game : null;
             if (game != null) camera.orthographicSize = game.cameraOrthoSize;
+        }
 
-            go.AddComponent<AudioListener>();
-            return camera;
+        static void EnsureSingleAudioListener(Camera camera)
+        {
+            var listeners = UnityEngine.Object.FindObjectsByType<AudioListener>(FindObjectsSortMode.None);
+            if (listeners.Length == 0)
+            {
+                camera.gameObject.AddComponent<AudioListener>();
+                return;
+            }
+
+            var keep = camera.GetComponent<AudioListener>();
+            if (keep == null) keep = listeners[0];
+
+            for (int i = 0; i < listeners.Length; i++)
+            {
+                if (listeners[i] != keep) UnityEngine.Object.Destroy(listeners[i]);
+            }
         }
 
         static Canvas CreateCanvas(Transform parent)
