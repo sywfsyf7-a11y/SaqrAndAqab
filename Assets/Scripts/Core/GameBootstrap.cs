@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
+using SaqrAndAqab.UI;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem.UI;
 #endif
@@ -13,6 +15,7 @@ namespace SaqrAndAqab.Core
     {
         const string RootName = "GameRoot";
         const float CameraZ = -10f;
+        static readonly Color TitleColor = new Color(0.95f, 0.85f, 0.60f, 1f);
         static Transform _root;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -36,7 +39,7 @@ namespace SaqrAndAqab.Core
 
             var canvas = CreateCanvas(root.transform);
             CreateEventSystem(root.transform);
-            CreateBootLabel(canvas);
+            CreateMenuUI(canvas);
             EnsureCamera(root.transform);
 
             Debug.Log("Boot OK");
@@ -149,26 +152,29 @@ namespace SaqrAndAqab.Core
 #endif
         }
 
-        // Temporary proof that boot worked. Real Arabic UI starts in task 02.
-        static void CreateBootLabel(Canvas canvas)
+        // Temporary menu screen: Arabic title + play button. The real menu comes in task 10.
+        static void CreateMenuUI(Canvas canvas)
         {
-            var go = new GameObject("Boot Label", typeof(RectTransform), typeof(Text));
-            go.transform.SetParent(canvas.transform, false);
+            var title = UIFactory.CreateText(canvas.transform, "app.title", 140, TitleColor,
+                TextAlignmentOptions.Center, true);
+            Place(title.rectTransform, new Vector2(0f, 230f), new Vector2(1500f, 320f));
 
-            var label = go.GetComponent<Text>();
-            label.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            label.text = "Boot OK";
-            label.fontSize = 64;
-            label.alignment = TextAnchor.MiddleCenter;
-            label.color = Color.white;
-            label.raycastTarget = false;
+            var button = UIFactory.CreateButton(canvas.transform, "menu.play", OnPlayPressed);
+            Place(button.GetComponent<RectTransform>(), new Vector2(0f, -140f), new Vector2(460f, 120f));
+        }
 
-            var rect = go.GetComponent<RectTransform>();
+        static void Place(RectTransform rect, Vector2 position, Vector2 size)
+        {
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = Vector2.zero;
-            rect.sizeDelta = new Vector2(900f, 220f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
+        }
+
+        static void OnPlayPressed()
+        {
+            Debug.Log("Play button pressed");
         }
     }
 }
