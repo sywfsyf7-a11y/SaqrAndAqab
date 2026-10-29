@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using TMPro;
-using SaqrAndAqab.UI;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem.UI;
 #endif
@@ -15,8 +13,12 @@ namespace SaqrAndAqab.Core
     {
         const string RootName = "GameRoot";
         const float CameraZ = -10f;
-        static readonly Color TitleColor = new Color(0.95f, 0.85f, 0.60f, 1f);
         static Transform _root;
+
+        // Shared scene objects other screens attach to.
+        public static Transform Root { get { return _root; } }
+
+        public static Transform UICanvas { get; private set; }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Boot()
@@ -38,9 +40,10 @@ namespace SaqrAndAqab.Core
             _root = root.transform;
 
             var canvas = CreateCanvas(root.transform);
+            UICanvas = canvas.transform;
             CreateEventSystem(root.transform);
-            CreateMenuUI(canvas);
             EnsureCamera(root.transform);
+            ScreenManager.Show(Screen.Menu);
 
             Debug.Log("Boot OK");
         }
@@ -150,31 +153,6 @@ namespace SaqrAndAqab.Core
 #else
             go.AddComponent<StandaloneInputModule>();
 #endif
-        }
-
-        // Temporary menu screen: Arabic title + play button. The real menu comes in task 10.
-        static void CreateMenuUI(Canvas canvas)
-        {
-            var title = UIFactory.CreateText(canvas.transform, "app.title", 140, TitleColor,
-                TextAlignmentOptions.Center, true);
-            Place(title.rectTransform, new Vector2(0f, 230f), new Vector2(1500f, 320f));
-
-            var button = UIFactory.CreateButton(canvas.transform, "menu.play", OnPlayPressed);
-            Place(button.GetComponent<RectTransform>(), new Vector2(0f, -140f), new Vector2(460f, 120f));
-        }
-
-        static void Place(RectTransform rect, Vector2 position, Vector2 size)
-        {
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = position;
-            rect.sizeDelta = size;
-        }
-
-        static void OnPlayPressed()
-        {
-            Debug.Log("Play button pressed");
         }
     }
 }

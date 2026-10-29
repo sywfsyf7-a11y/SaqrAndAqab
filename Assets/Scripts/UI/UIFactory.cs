@@ -63,7 +63,42 @@ namespace SaqrAndAqab.UI
             return label;
         }
 
+        // Stretches a rect to fill its parent (used for text inside a button).
+        public static void Fill(RectTransform rect)
+        {
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+        }
+
+        // A full-canvas container for one screen's widgets.
+        public static RectTransform CreateUIRoot(Transform parent, string name)
+        {
+            var go = new GameObject(name, typeof(RectTransform));
+            var rect = go.GetComponent<RectTransform>();
+            rect.SetParent(parent, false);
+            Fill(rect);
+            return rect;
+        }
+
+        // Centers a rect on its parent with an explicit size.
+        public static void Place(RectTransform rect, Vector2 position, Vector2 size)
+        {
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
+        }
+
         public static Button CreateButton(Transform parent, string locKey, UnityAction onClick)
+        {
+            return CreateButton(parent, locKey, onClick, new Vector2(460f, 120f), 46);
+        }
+
+        public static Button CreateButton(Transform parent, string locKey, UnityAction onClick,
+            Vector2 size, int labelSize)
         {
             var go = new GameObject("Button", typeof(RectTransform), typeof(Image), typeof(Button));
             go.transform.SetParent(parent, false);
@@ -72,14 +107,11 @@ namespace SaqrAndAqab.UI
             image.color = ButtonColor;
 
             var rect = go.GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(460f, 120f);
+            rect.sizeDelta = size;
 
-            var label = CreateText(go.transform, locKey, 46, ButtonTextColor, TextAlignmentOptions.Center, true);
+            var label = CreateText(go.transform, locKey, labelSize, ButtonTextColor, TextAlignmentOptions.Center, true);
             var labelRect = label.rectTransform;
-            labelRect.anchorMin = Vector2.zero;
-            labelRect.anchorMax = Vector2.one;
-            labelRect.offsetMin = Vector2.zero;
-            labelRect.offsetMax = Vector2.zero;
+            Fill(labelRect);
 
             var button = go.GetComponent<Button>();
             if (onClick != null) button.onClick.AddListener(onClick);

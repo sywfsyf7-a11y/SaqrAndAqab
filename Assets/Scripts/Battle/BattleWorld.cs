@@ -1,0 +1,193 @@
+using UnityEngine;
+using SaqrAndAqab.Core;
+using SaqrAndAqab.Data;
+
+namespace SaqrAndAqab.Battle
+{
+    // Builds the side-view battle world from code: sky + far + ground bands, gate, cave and the hero.
+    // The scene stays empty; this object owns everything it creates.
+    public class BattleWorld : MonoBehaviour
+    {
+        const int SkyOrder = -1000;
+        const int FarOrder = -900;
+        const int GroundOrder = -800;
+        const int PropOrder = -500;
+
+        const float FarFactor = 0.3f;
+        const float GroundTileWidth = 6f;
+        const float PropSink = 0.35f;
+        const float HeroStartOffset = 2.5f;
+        const float CameraSmoothTime = 0.18f;
+
+        // Placeholder-era haze so the three placeholder bands are easy to tell apart.
+        // With real art the far layer tint goes back to opaque white.
+        static readonly Color FarTint = new Color(0.78f, 0.84f, 0.96f, 0.60f);
+        static readonly Color GroundTint = new Color(1f, 0.93f, 0.80f, 1f);
+
+        Camera _camera;
+        Hero _hero;
+        ParallaxLayer _sky;
+        ParallaxLayer _far;
+        ParallaxLayer _ground;
+
+        float _camMinX;
+        float _camMaxX;
+        float _camY;
+        float _camVelocity;
+
+        public WorldThemeId Theme { get; private set; }
+
+        public Hero Hero { get { return _hero; } }
+
+        public static BattleWorld Build(Transform parent, WorldThemeId theme)
+        {
+            var go = new GameObject("Battle World");
+            if (parent != null) go.transform.SetParent(parent, false);
+
+            var world = go.AddComponent<BattleWorld>();
+            world.BuildInternal(theme);
+            return world;
+        }
+
+        void BuildInternal(WorldThemeId theme)
+        {
+            Theme = theme;
+
+            var balance = ConfigService.Balance;
+            var game = balance != null ? balance.game : null;
+            var heroConfig = balance != null ? balance.hero : null;
+            if (game == null || heroConfig == null)
+            {
+                Debug.LogError("[Battle] balance.json is not loaded, the world cannot be built.");
+                return;
+            }
+
+            _camera = Camera.main;
+            if (_camera == null)
+            {
+                Debug.LogError("[Battle] No main camera, the world cannot be built.");
+                return;
+            }
+
+            WorldTheme.Apply(theme, _camera, transform);
+
+            float halfHeight = _camera.orthographicSize;
+            float halfWidth = halfHeight * _camera.aspect;
+            _camY = 0f;
+            _camera.transform.position = new Vector3(_camera.transform.position.x, _camY, _camera.transform.position.z);
+
+            _camMinX = game.worldMinX + halfWidth;
+            _camMaxX = game.worldMaxX - halfWidth;
+            if (_camMinX > _camMaxX)
+            {
+                float middle = (game.worldMinX + game.worldMaxX) * 0.5f;
+                _camMinX = middle;
+                _camMaxX = middle;
+            }
+
+            float bottom = _camY - halfHeight;
+
+            // Sky is glued to the camera, far moves at 30% and the ground moves with the world.
+            _sky = CreateLayer("Sky", WorldTheme.SkySprite(theme), 0f, bottom,
+                -halfWidth, halfWidth, SkyOrder, Color.white, 0f, 0f);
+
+            _far = CreateLayer("Far", WorldTheme.FarSprite(theme), FarFactor, bottom,
+                _camMinX * FarFactor - halfWidth, _camMaxX * FarFactor + halfWidth, FarOrder, FarTint, 0f, 0f);
+
+            // The ground is stretched from the back edge of the lane down to the bottom of the screen.
+            float groundTop = game.laneMaxY;
+            _ground = CreateLayer("Ground", WorldTheme.GroundSprite(theme), 1f, bottom,
+                game.worldMinX, game.worldMaxX, GroundOrder, GroundTint, GroundTileWidth, groundTop - bottom);
+
+            CreateProp("Gate", "prop_gate", game.gateX, game.laneMinY - PropSink);
+            CreateProp("Cave", "prop_cave", game.caveX, game.laneMinY - PropSink);
+
+            float startX = Mathf.Clamp(game.gateX + HeroStartOffset, game.worldMinX + 1f, game.worldMaxX - 1f);
+            float startY = (game.laneMinY + game.laneMaxY) * 0.5f;
+            _hero = Hero.Create(transform, new Vector3(startX, startY, 0f), game, heroConfig);
+
+            SnapCamera();
+        }
+
+        void LateUpdate()
+        {
+            if (_camera == null || _hero == null) return;
+
+            float camX = Mathf.SmoothDamp(_camera.transform.position.x, _hero.transform.position.x,
+                ref _camVelocity, CameraSmoothTime);
+            camX = Mathf.Clamp(camX, _camMinX, _camMaxX);
+            ApplyCameraX(camX);
+        }
+
+        void SnapCamera()
+        {
+            if (_camera == null || _hero == null) return;
+
+            _camVelocity = 0f;
+            ApplyCameraX(Mathf.Clamp(_hero.transform.position.x, _camMinX, _camMaxX));
+        }
+
+        void ApplyCameraX(float camX)
+        {
+            var position = _camera.transform.position;
+            _camera.transform.position = new Vector3(camX, _camY, position.z);
+
+            if (_sky != null) _sky.Refresh(camX);
+            if (_far != null) _far.Refresh(camX);
+            if (_ground != null) _ground.Refresh(camX);
+        }
+
+        ParallaxLayer CreateLayer(string name, string spriteId, float factor, float bottomY,
+            float spanMinX, float spanMaxX, int sortingOrder, Color tint, float tileWidth, float height)
+        {
+            var sprite = AssetLibrary.GetSprite(spriteId);
+            if (sprite == null)
+            {
+                Debug.LogWarning("[Battle] Missing sprite: " + spriteId);
+                return null;
+            }
+
+            float worldHeight = height > 0f ? height : AssetLibrary.GetWorldHeight(spriteId);
+            float copyWidth = tileWidth > 0f ? tileWidth : UniformWidth(sprite, worldHeight);
+
+            var go = new GameObject(name, typeof(ParallaxLayer));
+            go.transform.SetParent(transform, false);
+
+            var layer = go.GetComponent<ParallaxLayer>();
+            layer.Build(_camera.transform, factor, sprite, new Vector2(copyWidth, worldHeight),
+                bottomY, spanMinX, spanMaxX, sortingOrder, tint);
+            return layer;
+        }
+
+        void CreateProp(string name, string spriteId, float x, float baseY)
+        {
+            var sprite = AssetLibrary.GetSprite(spriteId);
+            if (sprite == null)
+            {
+                Debug.LogWarning("[Battle] Missing sprite: " + spriteId);
+                return;
+            }
+
+            float worldHeight = AssetLibrary.GetWorldHeight(spriteId);
+            float spriteHeight = sprite.bounds.size.y > 0f ? sprite.bounds.size.y : 1f;
+            float scale = worldHeight / spriteHeight;
+            float pivotY = sprite.rect.height > 0f ? sprite.pivot.y / sprite.rect.height : 0.5f;
+
+            var go = new GameObject(name, typeof(SpriteRenderer));
+            go.transform.SetParent(transform, false);
+            go.transform.localScale = new Vector3(scale, scale, 1f);
+            go.transform.position = new Vector3(x, baseY + worldHeight * pivotY, 0f);
+
+            var renderer = go.GetComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.sortingOrder = PropOrder;
+        }
+
+        static float UniformWidth(Sprite sprite, float height)
+        {
+            float spriteHeight = sprite.bounds.size.y;
+            if (spriteHeight <= 0f) return height;
+            return sprite.bounds.size.x * (height / spriteHeight);
+        }
+    }
+}

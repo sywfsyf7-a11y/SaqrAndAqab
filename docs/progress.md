@@ -24,7 +24,17 @@
   - `Assets/Scripts/UI/UIFactory.cs`: `CreateText`, `CreateTextRaw`, `CreateButton`. All text goes through `RTLTextMeshPro` with Farsi off and Western digits kept.
   - Boot screen now shows the Arabic title (`app.title`) and the `menu.play` button instead of the temporary "Boot OK" label.
   - The two font assets are generated and committed. Verified in batch mode: every shaped glyph of `app.title` and `menu.play` exists in both font assets (0 missing), and the shaped strings are correct presentation forms (e.g. title = U+FEBB U+FED8 U+FEAE 0020 U+FEED U+FECB U+FED8 U+FE8E U+FE8F).
-- [ ] 03 battle world + hero movement
+- [x] 03 battle world + hero movement
+  - `Assets/Scripts/Battle/WorldTheme.cs`: Day / Night / DarkRealm. Each one sets the camera background colour and one Global Light 2D (URP 2D renderer is active in this project, so Light2D works; if it ever fails we keep the camera colour and log one warning).
+  - `Assets/Scripts/Battle/ParallaxLayer.cs`: one band of mirrored sprite copies laid out once in local space; only the root moves, so there is no per-frame work. `Refresh(cameraX)` sets `x = cameraX * (1 - factor)`, so factor 0 is glued to the camera and factor 1 is glued to the world.
+  - `Assets/Scripts/Battle/BattleWorld.cs`: builds sky (`factor 0`), far (`0.3`) and ground (`1.0`), then the gate at `gateX`, the cave at `caveX` and the hero. Ground is stretched from the back edge of the lane (`laneMaxY`) down to the bottom of the screen; sky/far use their `worldHeight` from assets.json.
+  - Depth: units use `sortingOrder = -(int)(y*100)` and are up to 8% larger at `laneMinY`. Background orders: sky -1000, far -900, ground -800, props -500.
+  - `Assets/Scripts/Battle/ProceduralAnim.cs`: Walk / Idle / Lunge / Flash / Die / Knockback with timers in Update (no Animator, no coroutines, no allocations).
+  - `Assets/Scripts/Battle/Hero.cs`: `InputService.MoveAxis` x `hero.moveSpeed`, clamped to the world, flips with the movement direction. The camera follow + clamp lives in `BattleWorld.LateUpdate` (smooth follow, clamped to `worldMinX + halfWidth .. worldMaxX - halfWidth`) so the layers always read the final camera X in the same frame.
+  - `ScreenManager` now really switches screens: `MenuScreen` builds/hides the title + play button, `BattleScreen` builds the world plus a small back button (`common.back`) in the top-right. `GameBootstrap` exposes `Root` and `UICanvas` and boots into the menu.
+  - `UIFactory`: added `Fill`, `Place`, `CreateUIRoot` and a `CreateButton` overload with an explicit size and label size.
+  - Placeholder note: the far layer is tinted at 60% alpha so the three placeholder bands are readable while the art is still coloured squares. With real art the tint goes back to opaque white.
+  - Verified headless: the built tree has the three layers with the right factors, 2 / 2 / 6 mirrored copies covering the whole camera range, gate at -12, cave at 20, hero at -9.5 with scale 1.72 and order 250, Global Light 2D = Global / warm / 1.1. Camera motion itself can only be seen in Play mode (Time.deltaTime is 0 in the editor).
 - [ ] 04 combat core
 - [ ] 05 enemies + waves
 - [ ] 06 HUD + coins + dates
