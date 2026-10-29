@@ -3,11 +3,13 @@
 ## Environment
 - URP: present (`com.unity.render-pipelines.universal` 17.0.4).
 - Input System: present (`com.unity.inputsystem` 1.20.0).
-- EditorSettings: serialization mode is Force Text (`m_SerializationMode: 2`). Version control mode: `m_ExternalVersionControlSupport` is not written in `ProjectSettings/EditorSettings.asset`, so Unity uses its default (Visible Meta Files; every asset has a visible `.meta` file).
-- Git LFS: not installed on this machine when task 00 ran (pending install).
+- EditorSettings: serialization mode is Force Text (`m_SerializationMode: 2`). Version control mode is Visible Meta Files (`ProjectSettings/VersionControlSettings.asset`, `m_Mode: Visible Meta Files`). No changes made to these settings.
+- Git LFS: installed during task 00 (git-lfs 3.8.1), hooks installed in the repo.
+- Remote: `origin` = https://github.com/sywfsyf7-a11y/SaqrAndAqab.git (public repo).
+- Note: the remote already had a `SaqrAndAqab-starter/` folder and a root `README_AR.md`; the project files now live at the repo root and the starter folder was kept as-is.
 
 ## Tasks
-- [ ] 00 setup repo
+- [x] 00 setup repo
 - [ ] 01 core foundation
 - [ ] 02 arabic text
 - [ ] 03 battle world + hero movement
