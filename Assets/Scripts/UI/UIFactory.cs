@@ -10,8 +10,8 @@ namespace SaqrAndAqab.UI
     // Creates RTL Arabic UI from code. Text always goes through RTLTextMeshPro.
     public static class UIFactory
     {
-        const string RegularFontResource = "Fonts/Tajawal-Regular SDF";
-        const string BoldFontResource = "Fonts/Tajawal-Bold SDF";
+        const string RegularFontResource = "Fonts/IBMPlexSansArabic-Regular SDF";
+        const string BoldFontResource = "Fonts/IBMPlexSansArabic-Bold SDF";
 
         static readonly Color ButtonColor = new Color(0.85f, 0.66f, 0.28f, 1f);
         static readonly Color ButtonTextColor = new Color(0.12f, 0.09f, 0.05f, 1f);

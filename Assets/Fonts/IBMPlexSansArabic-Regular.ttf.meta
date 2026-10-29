@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e3c14892f93b6a342a174da41b271295
+guid: 0ce203f5836e8ac4c804fc0e4dd21242
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Tajawal
+  - IBM Plex Sans Arabic
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

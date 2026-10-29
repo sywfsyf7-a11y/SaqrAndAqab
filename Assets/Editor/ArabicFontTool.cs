@@ -7,10 +7,18 @@ using UnityEngine.TextCore.LowLevel;
 
 // Builds the Arabic SDF font assets used by RTLTextMeshPro.
 // Menu: Saqr > Create Arabic Font Assets
+//
+// The font MUST contain the Arabic presentation forms (U+FE70..U+FEFC) because
+// RTLTMPro converts every letter to its isolated/initial/medial/final shape before
+// rendering, and TextMeshPro does no shaping of its own.
 public static class ArabicFontTool
 {
     const string FontsFolder = "Assets/Fonts";
     const string OutputFolder = "Assets/Resources/Fonts";
+
+    // Source font files (SIL Open Font License 1.1, see Assets/Fonts/OFL.txt).
+    const string RegularSource = "IBMPlexSansArabic-Regular";
+    const string BoldSource = "IBMPlexSansArabic-Bold";
 
     const int SamplingPointSize = 90;
     const int AtlasPadding = 9;
@@ -22,8 +30,8 @@ public static class ArabicFontTool
     {
         EnsureFolder(OutputFolder);
 
-        bool ok = CreateFontAsset("Tajawal-Regular", "Tajawal-Regular SDF");
-        ok &= CreateFontAsset("Tajawal-Bold", "Tajawal-Bold SDF");
+        bool ok = CreateFontAsset(RegularSource, RegularSource + " SDF");
+        ok &= CreateFontAsset(BoldSource, BoldSource + " SDF");
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -92,9 +100,9 @@ public static class ArabicFontTool
         Debug.LogError(
             "[Fonts] Could not create the font assets from code in this Unity version.\n" +
             "Do it manually: Window > TextMeshPro > Font Asset Creator\n" +
-            "1) Font Source = Assets/Fonts/Tajawal-Regular.ttf (then repeat for Tajawal-Bold.ttf)\n" +
+            "1) Font Source = Assets/Fonts/" + RegularSource + ".ttf (then repeat for " + BoldSource + ".ttf)\n" +
             "2) Atlas Population Mode = Dynamic, Atlas Resolution = 1024 x 1024\n" +
-            "3) Generate Font Atlas, then Save as Assets/Resources/Fonts/Tajawal-Regular SDF and Tajawal-Bold SDF");
+            "3) Generate Font Atlas, then Save as Assets/Resources/Fonts/" + RegularSource + " SDF and " + BoldSource + " SDF");
     }
 
     static void EnsureFolder(string folder)
