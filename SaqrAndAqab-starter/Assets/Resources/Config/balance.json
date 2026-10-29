@@ -1,0 +1,68 @@
+{
+  "game": {
+    "referenceWidth": 1920, "referenceHeight": 1080, "cameraOrthoSize": 5.4,
+    "worldMinX": -14, "worldMaxX": 22, "gateX": -12, "caveX": 20,
+    "laneMinY": -3.2, "laneMaxY": -1.8,
+    "darkRealmAfterWaves": [5, 10], "totalWaves": 10
+  },
+  "hero": { "hp": 100, "damage": 10, "attackRange": 1.6, "attackCooldown": 0.6, "moveSpeed": 4.5 },
+  "gate": { "hp": 300 },
+  "enemies": [
+    { "id": "jinn_earth", "hp": 20, "damage": 4, "moveSpeed": 2.2, "attackRange": 0.9, "attackCooldown": 1.0, "dirhamReward": 5, "isRanged": false, "projectileSpeed": 0 },
+    { "id": "ghoul", "hp": 90, "damage": 12, "moveSpeed": 1.2, "attackRange": 1.2, "attackCooldown": 1.4, "dirhamReward": 15, "isRanged": false, "projectileSpeed": 0 },
+    { "id": "ifrit", "hp": 35, "damage": 7, "moveSpeed": 1.8, "attackRange": 6.0, "attackCooldown": 1.8, "dirhamReward": 10, "isRanged": true, "projectileSpeed": 7 },
+    { "id": "marid", "hp": 900, "damage": 25, "moveSpeed": 1.0, "attackRange": 1.8, "attackCooldown": 1.6, "dirhamReward": 200, "isRanged": false, "projectileSpeed": 0 }
+  ],
+  "allies": [
+    { "id": "farmer", "hp": 25, "damage": 0, "moveSpeed": 1.5, "attackRange": 0, "attackCooldown": 0, "haybahCost": 5, "incomeDirhams": 2, "incomeInterval": 4 },
+    { "id": "archer", "hp": 30, "damage": 6, "moveSpeed": 2.0, "attackRange": 7.0, "attackCooldown": 1.2, "haybahCost": 10, "incomeDirhams": 0, "incomeInterval": 0 }
+  ],
+  "haybah": { "startValue": 3, "gainPerSecond": 1.0, "max": 60 },
+  "abilities": [
+    { "id": "crescent_slash", "damage": 40, "range": 3.0, "cooldown": 12 },
+    { "id": "arrow_volley", "damage": 15, "range": 8.0, "cooldown": 15, "arrowCount": 5 }
+  ],
+  "items": [
+    { "id": "date", "healAmount": 30, "startCount": 2, "cooldown": 20, "priceDirhams": 80 }
+  ],
+  "charms": [
+    { "id": "hirz_power", "damageMultiplier": 1.25, "priceDirhams": 150 },
+    { "id": "hirz_luck", "charmDropChanceBonus": 0.25, "priceDirhams": 150 },
+    { "id": "hirz_wealth", "dirhamMultiplier": 1.5, "priceDirhams": 200 }
+  ],
+  "charmDrop": { "baseChance": 0.15, "startCountEach": 1 },
+  "waves": [
+    { "wave": 1,  "jinn": 8,  "ghoul": 0, "ifrit": 0, "boss": 0, "spawnInterval": 2.5, "victoryAward": 100 },
+    { "wave": 2,  "jinn": 10, "ghoul": 0, "ifrit": 0, "boss": 0, "spawnInterval": 2.4, "victoryAward": 120 },
+    { "wave": 3,  "jinn": 12, "ghoul": 2, "ifrit": 0, "boss": 0, "spawnInterval": 2.3, "victoryAward": 140 },
+    { "wave": 4,  "jinn": 14, "ghoul": 3, "ifrit": 0, "boss": 0, "spawnInterval": 2.2, "victoryAward": 160 },
+    { "wave": 5,  "jinn": 12, "ghoul": 4, "ifrit": 3, "boss": 0, "spawnInterval": 2.1, "victoryAward": 200 },
+    { "wave": 6,  "jinn": 16, "ghoul": 5, "ifrit": 3, "boss": 0, "spawnInterval": 2.0, "victoryAward": 220 },
+    { "wave": 7,  "jinn": 18, "ghoul": 6, "ifrit": 5, "boss": 0, "spawnInterval": 1.9, "victoryAward": 250 },
+    { "wave": 8,  "jinn": 20, "ghoul": 7, "ifrit": 6, "boss": 0, "spawnInterval": 1.8, "victoryAward": 280 },
+    { "wave": 9,  "jinn": 22, "ghoul": 9, "ifrit": 7, "boss": 0, "spawnInterval": 1.7, "victoryAward": 320 },
+    { "wave": 10, "jinn": 18, "ghoul": 8, "ifrit": 8, "boss": 1, "spawnInterval": 1.6, "victoryAward": 500 }
+  ],
+  "upgrades": [
+    { "id": "hero",     "maxLevel": 10, "baseCost": 250, "costGrowth": 1.5, "bonusPerLevel": 0.12 },
+    { "id": "sword",    "maxLevel": 10, "baseCost": 250, "costGrowth": 1.5, "bonusPerLevel": 0.15 },
+    { "id": "bow",      "maxLevel": 10, "baseCost": 250, "costGrowth": 1.5, "bonusPerLevel": 0.15 },
+    { "id": "haybah",   "maxLevel": 10, "baseCost": 300, "costGrowth": 1.6, "bonusPerLevel": 0.15 },
+    { "id": "gate",     "maxLevel": 10, "baseCost": 400, "costGrowth": 1.6, "bonusPerLevel": 0.20 },
+    { "id": "slash",    "maxLevel": 10, "baseCost": 350, "costGrowth": 1.5, "bonusPerLevel": 0.20 },
+    { "id": "farmer",   "maxLevel": 10, "baseCost": 275, "costGrowth": 1.5, "bonusPerLevel": 0.20 },
+    { "id": "archer",   "maxLevel": 10, "baseCost": 300, "costGrowth": 1.5, "bonusPerLevel": 0.15 }
+  ],
+  "unlocks": [
+    { "afterWave": 1, "type": "ally", "id": "farmer" },
+    { "afterWave": 2, "type": "ability", "id": "arrow_volley" },
+    { "afterWave": 3, "type": "ally", "id": "archer" }
+  ],
+  "startingUnlocks": { "abilities": ["crescent_slash"], "allies": [] },
+  "slots": { "allies": 2, "abilities": 2, "charms": 1 },
+  "darkRealm": {
+    "durationSeconds": 35, "heroInvulnerable": true, "enemyHpMultiplier": 0.3,
+    "allyPowerMultiplier": 3, "rewardMultiplier": 3, "guaranteedCharmDrops": 2,
+    "spawnInterval": 0.5, "instantHaybah": true
+  }
+}

@@ -1,0 +1,292 @@
+{
+  "assets": [
+    {
+      "id": "hero_saqr",
+      "category": "character",
+      "worldHeight": 2.2,
+      "pivot": "bottom"
+    },
+    {
+      "id": "hero_saqr_blue",
+      "category": "character",
+      "worldHeight": 2.4,
+      "pivot": "center"
+    },
+    {
+      "id": "ally_farmer",
+      "category": "ally",
+      "worldHeight": 1.8,
+      "pivot": "bottom"
+    },
+    {
+      "id": "ally_archer",
+      "category": "ally",
+      "worldHeight": 2.0,
+      "pivot": "bottom"
+    },
+    {
+      "id": "enemy_jinn_earth",
+      "category": "enemy",
+      "worldHeight": 1.5,
+      "pivot": "bottom"
+    },
+    {
+      "id": "enemy_ghoul",
+      "category": "enemy",
+      "worldHeight": 3.0,
+      "pivot": "bottom"
+    },
+    {
+      "id": "enemy_ifrit",
+      "category": "enemy",
+      "worldHeight": 2.4,
+      "pivot": "center"
+    },
+    {
+      "id": "boss_marid",
+      "category": "boss",
+      "worldHeight": 6.0,
+      "pivot": "bottom"
+    },
+    {
+      "id": "aqab_blue_entity",
+      "category": "character",
+      "worldHeight": 3.0,
+      "pivot": "bottom"
+    },
+    {
+      "id": "story_portrait_entity",
+      "category": "character",
+      "worldHeight": 3.0,
+      "pivot": "bottom"
+    },
+    {
+      "id": "prop_gate",
+      "category": "prop",
+      "worldHeight": 6.0,
+      "pivot": "bottom"
+    },
+    {
+      "id": "prop_cave",
+      "category": "prop",
+      "worldHeight": 6.0,
+      "pivot": "bottom"
+    },
+    {
+      "id": "prop_lantern",
+      "category": "prop",
+      "worldHeight": 1.2,
+      "pivot": "bottom"
+    },
+    {
+      "id": "prop_palm",
+      "category": "prop",
+      "worldHeight": 4.0,
+      "pivot": "bottom"
+    },
+    {
+      "id": "bg_day_sky",
+      "category": "background",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    },
+    {
+      "id": "bg_day_far",
+      "category": "background",
+      "worldHeight": 10.8,
+      "pivot": "bottom"
+    },
+    {
+      "id": "ground_day",
+      "category": "background",
+      "worldHeight": 2.4,
+      "pivot": "bottom"
+    },
+    {
+      "id": "bg_night_sky",
+      "category": "background",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    },
+    {
+      "id": "bg_night_far",
+      "category": "background",
+      "worldHeight": 10.8,
+      "pivot": "bottom"
+    },
+    {
+      "id": "ground_night",
+      "category": "background",
+      "worldHeight": 2.4,
+      "pivot": "bottom"
+    },
+    {
+      "id": "bg_dark_sky",
+      "category": "background",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    },
+    {
+      "id": "bg_dark_far",
+      "category": "background",
+      "worldHeight": 10.8,
+      "pivot": "bottom"
+    },
+    {
+      "id": "ground_dark",
+      "category": "background",
+      "worldHeight": 2.4,
+      "pivot": "bottom"
+    },
+    {
+      "id": "fx_arrow",
+      "category": "fx",
+      "worldHeight": 0.8,
+      "pivot": "center"
+    },
+    {
+      "id": "fx_fireball",
+      "category": "fx",
+      "worldHeight": 0.6,
+      "pivot": "center"
+    },
+    {
+      "id": "fx_crescent",
+      "category": "fx",
+      "worldHeight": 3.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_dirham",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_date",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_haybah",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_icon_slash",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_icon_bow",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_hirz_power",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_hirz_luck",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_hirz_wealth",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_ally_farmer",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_ally_archer",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_portrait_saqr",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_panel_scroll",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "ui_button",
+      "category": "ui",
+      "worldHeight": 1.0,
+      "pivot": "center"
+    },
+    {
+      "id": "menu_keyart",
+      "category": "story",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    },
+    {
+      "id": "story_01_ropes",
+      "category": "story",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    },
+    {
+      "id": "story_02_fall",
+      "category": "story",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    },
+    {
+      "id": "story_03_chase",
+      "category": "story",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    },
+    {
+      "id": "story_04_cave",
+      "category": "story",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    },
+    {
+      "id": "story_05_entity",
+      "category": "story",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    },
+    {
+      "id": "story_06_slam",
+      "category": "story",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    },
+    {
+      "id": "story_07_entity",
+      "category": "story",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    },
+    {
+      "id": "story_08_alone",
+      "category": "story",
+      "worldHeight": 10.8,
+      "pivot": "center"
+    }
+  ]
+}
