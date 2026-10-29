@@ -10,7 +10,11 @@
 
 ## Tasks
 - [x] 00 setup repo
-- [ ] 01 core foundation
+- [x] 01 core foundation
+  - Runtime skeleton done: config, loc, save, input, art placeholders, screen stubs, validator, boot label.
+  - Verified by batch compiling the project with Unity 6000.0.85f1 (0 errors, 0 warnings) and by a temporary editor check that logged `Config OK`, the loaded balance values and the built camera/canvas/EventSystem/Boot label. The temporary check file was deleted.
+  - Note: the boot label uses `UnityEngine.UI.Text` with `LegacyRuntime.ttf`; it is temporary until task 02.
+  - Note: the screen enum is named `Screen`, so code that also has `using UnityEngine;` must write `UnityEngine.Screen` for the real screen.
 - [ ] 02 arabic text
 - [ ] 03 battle world + hero movement
 - [ ] 04 combat core
