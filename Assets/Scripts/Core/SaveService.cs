@@ -34,6 +34,7 @@ namespace SaqrAndAqab.Core
         public List<string> loadoutAbilities = new List<string>();
         public List<string> loadoutCharms = new List<string>();
         public bool introSeen;
+        public bool chapterComplete;
         public float musicVolume = 1f;
         public float sfxVolume = 1f;
     }

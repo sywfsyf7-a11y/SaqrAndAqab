@@ -24,6 +24,7 @@ namespace SaqrAndAqab.Battle
         int _killed;
         bool _running;
         bool _defeated;
+        Enemy _boss;
         float _dirhamMultiplier = 1f;
 
         public int CurrentWave { get; private set; }
@@ -38,6 +39,9 @@ namespace SaqrAndAqab.Battle
         public event System.Action<int> OnDirhamsChanged;
 
         public int WaveCount { get { return _waves != null ? _waves.Count : 0; } }
+
+        // The boss of this wave, if any. Used by the HUD for the big HP bar.
+        public Enemy Boss { get { return _boss; } }
 
         // The charm of wealth multiplies every coin collected during the wave.
         public void SetDirhamMultiplier(float multiplier)
@@ -105,9 +109,10 @@ namespace SaqrAndAqab.Battle
             CurrentWave = waveNumber;
             _running = true;
             _defeated = false;
+            _boss = null;
 
             // The boss is added by the boss task, so it is not counted yet.
-            _total = wave.jinn + wave.ghoul + wave.ifrit;
+            _total = wave.jinn + wave.ghoul + wave.ifrit + wave.boss;
             _spawned = 0;
             _killed = 0;
             _spawnTimer = 0f;
@@ -117,6 +122,7 @@ namespace SaqrAndAqab.Battle
             for (int i = 0; i < wave.jinn; i++) _pending.Add("jinn_earth");
             for (int i = 0; i < wave.ghoul; i++) _pending.Add("ghoul");
             for (int i = 0; i < wave.ifrit; i++) _pending.Add("ifrit");
+            for (int i = 0; i < wave.boss; i++) _pending.Add("marid");
             Shuffle(_pending);
 
             Debug.Log("[Wave] start " + waveNumber + " enemies=" + _total);
@@ -140,6 +146,7 @@ namespace SaqrAndAqab.Battle
                     if (enemy != null)
                     {
                         enemy.OnDied += HandleEnemyDied;
+                        if (id == "marid") _boss = enemy;
                         _spawned++;
                     }
 
@@ -167,6 +174,8 @@ namespace SaqrAndAqab.Battle
 
         void HandleEnemyDied(Unit unit)
         {
+            if (unit == _boss) _boss = null;
+
             // Drop the enemy's dirhams as a pooled coin that flies to the hero.
             if (_running)
             {

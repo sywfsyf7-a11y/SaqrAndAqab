@@ -22,7 +22,7 @@ namespace SaqrAndAqab.Battle
         public int Damage { get; private set; }
         public float Range { get; private set; }
         public float Cooldown { get; private set; }
-        public float Speed { get; private set; }
+        public float Speed { get; protected set; }
 
         // Multiplier on every attack (the charm of power). 1 = normal damage.
         public float DamageMultiplier

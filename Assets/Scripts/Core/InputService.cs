@@ -144,6 +144,7 @@ namespace SaqrAndAqab.Core
         static bool _debugSpawnWasDown;
         static bool _debugNextWaveWasDown;
         static bool _debugKillAllWasDown;
+        static bool _debugJumpToWave10WasDown;
 
         // Press T in the editor to spawn the training dummy next to the hero.
         public static bool DebugSpawnDummyPressed
@@ -183,6 +184,20 @@ namespace SaqrAndAqab.Core
                 if (keyboard != null) now = keyboard.kKey.isPressed;
                 bool pressed = now && !_debugKillAllWasDown;
                 _debugKillAllWasDown = now;
+                return pressed;
+            }
+        }
+
+        // Press J in the editor to jump straight to wave 10 (boss).
+        public static bool DebugJumpToWave10Pressed
+        {
+            get
+            {
+                bool now = false;
+                var keyboard = Keyboard.current;
+                if (keyboard != null) now = keyboard.jKey.isPressed;
+                bool pressed = now && !_debugJumpToWave10WasDown;
+                _debugJumpToWave10WasDown = now;
                 return pressed;
             }
         }

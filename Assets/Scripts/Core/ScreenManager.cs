@@ -17,7 +17,8 @@ namespace SaqrAndAqab.Core
         Defeat,
         Shop,
         DarkRealm,
-        Settings
+        Settings,
+        ChapterEnd
     }
 
     public abstract class GameScreen
@@ -236,6 +237,9 @@ namespace SaqrAndAqab.Core
 
             int collected = GameFlow.LastCollectedDirhams;
 
+            // The final wave leads to the chapter-end screen instead of another setup.
+            GameFlow.ChapterPending = (wave >= GameFlow.TotalWaves());
+
             if (wave > SaveService.Data.highestWaveCleared) SaveService.Data.highestWaveCleared = wave;
 
             var unlocked = LoadoutService.ApplyUnlocks(wave);
@@ -310,6 +314,40 @@ namespace SaqrAndAqab.Core
         }
     }
 
+    // Chapter-end screen (task 11): title then lines 1..3 one by one, tap to continue, then menu.
+    public class ChapterEndScreen : GameScreen
+    {
+        ChapterEndView _view;
+
+        public override void Enter()
+        {
+            Time.timeScale = 1f;
+            if (SaveService.Data == null) SaveService.Load();
+            if (SaveService.Data != null)
+            {
+                SaveService.Data.chapterComplete = true;
+                SaveService.Save();
+            }
+
+            if (GameBootstrap.UICanvas == null) return;
+            _view = ChapterEndView.Build(GameBootstrap.UICanvas, OnFinished);
+        }
+
+        public override void Exit()
+        {
+            if (_view != null)
+            {
+                _view.Destroy();
+                _view = null;
+            }
+        }
+
+        static void OnFinished()
+        {
+            ScreenManager.Show(Screen.Menu);
+        }
+    }
+
     public class StoryScreen : GameScreen { }
     public class ShopScreen : GameScreen
     {
@@ -337,6 +375,14 @@ namespace SaqrAndAqab.Core
             if (GameFlow.ShopReturnToSetup)
             {
                 GameFlow.ShopReturnToSetup = false;
+
+                if (GameFlow.ChapterPending)
+                {
+                    GameFlow.ChapterPending = false;
+                    ScreenManager.Show(Screen.ChapterEnd);
+                    return;
+                }
+
                 ScreenManager.Show(Screen.Setup);
             }
             else
@@ -389,6 +435,7 @@ namespace SaqrAndAqab.Core
                 case Screen.Shop: return new ShopScreen();
                 case Screen.DarkRealm: return new DarkRealmScreen();
                 case Screen.Settings: return new SettingsScreen();
+                case Screen.ChapterEnd: return new ChapterEndScreen();
                 default: return new MenuScreen();
             }
         }

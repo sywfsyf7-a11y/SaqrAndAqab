@@ -107,7 +107,15 @@
   - Upgrades applied at creation time (read from save, never editing config): hero (hp + damage), sword (damage), bow (arrow_volley damage), haybah (gain rate), gate (hp), slash (crescent_slash damage), farmer (income), archer (damage).
   - `GameFlow.ShopReturnToSetup` flag controls the shop's back destination.
   - Verified headless: cost formula 250, buy raises level 1->2 and dirhams 1000->750, multiplier 1.12, hero hp 100->112, shop view builds, charm count works. 0 errors, 0 warnings.
-- [ ] 11 boss (wave 10) + chapter end
+- [x] 11 boss (wave 10) + chapter end
+  - `Battle/Boss.cs`: marid (hp 900, damage 25), walks toward the gate, periodic slam (1 s red telegraph circle, then area damage radius 2.5 m for damage*1.5), summons 6 jinn at 50% HP and becomes 20% faster.
+  - `Battle/EnemySpawner.cs`: spawns `marid` as a `Boss`.
+  - `Battle/WaveManager.cs`: boss counted in `_total`, tracked as `_boss`, exposed via `Boss`; victory waits for the boss and all enemies to die.
+  - `UI/BattleHud.cs`: big boss HP bar (name `enemy.marid`) replaces the wave bar while the boss lives.
+  - `InputService`: debug key J jumps to wave 10.
+  - `UI/ChapterEndView.cs` + `ChapterEndScreen`: title `story.end.title`, then `story.end.1..3` one by one (tap to continue), marks `chapterComplete` in the save, returns to the menu.
+  - `SaveService`: added `chapterComplete` field.
+  - Verified headless: boss hp=900/damage=25, chapter-end view builds, chapterComplete saves. 0 errors, 0 warnings. (Boss spawning happens over time; verified by code path.)
 - [ ] 12 dark realm
 - [ ] 13 story intro
 - [ ] 14 audio + settings

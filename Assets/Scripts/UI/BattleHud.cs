@@ -66,6 +66,13 @@ namespace SaqrAndAqab.UI
         RTLTextMeshPro _waveLabel;
         int _waveShown = -1;
 
+        GameObject _waveBarRoot;
+        GameObject _bossBarRoot;
+        Image _bossFill;
+        RTLTextMeshPro _bossName;
+        RTLTextMeshPro _bossHpLabel;
+        int _bossHpShown = -1;
+
         Image _haybahFill;
         RTLTextMeshPro _haybahLabel;
 
@@ -135,6 +142,29 @@ namespace SaqrAndAqab.UI
             RefreshWaveLabel();
             TickDate();
             RefreshAbilityButtons();
+            RefreshBossBar();
+        }
+
+        void RefreshBossBar()
+        {
+            var boss = _waves != null ? _waves.Boss : null;
+            bool hasBoss = boss != null && boss.Health != null && boss.Health.IsAlive;
+
+            if (_waveBarRoot != null) _waveBarRoot.SetActive(!hasBoss);
+            if (_waveLabel != null) _waveLabel.gameObject.SetActive(!hasBoss);
+            if (_bossBarRoot != null) _bossBarRoot.SetActive(hasBoss);
+            if (_bossName != null) _bossName.gameObject.SetActive(hasBoss);
+
+            if (!hasBoss) return;
+
+            int hp = boss.Health.hp;
+            if (hp == _bossHpShown) return;
+            _bossHpShown = hp;
+
+            if (_bossFill != null)
+                SetBar(_bossFill, boss.Health.max > 0 ? (float)hp / boss.Health.max : 0f);
+
+            if (_bossHpLabel != null) _bossHpLabel.text = hp + " / " + boss.Health.max;
         }
 
         void OnDestroy()
@@ -185,11 +215,31 @@ namespace SaqrAndAqab.UI
             labelRect.anchoredPosition = new Vector2(0f, -18f);
             labelRect.sizeDelta = new Vector2(600f, 50f);
 
-            Image waveFill;
-            CreateBar(_safeArea, "Wave Bar", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-                new Vector2(0f, -74f), new Vector2(440f, 22f), WaveColor, out waveFill);
+            var waveBarRect = CreateBar(_safeArea, "Wave Bar", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
+                new Vector2(0f, -74f), new Vector2(440f, 22f), WaveColor, out var waveFill);
             _waveFill = waveFill;
+            _waveBarRoot = waveBarRect.gameObject;
             SetBar(_waveFill, 0f);
+
+            // Boss HP bar (replaces the wave bar while the boss lives).
+            var bossBarRect = CreateBar(_safeArea, "Boss Bar", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
+                new Vector2(0f, -74f), new Vector2(700f, 30f), new Color(0.85f, 0.20f, 0.20f, 1f), out var bossFill);
+            _bossFill = bossFill;
+            _bossBarRoot = bossBarRect.gameObject;
+            _bossBarRoot.SetActive(false);
+            SetBar(_bossFill, 0f);
+
+            _bossName = UIFactory.CreateTextRaw(_safeArea, Loc.T("enemy.marid"), 28, TextColor, TextAlignmentOptions.Center, true);
+            var bossNameRect = _bossName.rectTransform;
+            bossNameRect.anchorMin = new Vector2(0.5f, 1f);
+            bossNameRect.anchorMax = new Vector2(0.5f, 1f);
+            bossNameRect.pivot = new Vector2(0.5f, 1f);
+            bossNameRect.anchoredPosition = new Vector2(0f, -10f);
+            bossNameRect.sizeDelta = new Vector2(700f, 40f);
+            _bossName.gameObject.SetActive(false);
+
+            _bossHpLabel = UIFactory.CreateTextRaw(bossBarRect, "", 20, TextColor, TextAlignmentOptions.Center, true);
+            UIFactory.Fill(_bossHpLabel.rectTransform);
         }
 
         // ---- top-right: dirhams + pause ----

@@ -103,6 +103,10 @@ namespace SaqrAndAqab.Battle
             if (InputService.DebugNextWavePressed && _waves != null) _waves.StartNextWave();
 
             if (InputService.DebugKillAllPressed && _waves != null) _waves.KillAllEnemies();
+
+            if (InputService.DebugJumpToWave10Pressed && _waves != null) _waves.StartWave(10);
+
+            if (InputService.DebugJumpToWave10Pressed && _waves != null) _waves.StartWave(10);
         }
 
         public void DebugSpawnDummy()

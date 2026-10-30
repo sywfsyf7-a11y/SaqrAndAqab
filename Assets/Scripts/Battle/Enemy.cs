@@ -8,11 +8,11 @@ namespace SaqrAndAqab.Battle
     // ranged enemies (ifrit) stop at their range and shoot a pooled fireball.
     public class Enemy : Unit
     {
-        SpriteRenderer _renderer;
-        bool _isRanged;
-        float _projectileSpeed;
-        float _gateX;
-        float _baseScale = 1f;
+        protected SpriteRenderer _renderer;
+        protected bool _isRanged;
+        protected float _projectileSpeed;
+        protected float _gateX;
+        protected float _baseScale = 1f;
 
         public int DirhamReward { get; private set; }
 
@@ -27,7 +27,7 @@ namespace SaqrAndAqab.Battle
             return enemy;
         }
 
-        void Setup(GameConfig game, EnemyConfig config)
+        protected virtual void Setup(GameConfig game, EnemyConfig config)
         {
             if (game != null) _gateX = game.gateX;
 

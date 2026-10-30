@@ -32,7 +32,11 @@ namespace SaqrAndAqab.Battle
             float maxY = _game != null ? _game.laneMaxY : 0f;
             float x = _game != null ? _game.caveX : 0f;
 
-            return Enemy.Create(transform, config, new Vector3(x, Random.Range(minY, maxY), 0f), _game);
+            Vector3 position = new Vector3(x, Random.Range(minY, maxY), 0f);
+
+            if (enemyId == "marid") return Boss.Create(transform, config, position, _game);
+
+            return Enemy.Create(transform, config, position, _game);
         }
 
         static EnemyConfig FindConfig(string id)

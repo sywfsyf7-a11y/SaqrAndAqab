@@ -22,6 +22,9 @@ namespace SaqrAndAqab.Core
         // returns to the next setup instead of the main menu.
         public static bool ShopReturnToSetup { get; set; }
 
+        // Set when the final wave has been won; the shop's back button then opens the chapter-end screen.
+        public static bool ChapterPending { get; set; }
+
         static GameFlow()
         {
             Wave = 1;
@@ -75,7 +78,7 @@ namespace SaqrAndAqab.Core
             CharmDropBonus = 0f;
         }
 
-        static int TotalWaves()
+        public static int TotalWaves()
         {
             var balance = ConfigService.Balance;
             var game = balance != null ? balance.game : null;
