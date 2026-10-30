@@ -80,7 +80,7 @@ namespace SaqrAndAqab.Battle
             int dealt = target.Health.TakeDamage(Damage);
             if (Anim != null) Anim.Flash();
 
-            DamageNumbers.Show(this, dealt, false);
+            DamageNumbers.Show(target, dealt, false);
         }
 
         void HandleDied()

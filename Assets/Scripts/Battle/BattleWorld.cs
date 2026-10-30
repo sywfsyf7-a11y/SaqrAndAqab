@@ -56,13 +56,27 @@ namespace SaqrAndAqab.Battle
             stats.cooldown = 60f;
             stats.speed = 0f;
 
-            var go = new GameObject("TrainingDummy", typeof(Unit));
+            var go = new GameObject("TrainingDummy", typeof(Unit), typeof(SpriteRenderer));
             go.transform.SetParent(transform, false);
             go.transform.position = new Vector3(_hero.transform.position.x + 1.2f, _hero.transform.position.y, 0f);
 
+            // Visible stand-in so the dummy can be seen while the real enemy art is still a placeholder.
+            const string DummySpriteId = "enemy_jinn_earth";
+            var sprite = AssetLibrary.GetSprite(DummySpriteId);
+            var renderer = go.GetComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.flipX = true;
+            renderer.sortingOrder = Hero.SortingOrderFor(go.transform.position.y);
+
+            float spriteHeight = sprite != null && sprite.bounds.size.y > 0f ? sprite.bounds.size.y : 1f;
+            float scale = AssetLibrary.GetWorldHeight(DummySpriteId) / spriteHeight;
+            go.transform.localScale = new Vector3(scale, scale, 1f);
+
             var dummy = go.GetComponent<Unit>();
             dummy.Init(Team.Enemy, stats);
-            go.AddComponent<ProceduralAnim>();
+
+            var anim = go.AddComponent<ProceduralAnim>();
+            anim.SetBaseScale(Vector3.one * scale);
         }
 
         public static BattleWorld Build(Transform parent, WorldThemeId theme)

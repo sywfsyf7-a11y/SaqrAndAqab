@@ -43,7 +43,7 @@
   - `Assets/Scripts/Battle/Hero.cs`: now derives from `Unit`. Movement (`InputService.MoveAxis` x `hero.moveSpeed`, clamped to the world, faces the movement) plus `HandleAttack()` every frame, so the hero attacks the nearest enemy while still moving freely.
   - `Assets/Scripts/Battle/DamageNumbers.cs` + `DamageNumber.cs`: pooled world-space TMP numbers (pool of 16). They rise 1.1 m and fade over 0.9 s, white for a normal hit, yellow for a crit / ability hit. Western digits only. Rendered with `TextMeshPro` (world space, sorting order 500 so they stay above the units).
   - `Assets/Scripts/Core/InputService.cs`: editor-only debug key `T` (`DebugSpawnDummyPressed`), read through `InputService` as the rules require. Nothing of it compiles into a build.
-  - `Assets/Scripts/Battle/BattleWorld.cs`: `Update` polls the debug key and `DebugSpawnDummy()` spawns a `Unit` on the enemy team 1.2 m to the hero's right (hp 50, no attack, no movement, procedural anim so it can die).
+  - `Assets/Scripts/Battle/BattleWorld.cs`: `Update` polls the debug key and `DebugSpawnDummy()` spawns a visible `Unit` on the enemy team 1.2 m to the hero's right (hp 50, no attack, no movement, jinn placeholder sprite facing left, procedural anim so it can die).
   - Verified headless: hero and dummy spawn, the hero's hit deals `hero.damage` (50 -> 40), the dummy is removed from the enemy registry when it dies, and the death animation starts. `Time.deltaTime` is 0 outside Play mode, so the cooldown loop and the floating numbers must be seen by the user in Play mode.
   - Note: Unity keeps adding kerning records to `Assets/Resources/Fonts/IBMPlexSansArabic-Bold SDF.asset` on every editor run; the file is committed as generated.
 - [ ] 05 enemies + waves
