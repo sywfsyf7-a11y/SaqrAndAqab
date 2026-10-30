@@ -26,6 +26,9 @@ namespace SaqrAndAqab.Battle
 
         Camera _camera;
         Hero _hero;
+        Gate _gate;
+        EnemySpawner _spawner;
+        WaveManager _waves;
         ParallaxLayer _sky;
         ParallaxLayer _far;
         ParallaxLayer _ground;
@@ -35,14 +38,28 @@ namespace SaqrAndAqab.Battle
         float _camY;
         float _camVelocity;
 
+        int _debugWave;
+
         public WorldThemeId Theme { get; private set; }
 
         public Hero Hero { get { return _hero; } }
 
+        public Gate Gate { get { return _gate; } }
+
+        public WaveManager Waves { get { return _waves; } }
+
         void Update()
         {
-            // Task 04 debug: press T in the editor to spawn the training dummy next to the hero.
+            // Debug keys (editor only, task 04 + 05).
             if (InputService.DebugSpawnDummyPressed) DebugSpawnDummy();
+
+            if (InputService.DebugNextWavePressed && _waves != null)
+            {
+                _debugWave++;
+                _waves.StartWave(_debugWave);
+            }
+
+            if (InputService.DebugKillAllPressed && _waves != null) _waves.KillAllEnemies();
         }
 
         public void DebugSpawnDummy()
@@ -73,9 +90,8 @@ namespace SaqrAndAqab.Battle
             go.transform.localScale = new Vector3(scale, scale, 1f);
 
             var dummy = go.GetComponent<Unit>();
-            dummy.Init(Team.Enemy, stats);
-
             var anim = go.AddComponent<ProceduralAnim>();
+            dummy.Init(Team.Enemy, stats);
             anim.SetBaseScale(Vector3.one * scale);
         }
 
@@ -92,6 +108,9 @@ namespace SaqrAndAqab.Battle
         void BuildInternal(WorldThemeId theme)
         {
             Theme = theme;
+
+            // Never keep stale units from a previous battle.
+            UnitRegistry.Clear();
 
             var balance = ConfigService.Balance;
             var game = balance != null ? balance.game : null;
@@ -145,6 +164,11 @@ namespace SaqrAndAqab.Battle
             float startX = Mathf.Clamp(game.gateX + HeroStartOffset, game.worldMinX + 1f, game.worldMaxX - 1f);
             float startY = (game.laneMinY + game.laneMaxY) * 0.5f;
             _hero = Hero.Create(transform, new Vector3(startX, startY, 0f), game, heroConfig);
+
+            int gateHp = balance.gate != null ? balance.gate.hp : 0;
+            _gate = Gate.Create(transform, new Vector3(game.gateX, startY, 0f), gateHp);
+            _spawner = EnemySpawner.Create(transform, game);
+            _waves = WaveManager.Create(transform, balance.waves, _spawner, _gate, _hero);
 
             SnapCamera();
         }

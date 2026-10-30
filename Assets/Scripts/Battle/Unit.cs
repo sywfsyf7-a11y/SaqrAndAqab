@@ -39,6 +39,9 @@ namespace SaqrAndAqab.Battle
             CooldownBase = stats.cooldown;
             Speed = stats.speed;
 
+            // Units whose animator sits on the same object (gate, dummy) get it here.
+            if (Anim == null) Anim = GetComponent<ProceduralAnim>();
+
             Health = new Health(stats.hp);
             Health.OnDied += HandleDied;
 
@@ -63,14 +66,20 @@ namespace SaqrAndAqab.Battle
                 return;
             }
 
-            Unit target = UnitRegistry.GetNearest(Team.Enemy, transform.position.x, Range);
+            Team targetTeam = OpposingTeam(Team);
+            Unit target = UnitRegistry.GetNearest(targetTeam, transform.position.x, Range);
             if (target == null) return;
 
             Cooldown = CooldownBase;
             Attack(target);
         }
 
-        void Attack(Unit target)
+        static Team OpposingTeam(Team team)
+        {
+            return team == Team.Player ? Team.Enemy : Team.Player;
+        }
+
+        protected virtual void Attack(Unit target)
         {
             if (target == null || target.Health == null || !target.Health.IsAlive) return;
 
@@ -81,6 +90,13 @@ namespace SaqrAndAqab.Battle
             if (Anim != null) Anim.Flash();
 
             DamageNumbers.Show(target, dealt, false);
+        }
+
+        // Used by debug keys and by the wave manager to clear leftovers.
+        public void Kill()
+        {
+            if (Health == null) return;
+            Health.TakeDamage(Health.hp);
         }
 
         void HandleDied()

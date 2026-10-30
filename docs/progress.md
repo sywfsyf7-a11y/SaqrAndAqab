@@ -46,7 +46,16 @@
   - `Assets/Scripts/Battle/BattleWorld.cs`: `Update` polls the debug key and `DebugSpawnDummy()` spawns a visible `Unit` on the enemy team 1.2 m to the hero's right (hp 50, no attack, no movement, jinn placeholder sprite facing left, procedural anim so it can die).
   - Verified headless: hero and dummy spawn, the hero's hit deals `hero.damage` (50 -> 40), the dummy is removed from the enemy registry when it dies, and the death animation starts. `Time.deltaTime` is 0 outside Play mode, so the cooldown loop and the floating numbers must be seen by the user in Play mode.
   - Note: Unity keeps adding kerning records to `Assets/Resources/Fonts/IBMPlexSansArabic-Bold SDF.asset` on every editor run; the file is committed as generated.
-- [ ] 05 enemies + waves
+- [x] 05 enemies + waves
+  - `Assets/Scripts/Battle/Enemy.cs`: derives from `Unit`, stats by id from `balance.json` (`jinn_earth`, `ghoul`, `ifrit`), sprite `enemy_<id>` facing left (flipX). Walks left toward `gateX`, stops and attacks the nearest player unit (hero / gate / ally) in range. Ranged enemies (ifrit) stop at their range and fire a pooled fireball instead of hitting instantly.
+  - `Assets/Scripts/Battle/Gate.cs`: the gate is a player-side `Unit` (hp from `gate.hp`, damage 0, no movement). Being a unit means enemies find it with the normal target search; its death is what loses the wave.
+  - `Assets/Scripts/Battle/Projectile.cs`: pooled fireball (stack pool). Flies straight, hits the first live unit of the opposing team (0.5 m horizontal / 0.9 m vertical tolerance), shows a damage number and returns to the pool. Pool entries destroyed with the battle are skipped safely.
+  - `Assets/Scripts/Battle/EnemySpawner.cs`: spawns at `caveX` with a random lane Y from `laneMinY..laneMaxY`.
+  - `Assets/Scripts/Battle/WaveManager.cs`: `StartWave(n)` reads the `waves` table, builds a shuffled list (jinn / ghoul / ifrit), spawns one enemy every `spawnInterval`, progress = killed / total, wave complete when everything spawned and dead. Events: `OnWaveProgress`, `OnWaveComplete`, `OnDefeat` (gate destroyed or hero dead). Starting a new wave clears leftovers. The boss count is ignored until task 11.
+  - `Unit` changes: target team is now the opposing team (so enemies fight the player side), `Attack` is `protected virtual` (ifrit overrides it), `Kill()` for debug / wave cleanup, and `Init` now picks up a `ProceduralAnim` on the same object. That last one fixes the reported bug: the training dummy died logically but had no animator, so it stayed standing after 5 hits.
+  - `Assets/Scripts/Battle/BattleWorld.cs`: clears `UnitRegistry`, creates the gate + spawner + wave manager, and polls the debug keys `T` (dummy), `N` (next wave), `K` (kill all enemies). Exposes `Hero`, `Gate` and `Waves`.
+  - `Assets/Scripts/Core/InputService.cs`: editor-only `N` and `K` debug keys next to `T` (never compiled into a build).
+  - Verified headless: gate 300 hp registered with the hero on the player side, wave 1 spawns its 8 enemies at `caveX` with a random lane Y and a left-facing placeholder sprite, an ifrit fireball hits the hero (100 -> 93) and returns to the pool, killing all enemies logs `[Wave] complete 1` and fires the event, and destroying the gate logs `[Wave] defeat (gate)`. Movement, spawning over time and the visuals need Play mode (Time.deltaTime is 0 in the editor).
 - [ ] 06 HUD + coins + dates
 - [ ] 07 allies + haybah
 - [ ] 08 abilities

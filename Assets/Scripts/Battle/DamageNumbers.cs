@@ -12,13 +12,15 @@ namespace SaqrAndAqab.Battle
 
         public static void Show(Unit source, int amount, bool crit)
         {
-            DamageNumber num;
-            if (_pool.Count > 0)
+            DamageNumber num = null;
+            while (num == null && _pool.Count > 0)
             {
-                num = _pool[_pool.Count - 1];
-                _pool.RemoveAt(_pool.Count - 1);
+                int last = _pool.Count - 1;
+                num = _pool[last];
+                _pool.RemoveAt(last);
             }
-            else
+
+            if (num == null)
             {
                 var go = new GameObject("DamageNumber", typeof(DamageNumber));
                 num = go.GetComponent<DamageNumber>();

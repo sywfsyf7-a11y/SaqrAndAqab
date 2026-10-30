@@ -140,8 +140,10 @@ namespace SaqrAndAqab.Core
 #endif
 
 #if UNITY_EDITOR
-        // Task 04 debug keys (editor only, never active in a build).
+        // Debug keys (editor only, never active in a build): T dummy, N next wave, K kill all enemies.
         static bool _debugSpawnWasDown;
+        static bool _debugNextWaveWasDown;
+        static bool _debugKillAllWasDown;
 
         // Press T in the editor to spawn the training dummy next to the hero.
         public static bool DebugSpawnDummyPressed
@@ -153,6 +155,34 @@ namespace SaqrAndAqab.Core
                 if (keyboard != null) now = keyboard.tKey.isPressed;
                 bool pressed = now && !_debugSpawnWasDown;
                 _debugSpawnWasDown = now;
+                return pressed;
+            }
+        }
+
+        // Press N in the editor to start the next wave.
+        public static bool DebugNextWavePressed
+        {
+            get
+            {
+                bool now = false;
+                var keyboard = Keyboard.current;
+                if (keyboard != null) now = keyboard.nKey.isPressed;
+                bool pressed = now && !_debugNextWaveWasDown;
+                _debugNextWaveWasDown = now;
+                return pressed;
+            }
+        }
+
+        // Press K in the editor to kill every enemy on the field.
+        public static bool DebugKillAllPressed
+        {
+            get
+            {
+                bool now = false;
+                var keyboard = Keyboard.current;
+                if (keyboard != null) now = keyboard.kKey.isPressed;
+                bool pressed = now && !_debugKillAllWasDown;
+                _debugKillAllWasDown = now;
                 return pressed;
             }
         }
