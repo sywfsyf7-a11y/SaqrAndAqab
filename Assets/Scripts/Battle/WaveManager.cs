@@ -28,6 +28,31 @@ namespace SaqrAndAqab.Battle
         public int CurrentWave { get; private set; }
         public bool IsRunning { get { return _running; } }
 
+        // Dirhams collected during this battle (coins picked up by the hero).
+        public int RunDirhams { get; private set; }
+
+        public event System.Action<int> OnDirhamsChanged;
+
+        public int WaveCount { get { return _waves != null ? _waves.Count : 0; } }
+
+        public void AddDirhams(int amount)
+        {
+            if (amount <= 0) return;
+
+            RunDirhams += amount;
+            if (OnDirhamsChanged != null) OnDirhamsChanged(RunDirhams);
+        }
+
+        // Debug key N: the next wave, wrapping back to wave 1 after the last one.
+        public void StartNextWave()
+        {
+            if (_waves == null || _waves.Count == 0) return;
+
+            int next = CurrentWave + 1;
+            if (FindWave(next) == null) next = 1;
+            StartWave(next);
+        }
+
         public static WaveManager Create(Transform parent, List<WaveConfig> waves, EnemySpawner spawner, Gate gate, Hero hero)
         {
             var go = new GameObject("Wave Manager", typeof(WaveManager));
@@ -131,6 +156,17 @@ namespace SaqrAndAqab.Battle
 
         void HandleEnemyDied(Unit unit)
         {
+            // Drop the enemy's dirhams as a pooled coin that flies to the hero.
+            if (_running)
+            {
+                var enemy = unit as Enemy;
+                if (enemy != null && enemy.DirhamReward > 0)
+                {
+                    Vector3 dropPosition = enemy.transform.position + Vector3.up * 0.6f;
+                    CoinPickups.Spawn(transform.parent, dropPosition, enemy.DirhamReward, _hero, this);
+                }
+            }
+
             _killed++;
             RaiseProgress();
 

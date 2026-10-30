@@ -29,6 +29,7 @@ namespace SaqrAndAqab.Core
         public List<string> unlockedAbilities = new List<string>();
         public List<CharmCount> charmCounts = new List<CharmCount>();
         public int dateCount;
+        public bool datesInitialized;
         public List<string> loadoutAllies = new List<string>();
         public List<string> loadoutAbilities = new List<string>();
         public List<string> loadoutCharms = new List<string>();

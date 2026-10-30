@@ -14,6 +14,8 @@ namespace SaqrAndAqab.Battle
         float _gateX;
         float _baseScale = 1f;
 
+        public int DirhamReward { get; private set; }
+
         public static Enemy Create(Transform parent, EnemyConfig config, Vector3 position, GameConfig game)
         {
             var go = new GameObject("Enemy " + (config != null ? config.id : "?"), typeof(Enemy));
@@ -55,6 +57,7 @@ namespace SaqrAndAqab.Battle
 
             _isRanged = config.isRanged;
             _projectileSpeed = config.projectileSpeed;
+            DirhamReward = config.dirhamReward;
 
             var stats = new UnitStats();
             stats.hp = config.hp;

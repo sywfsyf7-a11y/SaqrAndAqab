@@ -69,51 +69,40 @@ namespace SaqrAndAqab.Core
         }
     }
 
-    // Battle: the world plus a small back button. The real HUD comes in task 06.
+    // Battle: the world plus the HUD (task 06). The setup screen (task 09) will pick the wave later.
     public class BattleScreen : GameScreen
     {
         BattleWorld _world;
-        RectTransform _ui;
+        BattleHud _hud;
 
         public override void Enter()
         {
+            Time.timeScale = 1f;
+
             if (_world == null) _world = BattleWorld.Build(GameBootstrap.Root, WorldThemeId.Day);
-            if (_ui == null) _ui = BuildUI();
-            if (_ui != null) _ui.gameObject.SetActive(true);
+            if (_hud == null) _hud = BattleHud.Create(GameBootstrap.UICanvas, _world);
+            if (_hud != null) _hud.gameObject.SetActive(true);
+
+            // Straight into wave 1 for now, so the HUD can be checked without the setup screen.
+            if (_world != null && _world.Waves != null && !_world.Waves.IsRunning)
+                _world.Waves.StartWave(1);
         }
 
         public override void Exit()
         {
+            Time.timeScale = 1f;
+
             if (_world != null)
             {
                 Object.Destroy(_world.gameObject);
                 _world = null;
             }
 
-            if (_ui != null) _ui.gameObject.SetActive(false);
-        }
-
-        static RectTransform BuildUI()
-        {
-            var canvas = GameBootstrap.UICanvas;
-            if (canvas == null) return null;
-
-            var root = UIFactory.CreateUIRoot(canvas, "Battle UI");
-
-            var back = UIFactory.CreateButton(root, "common.back", OnBackPressed,
-                new Vector2(200f, 84f), 34);
-            var rect = back.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(1f, 1f);
-            rect.anchorMax = new Vector2(1f, 1f);
-            rect.pivot = new Vector2(1f, 1f);
-            rect.anchoredPosition = new Vector2(-28f, -28f);
-
-            return root;
-        }
-
-        static void OnBackPressed()
-        {
-            ScreenManager.Show(Screen.Menu);
+            if (_hud != null)
+            {
+                Object.Destroy(_hud.gameObject);
+                _hud = null;
+            }
         }
     }
 

@@ -38,8 +38,6 @@ namespace SaqrAndAqab.Battle
         float _camY;
         float _camVelocity;
 
-        int _debugWave;
-
         public WorldThemeId Theme { get; private set; }
 
         public Hero Hero { get { return _hero; } }
@@ -53,11 +51,7 @@ namespace SaqrAndAqab.Battle
             // Debug keys (editor only, task 04 + 05).
             if (InputService.DebugSpawnDummyPressed) DebugSpawnDummy();
 
-            if (InputService.DebugNextWavePressed && _waves != null)
-            {
-                _debugWave++;
-                _waves.StartWave(_debugWave);
-            }
+            if (InputService.DebugNextWavePressed && _waves != null) _waves.StartNextWave();
 
             if (InputService.DebugKillAllPressed && _waves != null) _waves.KillAllEnemies();
         }
@@ -109,8 +103,9 @@ namespace SaqrAndAqab.Battle
         {
             Theme = theme;
 
-            // Never keep stale units from a previous battle.
+            // Never keep stale units or coins from a previous battle.
             UnitRegistry.Clear();
+            CoinPickups.Clear();
 
             var balance = ConfigService.Balance;
             var game = balance != null ? balance.game : null;
