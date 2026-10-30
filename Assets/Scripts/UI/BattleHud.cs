@@ -10,7 +10,8 @@ using SaqrAndAqab.Data;
 namespace SaqrAndAqab.UI
 {
     // Battle HUD built from code: hero portrait + HP bar (top-left), wave progress (top-center),
-    // dirhams + pause (top-right), date (healing) button (bottom-center) and the pause overlay.
+    // dirhams + pause (top-right), date (healing) button (bottom-center), haybah + allies (bottom-left),
+    // ability buttons with a circular cooldown (bottom-right) and the pause overlay.
     // Anchored for the 1920x1080 reference and kept inside the device safe area.
     public class BattleHud : MonoBehaviour
     {
@@ -35,6 +36,14 @@ namespace SaqrAndAqab.UI
             public Image Icon;
         }
 
+        class AbilityButton
+        {
+            public Ability Ability;
+            public Button Button;
+            public Image Icon;
+            public Image Cooldown;
+        }
+
         BattleWorld _world;
         Hero _hero;
         WaveManager _waves;
@@ -42,6 +51,7 @@ namespace SaqrAndAqab.UI
         ItemConfig _dateItem;
 
         readonly List<AllyButton> _allyButtons = new List<AllyButton>();
+        readonly List<AbilityButton> _abilityButtons = new List<AbilityButton>();
 
         RectTransform _safeArea;
         Rect _lastSafeArea;
@@ -99,6 +109,7 @@ namespace SaqrAndAqab.UI
             BuildDateButton();
             BuildHaybahPanel();
             BuildAllyButtons();
+            BuildAbilityButtons();
             BuildPauseOverlay();
 
             InitDates();
@@ -123,6 +134,7 @@ namespace SaqrAndAqab.UI
             RefreshHealth();
             RefreshWaveLabel();
             TickDate();
+            RefreshAbilityButtons();
         }
 
         void OnDestroy()
@@ -136,6 +148,7 @@ namespace SaqrAndAqab.UI
             if (_haybah != null) _haybah.OnChanged -= HandleHaybahChanged;
 
             // Never leave the game frozen behind a destroyed HUD.
+            HitStop.Cancel();
             Time.timeScale = 1f;
         }
 
@@ -333,6 +346,92 @@ namespace SaqrAndAqab.UI
             }
         }
 
+        // ---- bottom-right: ability buttons ----
+
+        void BuildAbilityButtons()
+        {
+            if (_world == null) return;
+
+            var abilities = _world.Abilities;
+            for (int i = 0; i < abilities.Count; i++)
+            {
+                var ability = abilities[i];
+                if (ability == null) continue;
+
+                var rect = CreateRect(_safeArea, "Ability " + ability.Id, new Vector2(1f, 0f), new Vector2(1f, 0f),
+                    new Vector2(-28f - i * 132f, 36f), new Vector2(150f, 150f));
+
+                var image = rect.gameObject.AddComponent<Image>();
+                image.sprite = AssetLibrary.GetSprite(ability.IconId);
+                image.preserveAspect = true;
+                image.raycastTarget = true;
+
+                var button = rect.gameObject.AddComponent<Button>();
+                button.targetGraphic = image;
+                button.transition = Selectable.Transition.None;
+
+                var captured = ability;
+                button.onClick.AddListener(delegate { OnAbilityPressed(captured); });
+
+                // Circular cooldown fill drawn on top of the icon.
+                var cooldownRect = CreateRect(rect, "Cooldown", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                    Vector2.zero, Vector2.zero);
+                UIFactory.Fill(cooldownRect);
+
+                var cooldown = cooldownRect.gameObject.AddComponent<Image>();
+                cooldown.color = CooldownColor;
+                cooldown.raycastTarget = false;
+                cooldown.type = Image.Type.Filled;
+                cooldown.fillMethod = Image.FillMethod.Radial360;
+                cooldown.fillOrigin = (int)Image.Origin360.Top;
+                cooldown.fillClockwise = true;
+                cooldown.fillAmount = 0f;
+                cooldown.gameObject.SetActive(false);
+
+                _abilityButtons.Add(new AbilityButton
+                {
+                    Ability = ability,
+                    Button = button,
+                    Icon = image,
+                    Cooldown = cooldown
+                });
+            }
+
+            RefreshAbilityButtons();
+        }
+
+        void OnAbilityPressed(Ability ability)
+        {
+            if (_world == null || ability == null) return;
+
+            _world.TryUseAbility(ability);
+            RefreshAbilityButtons();
+        }
+
+        void RefreshAbilityButtons()
+        {
+            bool alive = _hero != null && _hero.Health != null && _hero.Health.IsAlive;
+
+            for (int i = 0; i < _abilityButtons.Count; i++)
+            {
+                var entry = _abilityButtons[i];
+                if (entry.Ability == null || entry.Button == null) continue;
+
+                bool ready = alive && entry.Ability.IsReady;
+                entry.Button.interactable = ready;
+                if (entry.Icon != null) entry.Icon.color = ready ? Color.white : DisabledColor;
+
+                if (entry.Cooldown != null)
+                {
+                    float fraction = entry.Ability.CooldownFraction;
+                    entry.Cooldown.fillAmount = fraction;
+
+                    bool show = fraction > 0f;
+                    if (entry.Cooldown.gameObject.activeSelf != show) entry.Cooldown.gameObject.SetActive(show);
+                }
+            }
+        }
+
         // ---- pause overlay ----
 
         void BuildPauseOverlay()
@@ -445,7 +544,8 @@ namespace SaqrAndAqab.UI
 
         void OnPausePressed()
         {
-            if (_paused) return;
+            // Ignore the pause tap during the 40 ms ability hit-stop (it would freeze the game for good).
+            if (_paused || HitStop.IsActive) return;
 
             _paused = true;
             if (_pauseRoot != null) _pauseRoot.SetActive(true);
@@ -477,6 +577,7 @@ namespace SaqrAndAqab.UI
         {
             _paused = false;
             if (_pauseRoot != null) _pauseRoot.SetActive(false);
+            HitStop.Cancel();
             Time.timeScale = 1f;
         }
 

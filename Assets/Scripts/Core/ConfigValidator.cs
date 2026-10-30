@@ -113,6 +113,9 @@ namespace SaqrAndAqab.Core
                     if (ability.damage <= 0) ok = Fail(prefix + "damage must be > 0");
                     if (ability.range <= 0) ok = Fail(prefix + "range must be > 0");
                     if (ability.cooldown <= 0) ok = Fail(prefix + "cooldown must be > 0");
+                    if (ability.arrowCount < 0) ok = Fail(prefix + "arrowCount must be >= 0");
+                    if (ability.arrowCount > 0 && ability.projectileSpeed <= 0)
+                        ok = Fail(prefix + "arrow ability needs projectileSpeed > 0");
                 }
             }
 

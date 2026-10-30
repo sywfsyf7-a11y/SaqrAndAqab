@@ -20,6 +20,9 @@ namespace SaqrAndAqab.Battle
         float _baseScale = 1f;
         bool _facingRight = true;
 
+        // Abilities use this to aim in the direction the hero is facing.
+        public bool IsFacingRight { get { return _facingRight; } }
+
         public static Hero Create(Transform parent, Vector3 position, GameConfig game, HeroConfig config)
         {
             var go = new GameObject("Hero", typeof(Hero));

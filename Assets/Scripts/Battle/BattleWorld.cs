@@ -30,9 +30,12 @@ namespace SaqrAndAqab.Battle
         EnemySpawner _spawner;
         WaveManager _waves;
         HaybahMeter _haybah;
+        CameraShake _shake;
         GameConfig _game;
         readonly System.Collections.Generic.List<AllyConfig> _selectedAllies =
             new System.Collections.Generic.List<AllyConfig>();
+        readonly System.Collections.Generic.List<Ability> _abilities =
+            new System.Collections.Generic.List<Ability>();
         ParallaxLayer _sky;
         ParallaxLayer _far;
         ParallaxLayer _ground;
@@ -52,8 +55,22 @@ namespace SaqrAndAqab.Battle
 
         public HaybahMeter Haybah { get { return _haybah; } }
 
+        public GameConfig Game { get { return _game; } }
+
+        public CameraShake Shake { get { return _shake; } }
+
         // Allies chosen for this battle (temporary list until the setup screen in task 09).
         public System.Collections.Generic.List<AllyConfig> SelectedAllies { get { return _selectedAllies; } }
+
+        // Abilities chosen for this battle (temporary list until the setup screen in task 09).
+        public System.Collections.Generic.List<Ability> Abilities { get { return _abilities; } }
+
+        // Uses an ability if the hero is alive and the cooldown is ready.
+        public bool TryUseAbility(Ability ability)
+        {
+            if (ability == null || _hero == null || _hero.Health == null || !_hero.Health.IsAlive) return false;
+            return ability.TryUse();
+        }
 
         // Spends the ally cost and spawns it near the gate.
         public bool TrySpawnAlly(AllyConfig config)
@@ -71,6 +88,15 @@ namespace SaqrAndAqab.Battle
 
         void Update()
         {
+            // Hit-stop runs on unscaled time so it always ends, even at timeScale 0.
+            HitStop.Tick();
+
+            float dt = Time.deltaTime;
+            for (int i = 0; i < _abilities.Count; i++)
+            {
+                if (_abilities[i] != null) _abilities[i].Tick(dt);
+            }
+
             // Debug keys (editor only, task 04 + 05).
             if (InputService.DebugSpawnDummyPressed) DebugSpawnDummy();
 
@@ -190,7 +216,9 @@ namespace SaqrAndAqab.Battle
             _spawner = EnemySpawner.Create(transform, game);
             _waves = WaveManager.Create(transform, balance.waves, _spawner, _gate, _hero);
             _haybah = HaybahMeter.Create(transform);
+            _shake = CameraShake.Create(transform);
             BuildSelectedAllies(balance);
+            BuildAbilities(balance);
 
             SnapCamera();
         }
@@ -217,6 +245,40 @@ namespace SaqrAndAqab.Battle
             }
         }
 
+        // Temporary loadout: the abilities from Ability.DefaultIds, capped by slots.abilities.
+        void BuildAbilities(BalanceConfig balance)
+        {
+            _abilities.Clear();
+            if (balance == null || balance.abilities == null) return;
+
+            int slots = balance.slots != null ? balance.slots.abilities : 0;
+            for (int i = 0; i < Ability.DefaultIds.Length && _abilities.Count < slots; i++)
+            {
+                var config = FindAbility(balance, Ability.DefaultIds[i]);
+                if (config == null) continue;
+
+                var ability = Ability.Create(config, this);
+                if (ability != null) _abilities.Add(ability);
+            }
+        }
+
+        static AbilityConfig FindAbility(BalanceConfig balance, string id)
+        {
+            for (int i = 0; i < balance.abilities.Count; i++)
+            {
+                var config = balance.abilities[i];
+                if (config != null && config.id == id) return config;
+            }
+
+            return null;
+        }
+
+        void OnDestroy()
+        {
+            // Leaving the battle must never keep the game frozen by a hit-stop.
+            HitStop.Cancel();
+        }
+
         void LateUpdate()
         {
             if (_camera == null || _hero == null) return;
@@ -238,7 +300,8 @@ namespace SaqrAndAqab.Battle
         void ApplyCameraX(float camX)
         {
             var position = _camera.transform.position;
-            _camera.transform.position = new Vector3(camX, _camY, position.z);
+            Vector2 shake = _shake != null ? _shake.Offset : Vector2.zero;
+            _camera.transform.position = new Vector3(camX + shake.x, _camY + shake.y, position.z);
 
             if (_sky != null) _sky.Refresh(camX);
             if (_far != null) _far.Refresh(camX);

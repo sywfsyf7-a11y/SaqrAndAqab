@@ -83,6 +83,7 @@ namespace SaqrAndAqab.Data
         public float range;
         public float cooldown;
         public int arrowCount;
+        public float projectileSpeed;
     }
 
     [Serializable]

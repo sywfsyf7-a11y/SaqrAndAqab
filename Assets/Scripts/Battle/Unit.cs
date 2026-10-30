@@ -18,7 +18,7 @@ namespace SaqrAndAqab.Battle
     {
         public Team Team { get; private set; }
         public Health Health { get; private set; }
-        public ProceduralAnim Anim { protected get; set; }
+        public ProceduralAnim Anim { get; protected set; }
         public int Damage { get; private set; }
         public float Range { get; private set; }
         public float Cooldown { get; private set; }
