@@ -23,6 +23,7 @@ namespace SaqrAndAqab.Battle
         float _age;
         Hero _hero;
         WaveManager _waves;
+        bool _magnetAnywhere;
 
         public int Value { get; private set; }
 
@@ -40,7 +41,8 @@ namespace SaqrAndAqab.Battle
             transform.localScale = new Vector3(scale, scale, 1f);
         }
 
-        public void Setup(Transform parent, Vector3 position, int value, Hero hero, WaveManager waves)
+        public void Setup(Transform parent, Vector3 position, int value, Hero hero, WaveManager waves,
+            bool magnetAnywhere)
         {
             transform.SetParent(parent, false);
             transform.position = position;
@@ -48,6 +50,7 @@ namespace SaqrAndAqab.Battle
             Value = value;
             _hero = hero;
             _waves = waves;
+            _magnetAnywhere = magnetAnywhere;
             _age = 0f;
             _velocity = new Vector3(Random.Range(-1.1f, 1.1f), Random.Range(4.2f, 5.4f), 0f);
         }
@@ -74,7 +77,8 @@ namespace SaqrAndAqab.Battle
             Vector3 target = _hero.transform.position + Vector3.up * AimHeight;
             float distance = Vector3.Distance(transform.position, target);
 
-            if (distance > MagnetRange)
+            // Enemy drops only fly in when the hero is close. Income coins always fly to him.
+            if (distance > MagnetRange && !_magnetAnywhere)
             {
                 if (_age > LifeTime) CoinPickups.Return(this);
                 return;

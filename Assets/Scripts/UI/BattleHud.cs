@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RTLTMPro;
 using TMPro;
 using UnityEngine;
@@ -16,17 +17,31 @@ namespace SaqrAndAqab.UI
         const string PortraitSprite = "ui_portrait_saqr";
         const string DirhamSprite = "ui_dirham";
         const string DateSprite = "ui_date";
+        const string HaybahSprite = "ui_haybah";
 
         static readonly Color TextColor = new Color(1f, 0.96f, 0.88f, 1f);
         static readonly Color BarBackColor = new Color(0.07f, 0.06f, 0.05f, 0.78f);
         static readonly Color HpColor = new Color(0.82f, 0.22f, 0.20f, 1f);
         static readonly Color WaveColor = new Color(0.95f, 0.78f, 0.30f, 1f);
+        static readonly Color HaybahColor = new Color(0.30f, 0.72f, 0.85f, 1f);
         static readonly Color CooldownColor = new Color(0f, 0f, 0f, 0.62f);
         static readonly Color OverlayColor = new Color(0.03f, 0.03f, 0.04f, 0.82f);
+        static readonly Color DisabledColor = new Color(1f, 1f, 1f, 0.40f);
 
+        class AllyButton
+        {
+            public AllyConfig Config;
+            public Button Button;
+            public Image Icon;
+        }
+
+        BattleWorld _world;
         Hero _hero;
         WaveManager _waves;
+        HaybahMeter _haybah;
         ItemConfig _dateItem;
+
+        readonly List<AllyButton> _allyButtons = new List<AllyButton>();
 
         RectTransform _safeArea;
         Rect _lastSafeArea;
@@ -40,6 +55,9 @@ namespace SaqrAndAqab.UI
         Image _waveFill;
         RTLTextMeshPro _waveLabel;
         int _waveShown = -1;
+
+        Image _haybahFill;
+        RTLTextMeshPro _haybahLabel;
 
         RTLTextMeshPro _dirhamLabel;
 
@@ -67,8 +85,10 @@ namespace SaqrAndAqab.UI
 
         void Setup(BattleWorld world)
         {
+            _world = world;
             _hero = world != null ? world.Hero : null;
             _waves = world != null ? world.Waves : null;
+            _haybah = world != null ? world.Haybah : null;
 
             _safeArea = UIFactory.CreateUIRoot(transform, "Safe Area");
             ApplySafeArea(true);
@@ -77,6 +97,8 @@ namespace SaqrAndAqab.UI
             BuildWavePanel();
             BuildDirhamPanel();
             BuildDateButton();
+            BuildHaybahPanel();
+            BuildAllyButtons();
             BuildPauseOverlay();
 
             InitDates();
@@ -87,9 +109,12 @@ namespace SaqrAndAqab.UI
                 _waves.OnDirhamsChanged += HandleDirhamsChanged;
             }
 
+            if (_haybah != null) _haybah.OnChanged += HandleHaybahChanged;
+
             RefreshHealth();
             RefreshWaveLabel();
             RefreshDirhams(_waves != null ? _waves.RunDirhams : 0);
+            if (_haybah != null) HandleHaybahChanged(_haybah.Value);
         }
 
         void Update()
@@ -107,6 +132,8 @@ namespace SaqrAndAqab.UI
                 _waves.OnWaveProgress -= HandleWaveProgress;
                 _waves.OnDirhamsChanged -= HandleDirhamsChanged;
             }
+
+            if (_haybah != null) _haybah.OnChanged -= HandleHaybahChanged;
 
             // Never leave the game frozen behind a destroyed HUD.
             Time.timeScale = 1f;
@@ -221,6 +248,89 @@ namespace SaqrAndAqab.UI
             countRect.pivot = new Vector2(1f, 0f);
             countRect.anchoredPosition = new Vector2(-6f, 6f);
             countRect.sizeDelta = new Vector2(64f, 40f);
+        }
+
+        // ---- bottom-left: haybah meter + ally buttons ----
+
+        void BuildHaybahPanel()
+        {
+            var iconRect = CreateRect(_safeArea, "Haybah Icon", new Vector2(0f, 0f), new Vector2(0f, 0f),
+                new Vector2(28f, 36f), new Vector2(56f, 56f));
+            var icon = iconRect.gameObject.AddComponent<Image>();
+            icon.sprite = AssetLibrary.GetSprite(HaybahSprite);
+            icon.preserveAspect = true;
+            icon.raycastTarget = false;
+
+            Image fill;
+            var bar = CreateBar(_safeArea, "Haybah Bar", new Vector2(0f, 0f), new Vector2(0f, 0f),
+                new Vector2(96f, 47f), new Vector2(300f, 34f), HaybahColor, out fill);
+            _haybahFill = fill;
+
+            _haybahLabel = UIFactory.CreateTextRaw(bar, "0", 24, TextColor, TextAlignmentOptions.Center, true);
+            UIFactory.Fill(_haybahLabel.rectTransform);
+        }
+
+        void BuildAllyButtons()
+        {
+            if (_world == null) return;
+
+            var allies = _world.SelectedAllies;
+            for (int i = 0; i < allies.Count; i++)
+            {
+                var config = allies[i];
+                if (config == null) continue;
+
+                var rect = CreateRect(_safeArea, "Ally " + config.id, new Vector2(0f, 0f), new Vector2(0f, 0f),
+                    new Vector2(28f + i * 132f, 100f), new Vector2(120f, 120f));
+
+                var image = rect.gameObject.AddComponent<Image>();
+                image.sprite = AssetLibrary.GetSprite("ui_ally_" + config.id);
+                image.preserveAspect = true;
+                image.raycastTarget = true;
+
+                var button = rect.gameObject.AddComponent<Button>();
+                button.targetGraphic = image;
+                button.transition = Selectable.Transition.None;
+
+                var captured = config;
+                button.onClick.AddListener(delegate { OnAllyPressed(captured); });
+
+                // Haybah cost strip at the bottom of the button.
+                var stripRect = CreateRect(rect, "Cost", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
+                    Vector2.zero, new Vector2(120f, 30f));
+                var strip = stripRect.gameObject.AddComponent<Image>();
+                strip.color = new Color(0f, 0f, 0f, 0.55f);
+                strip.raycastTarget = false;
+
+                var cost = UIFactory.CreateTextRaw(stripRect, config.haybahCost.ToString(), 24, TextColor,
+                    TextAlignmentOptions.Center, true);
+                UIFactory.Fill(cost.rectTransform);
+
+                _allyButtons.Add(new AllyButton { Config = config, Button = button, Icon = image });
+            }
+
+            RefreshAllyButtons();
+        }
+
+        void OnAllyPressed(AllyConfig config)
+        {
+            if (_world == null || config == null) return;
+            if (_world.TrySpawnAlly(config)) RefreshAllyButtons();
+        }
+
+        void RefreshAllyButtons()
+        {
+            int value = _haybah != null ? _haybah.Value : 0;
+
+            for (int i = 0; i < _allyButtons.Count; i++)
+            {
+                var entry = _allyButtons[i];
+                if (entry.Config == null || entry.Button == null) continue;
+
+                bool affordable = value >= entry.Config.haybahCost;
+                entry.Button.interactable = affordable;
+                if (entry.Icon != null) entry.Icon.color = affordable ? Color.white : DisabledColor;
+            }
         }
 
         // ---- pause overlay ----
@@ -381,6 +491,16 @@ namespace SaqrAndAqab.UI
         void HandleDirhamsChanged(int total)
         {
             RefreshDirhams(total);
+        }
+
+        void HandleHaybahChanged(int value)
+        {
+            if (_haybahFill != null && _haybah != null && _haybah.Max > 0)
+                SetBar(_haybahFill, (float)value / _haybah.Max);
+
+            if (_haybahLabel != null) _haybahLabel.text = value.ToString();
+
+            RefreshAllyButtons();
         }
 
         void RefreshHealth()

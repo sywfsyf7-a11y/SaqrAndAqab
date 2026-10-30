@@ -61,6 +61,7 @@ namespace SaqrAndAqab.Data
         public float moveSpeed;
         public float attackRange;
         public float attackCooldown;
+        public float projectileSpeed;
         public int haybahCost;
         public int incomeDirhams;
         public float incomeInterval;

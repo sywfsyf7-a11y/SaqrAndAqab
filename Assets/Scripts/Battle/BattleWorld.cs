@@ -29,6 +29,10 @@ namespace SaqrAndAqab.Battle
         Gate _gate;
         EnemySpawner _spawner;
         WaveManager _waves;
+        HaybahMeter _haybah;
+        GameConfig _game;
+        readonly System.Collections.Generic.List<AllyConfig> _selectedAllies =
+            new System.Collections.Generic.List<AllyConfig>();
         ParallaxLayer _sky;
         ParallaxLayer _far;
         ParallaxLayer _ground;
@@ -45,6 +49,25 @@ namespace SaqrAndAqab.Battle
         public Gate Gate { get { return _gate; } }
 
         public WaveManager Waves { get { return _waves; } }
+
+        public HaybahMeter Haybah { get { return _haybah; } }
+
+        // Allies chosen for this battle (temporary list until the setup screen in task 09).
+        public System.Collections.Generic.List<AllyConfig> SelectedAllies { get { return _selectedAllies; } }
+
+        // Spends the ally cost and spawns it near the gate.
+        public bool TrySpawnAlly(AllyConfig config)
+        {
+            if (config == null || _hero == null || _game == null) return false;
+            if (_haybah == null || !_haybah.TrySpend(config.haybahCost)) return false;
+
+            float x = _game.gateX + 1f + Random.Range(0f, 3f);
+            x = Mathf.Clamp(x, _game.worldMinX + 1f, _game.worldMaxX - 1f);
+            float y = (_game.laneMinY + _game.laneMaxY) * 0.5f;
+
+            Ally.Create(transform, config, new Vector3(x, y, 0f), _hero, _waves, _game);
+            return true;
+        }
 
         void Update()
         {
@@ -116,6 +139,8 @@ namespace SaqrAndAqab.Battle
                 return;
             }
 
+            _game = game;
+
             _camera = Camera.main;
             if (_camera == null)
             {
@@ -164,8 +189,32 @@ namespace SaqrAndAqab.Battle
             _gate = Gate.Create(transform, new Vector3(game.gateX, startY, 0f), gateHp);
             _spawner = EnemySpawner.Create(transform, game);
             _waves = WaveManager.Create(transform, balance.waves, _spawner, _gate, _hero);
+            _haybah = HaybahMeter.Create(transform);
+            BuildSelectedAllies(balance);
 
             SnapCamera();
+        }
+
+        // Temporary loadout: the allies from Ally.DefaultIds, capped by slots.allies.
+        void BuildSelectedAllies(BalanceConfig balance)
+        {
+            _selectedAllies.Clear();
+            if (balance == null || balance.allies == null) return;
+
+            int slots = balance.slots != null ? balance.slots.allies : 0;
+            for (int i = 0; i < Ally.DefaultIds.Length && _selectedAllies.Count < slots; i++)
+            {
+                string id = Ally.DefaultIds[i];
+                for (int j = 0; j < balance.allies.Count; j++)
+                {
+                    var config = balance.allies[j];
+                    if (config != null && config.id == id)
+                    {
+                        _selectedAllies.Add(config);
+                        break;
+                    }
+                }
+            }
         }
 
         void LateUpdate()

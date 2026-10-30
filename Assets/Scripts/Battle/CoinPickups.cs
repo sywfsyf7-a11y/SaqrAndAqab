@@ -10,7 +10,8 @@ namespace SaqrAndAqab.Battle
 
         static readonly List<CoinPickup> _pool = new List<CoinPickup>();
 
-        public static void Spawn(Transform parent, Vector3 position, int value, Hero hero, WaveManager waves)
+        public static void Spawn(Transform parent, Vector3 position, int value, Hero hero, WaveManager waves,
+            bool magnetAnywhere = false)
         {
             if (value <= 0) return;
 
@@ -28,7 +29,7 @@ namespace SaqrAndAqab.Battle
                 coin = go.GetComponent<CoinPickup>();
             }
 
-            coin.Setup(parent, position, value, hero, waves);
+            coin.Setup(parent, position, value, hero, waves, magnetAnywhere);
             coin.gameObject.SetActive(true);
         }
 

@@ -14,8 +14,8 @@
     { "id": "marid", "hp": 900, "damage": 25, "moveSpeed": 1.0, "attackRange": 1.8, "attackCooldown": 1.6, "dirhamReward": 200, "isRanged": false, "projectileSpeed": 0 }
   ],
   "allies": [
-    { "id": "farmer", "hp": 25, "damage": 0, "moveSpeed": 1.5, "attackRange": 0, "attackCooldown": 0, "haybahCost": 5, "incomeDirhams": 2, "incomeInterval": 4 },
-    { "id": "archer", "hp": 30, "damage": 6, "moveSpeed": 2.0, "attackRange": 7.0, "attackCooldown": 1.2, "haybahCost": 10, "incomeDirhams": 0, "incomeInterval": 0 }
+    { "id": "farmer", "hp": 25, "damage": 0, "moveSpeed": 1.5, "attackRange": 0, "attackCooldown": 0, "projectileSpeed": 0, "haybahCost": 5, "incomeDirhams": 2, "incomeInterval": 4 },
+    { "id": "archer", "hp": 30, "damage": 6, "moveSpeed": 2.0, "attackRange": 7.0, "attackCooldown": 1.2, "projectileSpeed": 12, "haybahCost": 10, "incomeDirhams": 0, "incomeInterval": 0 }
   ],
   "haybah": { "startValue": 3, "gainPerSecond": 1.0, "max": 60 },
   "abilities": [
