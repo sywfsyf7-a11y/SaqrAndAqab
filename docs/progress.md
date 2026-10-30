@@ -35,7 +35,17 @@
   - `UIFactory`: added `Fill`, `Place`, `CreateUIRoot` and a `CreateButton` overload with an explicit size and label size.
   - Placeholder note: the far layer is tinted at 60% alpha so the three placeholder bands are readable while the art is still coloured squares. With real art the tint goes back to opaque white.
   - Verified headless: the built tree has the three layers with the right factors, 2 / 2 / 6 mirrored copies covering the whole camera range, gate at -12, cave at 20, hero at -9.5 with scale 1.72 and order 250, Global Light 2D = Global / warm / 1.1. Camera motion itself can only be seen in Play mode (Time.deltaTime is 0 in the editor).
-- [ ] 04 combat core
+- [x] 04 combat core
+  - `Assets/Scripts/Battle/Team.cs`: `Team { Player, Enemy }`. One side only for now (see decisions.md), a second side can be added later.
+  - `Assets/Scripts/Battle/Health.cs`: plain class (`hp`, `max`, `TakeDamage` returns the damage actually dealt, `Heal`, events `OnDamaged(int)` / `OnDied`). It never raises `OnDied` twice.
+  - `Assets/Scripts/Battle/UnitRegistry.cs`: two static lists (player / enemy) with `Add` / `Remove` / `Get` / `GetNearest(team, x, maxRange)` / `Clear`. No physics, no `Find*`. `Remove` clears the unit from both lists so a wrong team can never leave a ghost entry.
+  - `Assets/Scripts/Battle/Unit.cs`: base class with `UnitStats` (hp, damage, range, cooldown, speed), `Health`, `ProceduralAnim`, auto-attack on cooldown (nearest opposing unit in range -> lunge + hit flash + pooled damage number), death handling (die animation, registry removal, `OnDied` event). Units with `damage <= 0` never attack (the farmer and the training dummy). A unit is registered in `UnitRegistry` inside `Init` (after the team is set) and removed on death / disable.
+  - `Assets/Scripts/Battle/Hero.cs`: now derives from `Unit`. Movement (`InputService.MoveAxis` x `hero.moveSpeed`, clamped to the world, faces the movement) plus `HandleAttack()` every frame, so the hero attacks the nearest enemy while still moving freely.
+  - `Assets/Scripts/Battle/DamageNumbers.cs` + `DamageNumber.cs`: pooled world-space TMP numbers (pool of 16). They rise 1.1 m and fade over 0.9 s, white for a normal hit, yellow for a crit / ability hit. Western digits only. Rendered with `TextMeshPro` (world space, sorting order 500 so they stay above the units).
+  - `Assets/Scripts/Core/InputService.cs`: editor-only debug key `T` (`DebugSpawnDummyPressed`), read through `InputService` as the rules require. Nothing of it compiles into a build.
+  - `Assets/Scripts/Battle/BattleWorld.cs`: `Update` polls the debug key and `DebugSpawnDummy()` spawns a `Unit` on the enemy team 1.2 m to the hero's right (hp 50, no attack, no movement, procedural anim so it can die).
+  - Verified headless: hero and dummy spawn, the hero's hit deals `hero.damage` (50 -> 40), the dummy is removed from the enemy registry when it dies, and the death animation starts. `Time.deltaTime` is 0 outside Play mode, so the cooldown loop and the floating numbers must be seen by the user in Play mode.
+  - Note: Unity keeps adding kerning records to `Assets/Resources/Fonts/IBMPlexSansArabic-Bold SDF.asset` on every editor run; the file is committed as generated.
 - [ ] 05 enemies + waves
 - [ ] 06 HUD + coins + dates
 - [ ] 07 allies + haybah

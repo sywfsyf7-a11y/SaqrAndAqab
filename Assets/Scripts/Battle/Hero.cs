@@ -4,18 +4,15 @@ using SaqrAndAqab.Data;
 
 namespace SaqrAndAqab.Battle
 {
-    // The player hero. Moves left/right inside the world, faces the movement and animates procedurally.
-    public class Hero : MonoBehaviour
+    // The player hero. Moves left/right inside the world, faces the movement, auto-attacks the nearest enemy.
+    public class Hero : Unit
     {
         public const string SpriteId = "hero_saqr";
 
         const float EdgeMargin = 0.7f;
         const float DepthScaleMax = 0.08f;
 
-        HeroConfig _config;
         SpriteRenderer _renderer;
-        ProceduralAnim _anim;
-
         float _minX;
         float _maxX;
         float _laneMinY;
@@ -42,8 +39,6 @@ namespace SaqrAndAqab.Battle
 
         void Setup(GameConfig game, HeroConfig config)
         {
-            _config = config;
-
             if (game != null)
             {
                 _minX = game.worldMinX + EdgeMargin;
@@ -64,20 +59,32 @@ namespace SaqrAndAqab.Battle
             _renderer.sprite = sprite;
             _renderer.sortingOrder = SortingOrderFor(transform.position.y);
 
-            _anim = child.GetComponent<ProceduralAnim>();
-            _anim.SetBaseScale(Vector3.one * _baseScale);
+            Anim = child.GetComponent<ProceduralAnim>();
+            Anim.SetBaseScale(Vector3.one * _baseScale);
             child.transform.localScale = Vector3.one * _baseScale;
+
+            UnitStats stats = new UnitStats();
+            stats.hp = config != null ? config.hp : 0;
+            stats.damage = config != null ? config.damage : 0;
+            stats.range = config != null ? config.attackRange : 0f;
+            stats.cooldown = config != null ? config.attackCooldown : 0f;
+            stats.speed = config != null ? config.moveSpeed : 0f;
+
+            Init(Team.Player, stats);
 
             ApplyDepth();
         }
 
         void Update()
         {
+            // Auto-attack the nearest enemy in range, while still moving freely.
+            HandleAttack();
+
             float axis = InputService.MoveAxis;
 
             if (Mathf.Abs(axis) > 0.01f)
             {
-                float speed = _config != null ? _config.moveSpeed : 0f;
+                float speed = Speed;
                 var position = transform.position;
                 position.x = Mathf.Clamp(position.x + axis * speed * Time.deltaTime, _minX, _maxX);
                 transform.position = position;
@@ -89,12 +96,9 @@ namespace SaqrAndAqab.Battle
                     if (_renderer != null) _renderer.flipX = !facingRight;
                 }
 
-                if (_anim != null) _anim.Walk(speed);
+                if (Anim != null) Anim.Walk(speed);
             }
-            else if (_anim != null)
-            {
-                _anim.Idle();
-            }
+            else if (Anim != null) Anim.Idle();
 
             ApplyDepth();
         }
@@ -104,7 +108,7 @@ namespace SaqrAndAqab.Battle
             float y = transform.position.y;
             float depth = _laneMaxY > _laneMinY ? Mathf.InverseLerp(_laneMaxY, _laneMinY, y) : 0f;
 
-            if (_anim != null) _anim.SetBaseScale(Vector3.one * (_baseScale * (1f + DepthScaleMax * depth)));
+            if (Anim != null) Anim.SetBaseScale(Vector3.one * (_baseScale * (1f + DepthScaleMax * depth)));
             if (_renderer != null) _renderer.sortingOrder = SortingOrderFor(y);
         }
     }

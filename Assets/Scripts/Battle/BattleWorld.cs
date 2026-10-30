@@ -39,6 +39,32 @@ namespace SaqrAndAqab.Battle
 
         public Hero Hero { get { return _hero; } }
 
+        void Update()
+        {
+            // Task 04 debug: press T in the editor to spawn the training dummy next to the hero.
+            if (InputService.DebugSpawnDummyPressed) DebugSpawnDummy();
+        }
+
+        public void DebugSpawnDummy()
+        {
+            if (_hero == null) return;
+
+            var stats = new UnitStats();
+            stats.hp = 50;
+            stats.damage = 0;
+            stats.range = 1.6f;
+            stats.cooldown = 60f;
+            stats.speed = 0f;
+
+            var go = new GameObject("TrainingDummy", typeof(Unit));
+            go.transform.SetParent(transform, false);
+            go.transform.position = new Vector3(_hero.transform.position.x + 1.2f, _hero.transform.position.y, 0f);
+
+            var dummy = go.GetComponent<Unit>();
+            dummy.Init(Team.Enemy, stats);
+            go.AddComponent<ProceduralAnim>();
+        }
+
         public static BattleWorld Build(Transform parent, WorldThemeId theme)
         {
             var go = new GameObject("Battle World");

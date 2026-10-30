@@ -138,5 +138,24 @@ namespace SaqrAndAqab.Core
             return eventSystem.IsPointerOverGameObject(pointerId);
         }
 #endif
+
+#if UNITY_EDITOR
+        // Task 04 debug keys (editor only, never active in a build).
+        static bool _debugSpawnWasDown;
+
+        // Press T in the editor to spawn the training dummy next to the hero.
+        public static bool DebugSpawnDummyPressed
+        {
+            get
+            {
+                bool now = false;
+                var keyboard = Keyboard.current;
+                if (keyboard != null) now = keyboard.tKey.isPressed;
+                bool pressed = now && !_debugSpawnWasDown;
+                _debugSpawnWasDown = now;
+                return pressed;
+            }
+        }
+#endif
     }
 }
