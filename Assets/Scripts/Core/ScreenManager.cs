@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using SaqrAndAqab.Battle;
 using SaqrAndAqab.UI;
 using SaqrAndAqab.Data;
@@ -56,6 +57,14 @@ namespace SaqrAndAqab.Core
 
             var root = UIFactory.CreateUIRoot(canvas, "Menu UI");
 
+            // Hanging Saqr key art behind the title.
+            var keyArtRect = UIFactory.CreateUIRoot(root, "Key Art");
+            var keyArt = keyArtRect.gameObject.AddComponent<Image>();
+            keyArt.sprite = AssetLibrary.GetSprite("menu_keyart");
+            keyArt.preserveAspect = true;
+            keyArt.raycastTarget = false;
+            UIFactory.Place(keyArtRect, new Vector2(0f, 260f), new Vector2(720f, 420f));
+
             var title = UIFactory.CreateText(root, "app.title", 140, TitleColor, TextAlignmentOptions.Center, true);
             UIFactory.Place(title.rectTransform, new Vector2(0f, 300f), new Vector2(1500f, 320f));
 
@@ -83,8 +92,22 @@ namespace SaqrAndAqab.Core
                 SaveService.Reset();
             }
 
-            GameFlow.BeginRun();
-            ScreenManager.Show(Screen.Setup);
+            // First play shows the story intro; later plays skip it.
+            if (SaveService.Data == null || !SaveService.Data.introSeen)
+            {
+                if (SaveService.Data != null)
+                {
+                    SaveService.Data.introSeen = true;
+                    SaveService.Save();
+                }
+
+                ScreenManager.Show(Screen.Story);
+            }
+            else
+            {
+                GameFlow.BeginRun();
+                ScreenManager.Show(Screen.Setup);
+            }
         }
 
         static bool HasSaveFile()
@@ -374,7 +397,45 @@ namespace SaqrAndAqab.Core
         }
     }
 
-    public class StoryScreen : GameScreen { }
+    public class StoryScreen : GameScreen
+    {
+        StoryPlayer _player;
+
+        public override void Enter()
+        {
+            Time.timeScale = 1f;
+            if (GameBootstrap.UICanvas == null) return;
+
+            var beats = new StoryPlayer.Beat[]
+            {
+                new StoryPlayer.Beat { imageId = "story_01_ropes", textKey = "story.intro.1", duration = 4f },
+                new StoryPlayer.Beat { imageId = "story_02_fall", textKey = "story.intro.2", duration = 4f },
+                new StoryPlayer.Beat { imageId = "story_03_chase", textKey = "story.intro.3", duration = 4f },
+                new StoryPlayer.Beat { imageId = "story_04_cave", textKey = "story.intro.4", duration = 4f },
+                new StoryPlayer.Beat { imageId = "story_05_entity", textKey = "story.intro.5", speakerKey = "speaker.entity", duration = 4f },
+                new StoryPlayer.Beat { imageId = "story_06_slam", textKey = "story.intro.6", duration = 4f },
+                new StoryPlayer.Beat { imageId = "story_07_entity", textKey = "story.intro.7", speakerKey = "speaker.entity", duration = 4f },
+                new StoryPlayer.Beat { imageId = "story_08_alone", textKey = "story.intro.8", duration = 4f },
+            };
+
+            _player = StoryPlayer.Play(GameBootstrap.UICanvas, beats, OnFinished);
+        }
+
+        public override void Exit()
+        {
+            if (_player != null)
+            {
+                Object.Destroy(_player.gameObject);
+                _player = null;
+            }
+        }
+
+        static void OnFinished()
+        {
+            GameFlow.BeginRun();
+            ScreenManager.Show(Screen.Setup);
+        }
+    }
     public class ShopScreen : GameScreen
     {
         ShopScreenView _view;

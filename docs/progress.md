@@ -124,7 +124,10 @@
   - `Ally.Create` accepts a power multiplier.
   - `ScreenManager` starts the stage from `HandleWaveComplete` for waves in `darkRealmAfterWaves`.
   - Verified headless: stage starts, hero floats/invulnerable/blue, haybah full/free, theme DarkRealm, restore works. 0 errors, 0 warnings.
-- [ ] 13 story intro
+- [x] 13 story intro
+  - `UI/StoryPlayer.cs`: plays beats (image + Ken Burns zoom, cross-fade, RTL text box, optional speaker), tap to advance, `common.skip` skips all.
+  - `Core/ScreenManager.cs`: `MenuScreen` now shows `menu_keyart` behind the title; `OnPlayPressed` shows the intro on first play (saves `introSeen`), then Setup wave 1; `StoryScreen` builds the 8 intro beats and routes to Setup.
+  - Verified headless: story player builds, introSeen saves. 0 errors, 0 warnings.
 - [ ] 14 audio + settings
 - [ ] 15 polish + tutorial hints
 - [ ] 16 android build
