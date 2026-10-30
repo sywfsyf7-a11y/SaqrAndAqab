@@ -20,8 +20,28 @@ namespace SaqrAndAqab.Battle
         float _baseScale = 1f;
         bool _facingRight = true;
 
+    bool _floating;
+    public bool Floating
+    {
+        get { return _floating; }
+        set
+        {
+            if (value && !_floating)
+            {
+                _floatBaseY = (_laneMinY + _laneMaxY) * 0.5f + 1f;
+                _floatTime = 0f;
+            }
+            _floating = value;
+        }
+    }
+    float _floatBaseY;
+    float _floatTime;
+
         // Abilities use this to aim in the direction the hero is facing.
         public bool IsFacingRight { get { return _facingRight; } }
+
+    // Exposed for the Dark Realm aura sprite.
+    public SpriteRenderer SpriteRenderer { get { return _renderer; } }
 
         public static Hero Create(Transform parent, Vector3 position, GameConfig game, HeroConfig config)
         {
@@ -110,7 +130,37 @@ namespace SaqrAndAqab.Battle
             }
             else if (Anim != null) Anim.Idle();
 
+            if (Floating)
+            {
+                _floatTime += Time.deltaTime;
+                var position = transform.position;
+                position.y = _floatBaseY + Mathf.Sin(_floatTime * 2f) * 0.25f;
+                transform.position = position;
+            }
+
             ApplyDepth();
+        }
+
+        // Swaps the hero sprite (used by the Dark Realm to switch to the blue hero).
+        public void SetSprite(string spriteId)
+        {
+            var sprite = AssetLibrary.GetSprite(spriteId);
+            float worldHeight = AssetLibrary.GetWorldHeight(spriteId);
+            float spriteHeight = sprite != null && sprite.bounds.size.y > 0f ? sprite.bounds.size.y : 1f;
+            _baseScale = worldHeight / spriteHeight;
+
+            if (_renderer != null)
+            {
+                _renderer.sprite = sprite;
+                _renderer.flipX = !_facingRight;
+            }
+
+            if (Anim != null) Anim.SetBaseScale(Vector3.one * _baseScale);
+        }
+
+        public void SetInvulnerable(bool value)
+        {
+            if (Health != null) Health.Invulnerable = value;
         }
 
         void ApplyDepth()

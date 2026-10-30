@@ -30,18 +30,18 @@ namespace SaqrAndAqab.Battle
         int _incomeDirhams;
 
         public static Ally Create(Transform parent, AllyConfig config, Vector3 position,
-            Hero hero, WaveManager waves, GameConfig game)
+            Hero hero, WaveManager waves, GameConfig game, float powerMultiplier = 1f)
         {
             var go = new GameObject("Ally " + (config != null ? config.id : "?"), typeof(Ally));
             if (parent != null) go.transform.SetParent(parent, false);
             go.transform.position = position;
 
             var ally = go.GetComponent<Ally>();
-            ally.Setup(config, hero, waves, game);
+            ally.Setup(config, hero, waves, game, powerMultiplier);
             return ally;
         }
 
-        void Setup(AllyConfig config, Hero hero, WaveManager waves, GameConfig game)
+        void Setup(AllyConfig config, Hero hero, WaveManager waves, GameConfig game, float powerMultiplier = 1f)
         {
             _config = config;
             _hero = hero;
@@ -74,17 +74,17 @@ namespace SaqrAndAqab.Battle
             child.transform.localScale = Vector3.one * scale;
 
             var stats = new UnitStats();
-            stats.hp = config.hp;
-            // Archer damage is raised by the archer upgrade.
-            stats.damage = Mathf.RoundToInt(config.damage * UpgradeService.Multiplier("archer"));
+            stats.hp = Mathf.RoundToInt(config.hp * powerMultiplier);
+            // Archer damage is raised by the archer upgrade and the Dark Realm power multiplier.
+            stats.damage = Mathf.RoundToInt(config.damage * UpgradeService.Multiplier("archer") * powerMultiplier);
             stats.range = config.attackRange;
             stats.cooldown = config.attackCooldown;
             stats.speed = config.moveSpeed;
 
             Init(Team.Player, stats);
 
-            // Farmer income is raised by the farmer upgrade.
-            _incomeDirhams = Mathf.RoundToInt(config.incomeDirhams * UpgradeService.Multiplier("farmer"));
+            // Farmer income is raised by the farmer upgrade and the Dark Realm power multiplier.
+            _incomeDirhams = Mathf.RoundToInt(config.incomeDirhams * UpgradeService.Multiplier("farmer") * powerMultiplier);
             _incomeTimer = config.incomeInterval;
         }
 

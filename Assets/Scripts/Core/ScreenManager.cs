@@ -173,8 +173,34 @@ namespace SaqrAndAqab.Core
 
         void HandleWaveComplete(int wave)
         {
+            bool darkRealm = IsDarkRealmWave(wave);
+
+            if (darkRealm && _world != null)
+            {
+                DarkRealmStage.Start(_world, delegate
+                {
+                    GameFlow.WaveWon(wave, _world != null && _world.Waves != null ? _world.Waves.RunDirhams : 0);
+                    ScreenManager.Show(Screen.Victory);
+                });
+                return;
+            }
+
             GameFlow.WaveWon(wave, _world != null && _world.Waves != null ? _world.Waves.RunDirhams : 0);
             ScreenManager.Show(Screen.Victory);
+        }
+
+        static bool IsDarkRealmWave(int wave)
+        {
+            var balance = ConfigService.Balance;
+            var game = balance != null ? balance.game : null;
+            if (game == null || game.darkRealmAfterWaves == null) return false;
+
+            for (int i = 0; i < game.darkRealmAfterWaves.Length; i++)
+            {
+                if (game.darkRealmAfterWaves[i] == wave) return true;
+            }
+
+            return false;
         }
 
         void HandleDefeat()

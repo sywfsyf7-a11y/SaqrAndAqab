@@ -18,6 +18,16 @@ namespace SaqrAndAqab.Battle
 
         public int Max { get { return _max; } }
 
+        // When true, allies cost no haybah (Dark Realm).
+        public bool AlliesFree { get; set; }
+
+        // Fills the meter to max (Dark Realm).
+        public void SetFull()
+        {
+            _value = _max;
+            RaiseChanged();
+        }
+
         public static HaybahMeter Create(Transform parent)
         {
             var go = new GameObject("Haybah Meter", typeof(HaybahMeter));

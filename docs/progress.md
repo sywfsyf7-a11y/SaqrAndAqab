@@ -116,7 +116,14 @@
   - `UI/ChapterEndView.cs` + `ChapterEndScreen`: title `story.end.title`, then `story.end.1..3` one by one (tap to continue), marks `chapterComplete` in the save, returns to the menu.
   - `SaveService`: added `chapterComplete` field.
   - Verified headless: boss hp=900/damage=25, chapter-end view builds, chapterComplete saves. 0 errors, 0 warnings. (Boss spawning happens over time; verified by code path.)
-- [ ] 12 dark realm
+- [x] 12 dark realm
+  - `Battle/DarkRealmStage.cs`: bonus stage (35 s) after victories of waves 5 and 10; switches theme to DarkRealm, hero becomes blue + floating + invulnerable with pulsing aura; haybah full + allies free; auto-summons allies every 3 s with `allyPowerMultiplier`; enemies spawn with `enemyHpMultiplier` HP; dirhams multiplied by `rewardMultiplier`; `guaranteedCharmDrops` charms at the end; restores theme/hero/haybah and then the normal victory screen.
+  - `BattleWorld.ApplyTheme` rebuilds the parallax layers at runtime.
+  - `Hero` gained `Floating`, `SetSprite`, `SetInvulnerable`, `SpriteRenderer`.
+  - `Health.Invulnerable`, `HaybahMeter.SetFull/AlliesFree`.
+  - `Ally.Create` accepts a power multiplier.
+  - `ScreenManager` starts the stage from `HandleWaveComplete` for waves in `darkRealmAfterWaves`.
+  - Verified headless: stage starts, hero floats/invulnerable/blue, haybah full/free, theme DarkRealm, restore works. 0 errors, 0 warnings.
 - [ ] 13 story intro
 - [ ] 14 audio + settings
 - [ ] 15 polish + tutorial hints

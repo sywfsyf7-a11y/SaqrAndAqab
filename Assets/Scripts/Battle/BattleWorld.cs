@@ -239,6 +239,33 @@ namespace SaqrAndAqab.Battle
             SnapCamera();
         }
 
+        // Swaps the background theme at runtime (used by the Dark Realm).
+        public void ApplyTheme(WorldThemeId theme)
+        {
+            Theme = theme;
+            if (_camera != null) WorldTheme.Apply(theme, _camera, transform);
+
+            if (_sky != null) { UnityEngine.Object.Destroy(_sky.gameObject); _sky = null; }
+            if (_far != null) { UnityEngine.Object.Destroy(_far.gameObject); _far = null; }
+            if (_ground != null) { UnityEngine.Object.Destroy(_ground.gameObject); _ground = null; }
+
+            if (_camera == null || _game == null) return;
+
+            float halfHeight = _camera.orthographicSize;
+            float halfWidth = halfHeight * _camera.aspect;
+            float bottom = _camY - halfHeight;
+
+            _sky = CreateLayer("Sky", WorldTheme.SkySprite(theme), 0f, bottom,
+                -halfWidth, halfWidth, SkyOrder, Color.white, 0f, 0f);
+
+            _far = CreateLayer("Far", WorldTheme.FarSprite(theme), FarFactor, bottom,
+                _camMinX * FarFactor - halfWidth, _camMaxX * FarFactor + halfWidth, FarOrder, FarTint, 0f, 0f);
+
+            float groundTop = _game.laneMaxY;
+            _ground = CreateLayer("Ground", WorldTheme.GroundSprite(theme), 1f, bottom,
+                _game.worldMinX, _game.worldMaxX, GroundOrder, GroundTint, GroundTileWidth, groundTop - bottom);
+        }
+
         // The loadout chosen on the setup screen, capped by slots.allies.
         void BuildSelectedAllies(BalanceConfig balance, BattleSetup setup)
         {

@@ -8,6 +8,9 @@ namespace SaqrAndAqab.Battle
         public int hp;
         public int max;
 
+        // When true, TakeDamage always returns 0 (used by the Dark Realm).
+        public bool Invulnerable;
+
         public event Action<int> OnDamaged;
         public event Action OnDied;
 
@@ -24,6 +27,7 @@ namespace SaqrAndAqab.Battle
 
         public int TakeDamage(int damage)
         {
+            if (Invulnerable) return 0;
             if (hp <= 0) return 0;
 
             int dealt = damage > hp ? hp : damage;
