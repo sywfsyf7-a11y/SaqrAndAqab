@@ -26,7 +26,7 @@ namespace SaqrAndAqab.Core
         public virtual void Exit() { }
     }
 
-    // Temporary menu: title + play button. The real menu comes in task 10.
+    // Main menu (task 10): play / continue / shop / settings.
     public class MenuScreen : GameScreen
     {
         static readonly Color TitleColor = new Color(0.95f, 0.85f, 0.60f, 1f);
@@ -56,18 +56,64 @@ namespace SaqrAndAqab.Core
             var root = UIFactory.CreateUIRoot(canvas, "Menu UI");
 
             var title = UIFactory.CreateText(root, "app.title", 140, TitleColor, TextAlignmentOptions.Center, true);
-            UIFactory.Place(title.rectTransform, new Vector2(0f, 230f), new Vector2(1500f, 320f));
+            UIFactory.Place(title.rectTransform, new Vector2(0f, 300f), new Vector2(1500f, 320f));
 
-            var button = UIFactory.CreateButton(root, "menu.play", OnPlayPressed);
-            UIFactory.Place(button.GetComponent<RectTransform>(), new Vector2(0f, -140f), new Vector2(460f, 120f));
+            var play = UIFactory.CreateButton(root, "menu.play", OnPlayPressed, new Vector2(460f, 110f), 40);
+            UIFactory.Place(play.GetComponent<RectTransform>(), new Vector2(0f, 60f), new Vector2(460f, 110f));
+
+            var continueButton = UIFactory.CreateButton(root, "menu.continue", OnContinuePressed, new Vector2(460f, 110f), 40);
+            UIFactory.Place(continueButton.GetComponent<RectTransform>(), new Vector2(0f, -70f), new Vector2(460f, 110f));
+
+            var shop = UIFactory.CreateButton(root, "menu.shop", OnShopPressed, new Vector2(460f, 110f), 40);
+            UIFactory.Place(shop.GetComponent<RectTransform>(), new Vector2(0f, -200f), new Vector2(460f, 110f));
+
+            var settings = UIFactory.CreateButton(root, "menu.settings", OnSettingsPressed, new Vector2(460f, 110f), 40);
+            UIFactory.Place(settings.GetComponent<RectTransform>(), new Vector2(0f, -330f), new Vector2(460f, 110f));
 
             return root;
         }
 
         static void OnPlayPressed()
         {
+            // New game: only reset if there is no save yet.
+            if (SaveService.Data == null) SaveService.Load();
+            if (SaveService.Data == null || !HasSaveFile())
+            {
+                SaveService.Reset();
+            }
+
             GameFlow.BeginRun();
             ScreenManager.Show(Screen.Setup);
+        }
+
+        static bool HasSaveFile()
+        {
+            try
+            {
+                string path = System.IO.Path.Combine(Application.persistentDataPath, "save.json");
+                return System.IO.File.Exists(path);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        static void OnContinuePressed()
+        {
+            GameFlow.BeginRun();
+            ScreenManager.Show(Screen.Setup);
+        }
+
+        static void OnShopPressed()
+        {
+            GameFlow.ShopReturnToSetup = false;
+            ScreenManager.Show(Screen.Shop);
+        }
+
+        static void OnSettingsPressed()
+        {
+            ScreenManager.Show(Screen.Settings);
         }
     }
 
@@ -220,11 +266,12 @@ namespace SaqrAndAqab.Core
             }
         }
 
-        // Task 10 will build the shop; until then go straight to the next setup.
+        // Task 10: the next button now goes to the shop, then to the next setup.
         static void OnNextPressed()
         {
             GameFlow.NextWave();
-            ScreenManager.Show(Screen.Setup);
+            GameFlow.ShopReturnToSetup = true;
+            ScreenManager.Show(Screen.Shop);
         }
     }
 
@@ -264,7 +311,40 @@ namespace SaqrAndAqab.Core
     }
 
     public class StoryScreen : GameScreen { }
-    public class ShopScreen : GameScreen { }
+    public class ShopScreen : GameScreen
+    {
+        ShopScreenView _view;
+
+        public override void Enter()
+        {
+            Time.timeScale = 1f;
+            if (GameBootstrap.UICanvas == null) return;
+
+            _view = ShopScreenView.Build(GameBootstrap.UICanvas, OnBackPressed);
+        }
+
+        public override void Exit()
+        {
+            if (_view != null)
+            {
+                _view.Destroy();
+                _view = null;
+            }
+        }
+
+        static void OnBackPressed()
+        {
+            if (GameFlow.ShopReturnToSetup)
+            {
+                GameFlow.ShopReturnToSetup = false;
+                ScreenManager.Show(Screen.Setup);
+            }
+            else
+            {
+                ScreenManager.Show(Screen.Menu);
+            }
+        }
+    }
     public class DarkRealmScreen : GameScreen { }
     public class SettingsScreen : GameScreen { }
 

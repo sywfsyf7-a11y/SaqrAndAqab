@@ -27,6 +27,7 @@ namespace SaqrAndAqab.Battle
         float _gateX;
         float _incomeTimer;
         bool _isFarmer;
+        int _incomeDirhams;
 
         public static Ally Create(Transform parent, AllyConfig config, Vector3 position,
             Hero hero, WaveManager waves, GameConfig game)
@@ -74,13 +75,16 @@ namespace SaqrAndAqab.Battle
 
             var stats = new UnitStats();
             stats.hp = config.hp;
-            stats.damage = config.damage;
+            // Archer damage is raised by the archer upgrade.
+            stats.damage = Mathf.RoundToInt(config.damage * UpgradeService.Multiplier("archer"));
             stats.range = config.attackRange;
             stats.cooldown = config.attackCooldown;
             stats.speed = config.moveSpeed;
 
             Init(Team.Player, stats);
 
+            // Farmer income is raised by the farmer upgrade.
+            _incomeDirhams = Mathf.RoundToInt(config.incomeDirhams * UpgradeService.Multiplier("farmer"));
             _incomeTimer = config.incomeInterval;
         }
 
@@ -100,14 +104,14 @@ namespace SaqrAndAqab.Battle
         void HandleIncome()
         {
             if (Anim != null) Anim.Idle();
-            if (_config == null || _config.incomeInterval <= 0f || _config.incomeDirhams <= 0) return;
+            if (_config == null || _config.incomeInterval <= 0f || _incomeDirhams <= 0) return;
 
             _incomeTimer -= Time.deltaTime;
             if (_incomeTimer > 0f) return;
 
             _incomeTimer = _config.incomeInterval;
             CoinPickups.Spawn(transform.parent, transform.position + Vector3.up * SpawnHeight,
-                _config.incomeDirhams, _hero, _waves, true);
+                _incomeDirhams, _hero, _waves, true);
         }
 
         // Archer: stays behind the hero, never further right than gateX + 10.

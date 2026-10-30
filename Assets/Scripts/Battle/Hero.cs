@@ -66,9 +66,16 @@ namespace SaqrAndAqab.Battle
             Anim.SetBaseScale(Vector3.one * _baseScale);
             child.transform.localScale = Vector3.one * _baseScale;
 
+            int baseHp = config != null ? config.hp : 0;
+            int baseDamage = config != null ? config.damage : 0;
+
+            // Upgrades are applied at creation time, read from the save (not the config).
+            float heroMultiplier = UpgradeService.Multiplier("hero");
+            float swordMultiplier = UpgradeService.Multiplier("sword");
+
             UnitStats stats = new UnitStats();
-            stats.hp = config != null ? config.hp : 0;
-            stats.damage = config != null ? config.damage : 0;
+            stats.hp = Mathf.RoundToInt(baseHp * heroMultiplier);
+            stats.damage = Mathf.RoundToInt(baseDamage * heroMultiplier * swordMultiplier);
             stats.range = config != null ? config.attackRange : 0f;
             stats.cooldown = config != null ? config.attackCooldown : 0f;
             stats.speed = config != null ? config.moveSpeed : 0f;

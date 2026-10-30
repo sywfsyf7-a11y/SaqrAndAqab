@@ -1,4 +1,5 @@
 using UnityEngine;
+using SaqrAndAqab.Core;
 using SaqrAndAqab.Data;
 
 namespace SaqrAndAqab.Battle
@@ -91,12 +92,19 @@ namespace SaqrAndAqab.Battle
 
         protected abstract void OnUse();
 
-        // The charm of power multiplies the hero's damage, abilities included.
+        // The charm of power and the matching upgrade multiply the ability's damage.
         protected int ScaledDamage
         {
             get
             {
                 float multiplier = Hero != null ? Hero.DamageMultiplier : 1f;
+
+                string upgradeId = null;
+                if (Id == CrescentSlash.AbilityId) upgradeId = "slash";
+                else if (Id == ArrowVolley.AbilityId) upgradeId = "bow";
+
+                if (upgradeId != null) multiplier *= UpgradeService.Multiplier(upgradeId);
+
                 return Mathf.Max(0, Mathf.RoundToInt(Config.damage * multiplier));
             }
         }

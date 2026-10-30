@@ -38,7 +38,7 @@ namespace SaqrAndAqab.Battle
             }
 
             _max = config.max;
-            _gainPerSecond = config.gainPerSecond * UpgradeMultiplier("haybah");
+            _gainPerSecond = config.gainPerSecond * UpgradeService.Multiplier("haybah");
             _value = Mathf.Min(config.startValue, _max);
 
             RaiseChanged();
@@ -74,31 +74,6 @@ namespace SaqrAndAqab.Battle
             if (OnChanged != null) OnChanged(value);
         }
 
-        // Saved upgrade level -> multiplier. The shop that sets levels arrives in task 10.
-        static float UpgradeMultiplier(string id)
-        {
-            var balance = ConfigService.Balance;
-            var data = SaveService.Data;
-            if (balance == null || balance.upgrades == null || data == null || data.upgradeLevels == null) return 1f;
 
-            int level = 0;
-            for (int i = 0; i < data.upgradeLevels.Count; i++)
-            {
-                var saved = data.upgradeLevels[i];
-                if (saved != null && saved.id == id)
-                {
-                    level = saved.level;
-                    break;
-                }
-            }
-
-            for (int i = 0; i < balance.upgrades.Count; i++)
-            {
-                var upgrade = balance.upgrades[i];
-                if (upgrade != null && upgrade.id == id) return 1f + upgrade.bonusPerLevel * level;
-            }
-
-            return 1f;
-        }
     }
 }

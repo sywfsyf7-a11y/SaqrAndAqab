@@ -18,6 +18,10 @@ namespace SaqrAndAqab.Core
         // "gate" or "hero", set by the battle when the wave is lost.
         public static string DefeatReason { get; private set; }
 
+        // When true, the shop was opened from the victory screen and its back button
+        // returns to the next setup instead of the main menu.
+        public static bool ShopReturnToSetup { get; set; }
+
         static GameFlow()
         {
             Wave = 1;

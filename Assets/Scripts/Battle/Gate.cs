@@ -1,4 +1,5 @@
 using UnityEngine;
+using SaqrAndAqab.Core;
 
 namespace SaqrAndAqab.Battle
 {
@@ -19,7 +20,7 @@ namespace SaqrAndAqab.Battle
         void Setup(int hp)
         {
             var stats = new UnitStats();
-            stats.hp = hp;
+            stats.hp = Mathf.RoundToInt(hp * UpgradeService.Multiplier("gate"));
             stats.damage = 0;
             stats.range = 0f;
             stats.cooldown = 0f;

@@ -100,7 +100,13 @@
   - `BattleWorld`: accepts a BattleSetup, applies the power (hero damage multiplier) and wealth (wave dirham multiplier) charms, builds the chosen loadout (fallback to defaults).
   - `WaveManager`: DefeatReason property and dirham multiplier (charm of wealth). `Unit` gained DamageMultiplier; abilities use ScaledDamage.
   - Verified headless: full flow (BeginRun 4, NextWave 5, RetryWave 5), setup consume (charm count 2 -> 1, loadout cleared), UI builds (5/6 cards, 3 tabs), charm multipliers (hero 1.25), unlock reporting (farmer on wave 1), charm drop roll (high bonus drops, low bonus none), defeat reason "gate", victory/defeat views build. 0 errors, 0 warnings.
-- [ ] 10 shop + upgrades + save + menu
+- [x] 10 shop + upgrades + save + menu
+  - `Core/UpgradeService.cs`: upgrade levels, cost formula `round(baseCost * costGrowth^(L-1))`, effect `base * (1 + bonus*(L-1))`, TryBuy (spends dirhams, saves).
+  - `UI/ShopScreenView.cs`: dirham balance (top-right), back button (top-left), three tabs (hero/allies/items), upgrade rows (icon, name, status, buy button), items tab (dates + charms with `shop.owned`).
+  - `Core/ScreenManager.cs`: real `MenuScreen` (play/continue/shop/settings), real `ShopScreen` (context-aware back: post-victory returns to next setup, otherwise menu), `VictoryScreen` now routes to the shop.
+  - Upgrades applied at creation time (read from save, never editing config): hero (hp + damage), sword (damage), bow (arrow_volley damage), haybah (gain rate), gate (hp), slash (crescent_slash damage), farmer (income), archer (damage).
+  - `GameFlow.ShopReturnToSetup` flag controls the shop's back destination.
+  - Verified headless: cost formula 250, buy raises level 1->2 and dirhams 1000->750, multiplier 1.12, hero hp 100->112, shop view builds, charm count works. 0 errors, 0 warnings.
 - [ ] 11 boss (wave 10) + chapter end
 - [ ] 12 dark realm
 - [ ] 13 story intro
