@@ -55,7 +55,7 @@ namespace SaqrAndAqab.Battle
                     aim = Quaternion.Euler(0f, 0f, spread) * new Vector2(direction, 0f);
                 }
 
-                Projectile.Spawn(World != null ? World.transform : null, origin, aim, speed, Config.damage,
+                Projectile.Spawn(World != null ? World.transform : null, origin, aim, speed, ScaledDamage,
                     Team.Player, SpriteId);
             }
 

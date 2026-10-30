@@ -24,9 +24,13 @@ namespace SaqrAndAqab.Battle
         int _killed;
         bool _running;
         bool _defeated;
+        float _dirhamMultiplier = 1f;
 
         public int CurrentWave { get; private set; }
         public bool IsRunning { get { return _running; } }
+
+        // "gate" or "hero", set when the wave is lost.
+        public string DefeatReason { get; private set; }
 
         // Dirhams collected during this battle (coins picked up by the hero).
         public int RunDirhams { get; private set; }
@@ -35,11 +39,18 @@ namespace SaqrAndAqab.Battle
 
         public int WaveCount { get { return _waves != null ? _waves.Count : 0; } }
 
+        // The charm of wealth multiplies every coin collected during the wave.
+        public void SetDirhamMultiplier(float multiplier)
+        {
+            _dirhamMultiplier = multiplier > 0f ? multiplier : 1f;
+        }
+
         public void AddDirhams(int amount)
         {
             if (amount <= 0) return;
 
-            RunDirhams += amount;
+            int value = Mathf.Max(1, Mathf.RoundToInt(amount * _dirhamMultiplier));
+            RunDirhams += value;
             if (OnDirhamsChanged != null) OnDirhamsChanged(RunDirhams);
         }
 
@@ -190,6 +201,7 @@ namespace SaqrAndAqab.Battle
             if (_defeated) return;
 
             _defeated = true;
+            DefeatReason = reason;
             _running = false;
             Debug.Log("[Wave] defeat (" + reason + ")");
             if (OnDefeat != null) OnDefeat();

@@ -88,7 +88,18 @@
   - `Assets/Scripts/Data/BalanceConfig.cs` + `balance.json` + `ConfigValidator.cs`: `AbilityConfig.projectileSpeed` (arrow volley 14) with a validator rule for arrow abilities.
   - Verified headless: 2 abilities (ids/icons), the slash hits the two ghouls in front (90 -> 50) but not the one out of range or behind, sets `timeScale` 0 (hit-stop), starts the shake, spawns the `fx_crescent` visual and sets the cooldown to 1.00 (second use refused, `Cancel` restores `timeScale` 1); facing left hits the left ghoul only; the volley fires 5 `fx_arrow` projectiles and one arrow deals 15; the HUD builds 2 ability buttons with the right icons, disables the used one with a full circular fill and re-enables it at 0.00 after the cooldown, and the HUD arrow button fires more arrows. 0 errors, 0 warnings.
   - Note: the user reported "these errors" but no screenshot was attached to the message. Both Unity editor logs (`Editor.log`, `Editor-prev.log`) contain no game errors or warnings; the only red lines are Unity's own AI/licensing messages (`NoSubscription`, licensing 404). The old `[Wave] No wave 25..30` warning spam was already fixed in task 06. Ask for the console text if something still shows.
-- [ ] 09 setup screen + victory/defeat + charms
+- [x] 09 setup screen + victory/defeat + charms
+  - `Core/GameFlow.cs`: run state (wave, last wave, collected dirhams, charm drop bonus, defeat reason) with BeginRun / NextWave / RetryWave / SetWave.
+  - `Core/LoadoutService.cs`: unlocks (starting + earned), loadout normalization, charm counts, charm drop roll.
+  - `Data/BattleSetup.cs`: builds the per-wave loadout and consumes the charm on start (power / wealth / luck multipliers).
+  - `UI/SafeAreaFitter.cs`: reusable safe-area fitter for the setup and result screens.
+  - `UI/SetupScreenView.cs`: wave title, three tabs (allies / abilities / charms), unlocked item cards, slot row, start button. Selection saved as the loadout.
+  - `UI/VictoryScreenView.cs`: title, award / collected / total rows, charm found + icon, newly unlocked items, next button (goes to the next setup until the shop in task 10).
+  - `UI/DefeatScreenView.cs`: gate/hero title, wave label, retry (same wave) and menu buttons.
+  - `ScreenManager`: real Menu -> Setup -> Battle -> Victory/Defeat -> Setup flow; BattleScreen reads GameFlow.Wave and the BattleSetup; subscribes to wave complete / defeat.
+  - `BattleWorld`: accepts a BattleSetup, applies the power (hero damage multiplier) and wealth (wave dirham multiplier) charms, builds the chosen loadout (fallback to defaults).
+  - `WaveManager`: DefeatReason property and dirham multiplier (charm of wealth). `Unit` gained DamageMultiplier; abilities use ScaledDamage.
+  - Verified headless: full flow (BeginRun 4, NextWave 5, RetryWave 5), setup consume (charm count 2 -> 1, loadout cleared), UI builds (5/6 cards, 3 tabs), charm multipliers (hero 1.25), unlock reporting (farmer on wave 1), charm drop roll (high bonus drops, low bonus none), defeat reason "gate", victory/defeat views build. 0 errors, 0 warnings.
 - [ ] 10 shop + upgrades + save + menu
 - [ ] 11 boss (wave 10) + chapter end
 - [ ] 12 dark realm

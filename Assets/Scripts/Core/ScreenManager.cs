@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using SaqrAndAqab.Battle;
 using SaqrAndAqab.UI;
+using SaqrAndAqab.Data;
 
 namespace SaqrAndAqab.Core
 {
@@ -65,32 +66,48 @@ namespace SaqrAndAqab.Core
 
         static void OnPlayPressed()
         {
-            ScreenManager.Show(Screen.Battle);
+            GameFlow.BeginRun();
+            ScreenManager.Show(Screen.Setup);
         }
     }
 
-    // Battle: the world plus the HUD (task 06). The setup screen (task 09) will pick the wave later.
+    // Battle: the world plus the HUD. The wave comes from GameFlow.
     public class BattleScreen : GameScreen
     {
         BattleWorld _world;
         BattleHud _hud;
+        BattleSetup _setup;
 
         public override void Enter()
         {
             Time.timeScale = 1f;
+            if (SaveService.Data == null) SaveService.Load();
 
-            if (_world == null) _world = BattleWorld.Build(GameBootstrap.Root, WorldThemeId.Day);
+            _setup = BattleSetup.CreateForWave(GameFlow.Wave);
+            GameFlow.CharmDropBonus = _setup != null ? _setup.charmDropBonus : 0f;
+
+            if (_world == null) _world = BattleWorld.Build(GameBootstrap.Root, WorldThemeId.Day, _setup);
             if (_hud == null) _hud = BattleHud.Create(GameBootstrap.UICanvas, _world);
             if (_hud != null) _hud.gameObject.SetActive(true);
 
-            // Straight into wave 1 for now, so the HUD can be checked without the setup screen.
-            if (_world != null && _world.Waves != null && !_world.Waves.IsRunning)
-                _world.Waves.StartWave(1);
+            if (_world != null && _world.Waves != null)
+            {
+                _world.Waves.OnWaveComplete += HandleWaveComplete;
+                _world.Waves.OnDefeat += HandleDefeat;
+                _world.Waves.StartWave(_setup != null ? _setup.wave : GameFlow.Wave);
+            }
         }
 
         public override void Exit()
         {
             Time.timeScale = 1f;
+            HitStop.Cancel();
+
+            if (_world != null && _world.Waves != null)
+            {
+                _world.Waves.OnWaveComplete -= HandleWaveComplete;
+                _world.Waves.OnDefeat -= HandleDefeat;
+            }
 
             if (_world != null)
             {
@@ -103,13 +120,150 @@ namespace SaqrAndAqab.Core
                 Object.Destroy(_hud.gameObject);
                 _hud = null;
             }
+
+            _setup = null;
+        }
+
+        void HandleWaveComplete(int wave)
+        {
+            GameFlow.WaveWon(wave, _world != null && _world.Waves != null ? _world.Waves.RunDirhams : 0);
+            ScreenManager.Show(Screen.Victory);
+        }
+
+        void HandleDefeat()
+        {
+            GameFlow.WaveLost(_world != null && _world.Waves != null ? _world.Waves.DefeatReason : null);
+            ScreenManager.Show(Screen.Defeat);
+        }
+    }
+
+    // Setup screen: pick the wave's loadout (task 09).
+    public class SetupScreen : GameScreen
+    {
+        SetupScreenView _view;
+
+        public override void Enter()
+        {
+            Time.timeScale = 1f;
+            if (GameBootstrap.UICanvas == null) return;
+
+            _view = SetupScreenView.Build(GameBootstrap.UICanvas, GameFlow.Wave, OnStartPressed);
+        }
+
+        public override void Exit()
+        {
+            if (_view != null)
+            {
+                _view.Destroy();
+                _view = null;
+            }
+        }
+
+        static void OnStartPressed()
+        {
+            ScreenManager.Show(Screen.Battle);
+        }
+    }
+
+    // Victory screen (task 09).
+    public class VictoryScreen : GameScreen
+    {
+        VictoryScreenView _view;
+
+        public override void Enter()
+        {
+            Time.timeScale = 1f;
+            if (SaveService.Data == null) SaveService.Load();
+
+            int wave = GameFlow.LastWave > 0 ? GameFlow.LastWave : GameFlow.Wave;
+            var balance = ConfigService.Balance;
+
+            int award = 0;
+            if (balance != null && balance.waves != null)
+            {
+                for (int i = 0; i < balance.waves.Count; i++)
+                {
+                    var w = balance.waves[i];
+                    if (w != null && w.wave == wave) { award = w.victoryAward; break; }
+                }
+            }
+
+            int collected = GameFlow.LastCollectedDirhams;
+
+            if (wave > SaveService.Data.highestWaveCleared) SaveService.Data.highestWaveCleared = wave;
+
+            var unlocked = LoadoutService.ApplyUnlocks(wave);
+
+            var charm = LoadoutService.RollCharmDrop(GameFlow.CharmDropBonus);
+            if (charm != null) LoadoutService.AddCharm(charm.id, LoadoutService.CharmDropAmount());
+
+            // The charm used in this wave is gone once the battle ends.
+            SaveService.Data.loadoutCharms.Clear();
+
+            int total = award + collected;
+            SaveService.Data.dirhams += total;
+            SaveService.Save();
+
+            if (GameBootstrap.UICanvas != null)
+            {
+                _view = VictoryScreenView.Build(GameBootstrap.UICanvas, wave, award, collected, total,
+                    charm, unlocked, OnNextPressed);
+            }
+        }
+
+        public override void Exit()
+        {
+            if (_view != null)
+            {
+                _view.Destroy();
+                _view = null;
+            }
+        }
+
+        // Task 10 will build the shop; until then go straight to the next setup.
+        static void OnNextPressed()
+        {
+            GameFlow.NextWave();
+            ScreenManager.Show(Screen.Setup);
+        }
+    }
+
+    // Defeat screen (task 09).
+    public class DefeatScreen : GameScreen
+    {
+        DefeatScreenView _view;
+
+        public override void Enter()
+        {
+            Time.timeScale = 1f;
+            if (GameBootstrap.UICanvas == null) return;
+
+            _view = DefeatScreenView.Build(GameBootstrap.UICanvas, GameFlow.Wave, GameFlow.DefeatReason,
+                OnRetryPressed, OnMenuPressed);
+        }
+
+        public override void Exit()
+        {
+            if (_view != null)
+            {
+                _view.Destroy();
+                _view = null;
+            }
+        }
+
+        static void OnRetryPressed()
+        {
+            GameFlow.RetryWave();
+            ScreenManager.Show(Screen.Battle);
+        }
+
+        static void OnMenuPressed()
+        {
+            ScreenManager.Show(Screen.Menu);
         }
     }
 
     public class StoryScreen : GameScreen { }
-    public class SetupScreen : GameScreen { }
-    public class VictoryScreen : GameScreen { }
-    public class DefeatScreen : GameScreen { }
     public class ShopScreen : GameScreen { }
     public class DarkRealmScreen : GameScreen { }
     public class SettingsScreen : GameScreen { }

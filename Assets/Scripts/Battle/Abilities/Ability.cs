@@ -57,6 +57,17 @@ namespace SaqrAndAqab.Battle
             }
         }
 
+        // UI icon id from assets.json, for the setup screen (no world needed).
+        public static string IconFor(string id)
+        {
+            switch (id)
+            {
+                case CrescentSlash.AbilityId: return "ui_icon_slash";
+                case ArrowVolley.AbilityId: return "ui_icon_bow";
+                default: return null;
+            }
+        }
+
         // Spends the cooldown and runs the effect. False when the ability is not usable yet.
         public bool TryUse()
         {
@@ -79,6 +90,16 @@ namespace SaqrAndAqab.Battle
         }
 
         protected abstract void OnUse();
+
+        // The charm of power multiplies the hero's damage, abilities included.
+        protected int ScaledDamage
+        {
+            get
+            {
+                float multiplier = Hero != null ? Hero.DamageMultiplier : 1f;
+                return Mathf.Max(0, Mathf.RoundToInt(Config.damage * multiplier));
+            }
+        }
 
         // Alive enemies within range of the hero on X, sorted nearest first.
         protected static void CollectEnemies(Vector3 origin, float range, float laneTolerance,

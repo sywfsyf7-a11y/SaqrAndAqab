@@ -140,15 +140,20 @@ namespace SaqrAndAqab.Battle
 
         public static BattleWorld Build(Transform parent, WorldThemeId theme)
         {
+            return Build(parent, theme, null);
+        }
+
+        public static BattleWorld Build(Transform parent, WorldThemeId theme, BattleSetup setup)
+        {
             var go = new GameObject("Battle World");
             if (parent != null) go.transform.SetParent(parent, false);
 
             var world = go.AddComponent<BattleWorld>();
-            world.BuildInternal(theme);
+            world.BuildInternal(theme, setup);
             return world;
         }
 
-        void BuildInternal(WorldThemeId theme)
+        void BuildInternal(WorldThemeId theme, BattleSetup setup)
         {
             Theme = theme;
 
@@ -211,25 +216,46 @@ namespace SaqrAndAqab.Battle
             float startY = (game.laneMinY + game.laneMaxY) * 0.5f;
             _hero = Hero.Create(transform, new Vector3(startX, startY, 0f), game, heroConfig);
 
+            // The charm of power applies to the hero (melee and abilities) for the whole wave.
+            if (setup != null) _hero.DamageMultiplier = setup.damageMultiplier;
+
             int gateHp = balance.gate != null ? balance.gate.hp : 0;
             _gate = Gate.Create(transform, new Vector3(game.gateX, startY, 0f), gateHp);
             _spawner = EnemySpawner.Create(transform, game);
             _waves = WaveManager.Create(transform, balance.waves, _spawner, _gate, _hero);
             _haybah = HaybahMeter.Create(transform);
             _shake = CameraShake.Create(transform);
-            BuildSelectedAllies(balance);
-            BuildAbilities(balance);
+
+            // The charm of wealth multiplies every coin collected during the wave.
+            if (setup != null) _waves.SetDirhamMultiplier(setup.dirhamMultiplier);
+
+            BuildSelectedAllies(balance, setup);
+            BuildAbilities(balance, setup);
 
             SnapCamera();
         }
 
-        // Temporary loadout: the allies from Ally.DefaultIds, capped by slots.allies.
-        void BuildSelectedAllies(BalanceConfig balance)
+        // The loadout chosen on the setup screen, capped by slots.allies.
+        void BuildSelectedAllies(BalanceConfig balance, BattleSetup setup)
         {
             _selectedAllies.Clear();
             if (balance == null || balance.allies == null) return;
 
             int slots = balance.slots != null ? balance.slots.allies : 0;
+            var ids = setup != null && setup.allyIds.Count > 0 ? setup.allyIds : null;
+
+            if (ids != null)
+            {
+                for (int i = 0; i < ids.Count && _selectedAllies.Count < slots; i++)
+                {
+                    var config = FindAlly(balance, ids[i]);
+                    if (config != null) _selectedAllies.Add(config);
+                }
+
+                if (_selectedAllies.Count > 0) return;
+            }
+
+            // No setup (debug build) or an empty loadout: fall back to the default allies.
             for (int i = 0; i < Ally.DefaultIds.Length && _selectedAllies.Count < slots; i++)
             {
                 string id = Ally.DefaultIds[i];
@@ -245,13 +271,30 @@ namespace SaqrAndAqab.Battle
             }
         }
 
-        // Temporary loadout: the abilities from Ability.DefaultIds, capped by slots.abilities.
-        void BuildAbilities(BalanceConfig balance)
+        // The loadout chosen on the setup screen, capped by slots.abilities.
+        void BuildAbilities(BalanceConfig balance, BattleSetup setup)
         {
             _abilities.Clear();
             if (balance == null || balance.abilities == null) return;
 
             int slots = balance.slots != null ? balance.slots.abilities : 0;
+            var ids = setup != null && setup.abilityIds.Count > 0 ? setup.abilityIds : null;
+
+            if (ids != null)
+            {
+                for (int i = 0; i < ids.Count && _abilities.Count < slots; i++)
+                {
+                    var config = FindAbility(balance, ids[i]);
+                    if (config == null) continue;
+
+                    var ability = Ability.Create(config, this);
+                    if (ability != null) _abilities.Add(ability);
+                }
+
+                if (_abilities.Count > 0) return;
+            }
+
+            // No setup (debug build) or an empty loadout: fall back to the default abilities.
             for (int i = 0; i < Ability.DefaultIds.Length && _abilities.Count < slots; i++)
             {
                 var config = FindAbility(balance, Ability.DefaultIds[i]);
@@ -260,6 +303,17 @@ namespace SaqrAndAqab.Battle
                 var ability = Ability.Create(config, this);
                 if (ability != null) _abilities.Add(ability);
             }
+        }
+
+        static AllyConfig FindAlly(BalanceConfig balance, string id)
+        {
+            for (int i = 0; i < balance.allies.Count; i++)
+            {
+                var config = balance.allies[i];
+                if (config != null && config.id == id) return config;
+            }
+
+            return null;
         }
 
         static AbilityConfig FindAbility(BalanceConfig balance, string id)

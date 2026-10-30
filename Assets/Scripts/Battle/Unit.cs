@@ -24,6 +24,15 @@ namespace SaqrAndAqab.Battle
         public float Cooldown { get; private set; }
         public float Speed { get; private set; }
 
+        // Multiplier on every attack (the charm of power). 1 = normal damage.
+        public float DamageMultiplier
+        {
+            get { return _damageMultiplier; }
+            set { _damageMultiplier = value > 0f ? value : 0f; }
+        }
+
+        float _damageMultiplier = 1f;
+
         public event System.Action<Unit> OnDied;
 
         float CooldownBase;
@@ -86,7 +95,8 @@ namespace SaqrAndAqab.Battle
             Vector2 direction = new Vector2(target.transform.position.x - transform.position.x, 0f);
             if (Anim != null) Anim.Lunge(direction);
 
-            int dealt = target.Health.TakeDamage(Damage);
+            int damage = Mathf.Max(0, Mathf.RoundToInt(Damage * _damageMultiplier));
+            int dealt = target.Health.TakeDamage(damage);
             if (Anim != null) Anim.Flash();
 
             DamageNumbers.Show(target, dealt, false);

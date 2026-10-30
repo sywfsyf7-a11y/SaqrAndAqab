@@ -36,7 +36,7 @@ namespace SaqrAndAqab.Battle
                 if (dx * direction < 0f || Mathf.Abs(dx) > range) continue;
                 if (Mathf.Abs(enemy.transform.position.y - origin.y) > tolerance) continue;
 
-                int dealt = enemy.Health.TakeDamage(Config.damage);
+                int dealt = enemy.Health.TakeDamage(ScaledDamage);
                 DamageNumbers.Show(enemy, dealt, false);
 
                 if (enemy.Anim != null)
