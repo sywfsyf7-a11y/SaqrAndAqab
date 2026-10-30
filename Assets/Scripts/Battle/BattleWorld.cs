@@ -59,6 +59,9 @@ namespace SaqrAndAqab.Battle
 
         public CameraShake Shake { get { return _shake; } }
 
+        // Static access for units that need to trigger a shake without a world reference.
+        public static CameraShake CurrentShake { get; set; }
+
         // Allies chosen for this battle (temporary list until the setup screen in task 09).
         public System.Collections.Generic.List<AllyConfig> SelectedAllies { get { return _selectedAllies; } }
 
@@ -230,6 +233,7 @@ namespace SaqrAndAqab.Battle
             _waves = WaveManager.Create(transform, balance.waves, _spawner, _gate, _hero);
             _haybah = HaybahMeter.Create(transform);
             _shake = CameraShake.Create(transform);
+            CurrentShake = _shake;
 
             // The charm of wealth multiplies every coin collected during the wave.
             if (setup != null) _waves.SetDirhamMultiplier(setup.dirhamMultiplier);
@@ -363,6 +367,8 @@ namespace SaqrAndAqab.Battle
         {
             // Leaving the battle must never keep the game frozen by a hit-stop.
             HitStop.Cancel();
+
+            if (CurrentShake == _shake) CurrentShake = null;
         }
 
         void LateUpdate()

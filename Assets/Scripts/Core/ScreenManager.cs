@@ -148,6 +148,7 @@ namespace SaqrAndAqab.Core
         BattleWorld _world;
         BattleHud _hud;
         BattleSetup _setup;
+        TutorialHints _hints;
 
         public override void Enter()
         {
@@ -166,6 +167,11 @@ namespace SaqrAndAqab.Core
                 _world.Waves.OnWaveComplete += HandleWaveComplete;
                 _world.Waves.OnDefeat += HandleDefeat;
                 _world.Waves.StartWave(_setup != null ? _setup.wave : GameFlow.Wave);
+            }
+
+            if (_hud != null && _world != null && _world.Waves != null && _world.Waves.CurrentWave <= 2)
+            {
+                _hints = TutorialHints.Create(GameBootstrap.UICanvas, _world);
             }
 
             AudioService.PlayMusic(GameFlow.Wave >= 10 ? "boss" : "day");
@@ -192,6 +198,12 @@ namespace SaqrAndAqab.Core
             {
                 Object.Destroy(_hud.gameObject);
                 _hud = null;
+            }
+
+            if (_hints != null)
+            {
+                Object.Destroy(_hints.gameObject);
+                _hints = null;
             }
 
             _setup = null;

@@ -42,6 +42,8 @@ namespace SaqrAndAqab.UI
             public Button Button;
             public Image Icon;
             public Image Cooldown;
+            public bool WasReady;
+            public float PulseTimer;
         }
 
         BattleWorld _world;
@@ -143,6 +145,7 @@ namespace SaqrAndAqab.UI
             TickDate();
             RefreshAbilityButtons();
             RefreshBossBar();
+            TickAbilityPulse();
         }
 
         void RefreshBossBar()
@@ -468,6 +471,8 @@ namespace SaqrAndAqab.UI
                 if (entry.Ability == null || entry.Button == null) continue;
 
                 bool ready = alive && entry.Ability.IsReady;
+                if (ready && !entry.WasReady) entry.PulseTimer = 0.4f;
+                entry.WasReady = ready;
                 entry.Button.interactable = ready;
                 if (entry.Icon != null) entry.Icon.color = ready ? Color.white : DisabledColor;
 
@@ -478,6 +483,27 @@ namespace SaqrAndAqab.UI
 
                     bool show = fraction > 0f;
                     if (entry.Cooldown.gameObject.activeSelf != show) entry.Cooldown.gameObject.SetActive(show);
+                }
+            }
+        }
+
+        void TickAbilityPulse()
+        {
+            for (int i = 0; i < _abilityButtons.Count; i++)
+            {
+                var entry = _abilityButtons[i];
+                if (entry.Button == null) continue;
+
+                if (entry.PulseTimer > 0f)
+                {
+                    entry.PulseTimer -= Time.deltaTime;
+                    float t = 1f - Mathf.Clamp01(entry.PulseTimer / 0.4f);
+                    float scale = 1f + Mathf.Sin(t * Mathf.PI) * 0.18f;
+                    entry.Button.transform.localScale = new Vector3(scale, scale, 1f);
+                }
+                else
+                {
+                    entry.Button.transform.localScale = Vector3.one;
                 }
             }
         }

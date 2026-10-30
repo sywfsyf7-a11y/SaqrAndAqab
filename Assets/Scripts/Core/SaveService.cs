@@ -35,6 +35,10 @@ namespace SaqrAndAqab.Core
         public List<string> loadoutCharms = new List<string>();
         public bool introSeen;
         public bool chapterComplete;
+        public bool tutorialProtectShown;
+        public bool tutorialMoveShown;
+        public bool tutorialHaybahShown;
+        public bool tutorialSlashShown;
         public float musicVolume = 1f;
         public float sfxVolume = 1f;
     }

@@ -136,6 +136,7 @@ namespace SaqrAndAqab.Battle
             }
 
             AudioService.Play("boss_slam");
+            if (BattleWorld.CurrentShake != null) BattleWorld.CurrentShake.Play(0.35f, 0.4f);
             if (Anim != null) Anim.Lunge(Vector2.down);
 
             _slamCooldown = SlamCooldownSeconds;

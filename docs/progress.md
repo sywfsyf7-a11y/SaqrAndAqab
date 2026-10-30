@@ -134,6 +134,12 @@
   - `UI/SettingsScreenView.cs`: music/sfx sliders (saved + ApplyVolumes), reset with confirmation (clears save).
   - `Core/GameBootstrap.cs`: ApplyVolumes on boot; `MenuScreen` plays menu music; `BattleScreen` day/boss music; `DarkRealmStage` dark music.
   - Verified headless: audio plays, settings view builds, volumes save, reset clears. 0 errors, 0 warnings.
-- [ ] 15 polish + tutorial hints
+- [x] 15 polish + tutorial
+  - `Battle/Fx.cs`: procedural hit sparks, death puff, coin sparkle (pooled-less small sprites, self-cleaning).
+  - Screen shake on gate hits and boss slam via `BattleWorld.CurrentShake`.
+  - Ability button pulse when ready (BattleHud).
+  - `UI/TutorialHints.cs`: one-shot hints for waves 1-2 (protect/move/haybah/slash), saved flags, auto-dismiss after 5 s or tap, scroll panel.
+  - `SaveService`: tutorial flags added.
+  - Verified headless: fx spawn, tutorial hints create, 0 errors, 0 warnings. hints
 - [ ] 16 android build
 - [ ] 17 auto-play balance pass

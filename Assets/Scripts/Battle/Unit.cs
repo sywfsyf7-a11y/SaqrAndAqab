@@ -98,7 +98,14 @@ namespace SaqrAndAqab.Battle
 
             int damage = Mathf.Max(0, Mathf.RoundToInt(Damage * _damageMultiplier));
             int dealt = target.Health.TakeDamage(damage);
-            if (dealt > 0) AudioService.Play("hit");
+            if (dealt > 0)
+            {
+                AudioService.Play("hit");
+                Fx.HitSpark(target.transform.position, new Color(1f, 0.9f, 0.4f, 1f));
+
+                if (target is Gate && BattleWorld.CurrentShake != null)
+                    BattleWorld.CurrentShake.Play(0.15f, 0.2f);
+            }
             if (Anim != null) Anim.Flash();
 
             DamageNumbers.Show(target, dealt, false);
@@ -114,6 +121,8 @@ namespace SaqrAndAqab.Battle
         void HandleDied()
         {
             if (Anim != null) Anim.Die();
+
+            Fx.DeathPuff(transform.position);
 
             UnitRegistry.Remove(this);
 
