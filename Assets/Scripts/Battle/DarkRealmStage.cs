@@ -76,6 +76,7 @@ namespace SaqrAndAqab.Battle
             // Save and switch the theme.
             _savedTheme = world.Theme;
             world.ApplyTheme(WorldThemeId.DarkRealm);
+            AudioService.PlayMusic("dark");
 
             // Hero: blue sprite, floating, invulnerable.
             if (_hero != null)

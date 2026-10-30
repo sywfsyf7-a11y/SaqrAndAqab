@@ -1,4 +1,5 @@
 using UnityEngine;
+using SaqrAndAqab.Core;
 
 namespace SaqrAndAqab.Battle
 {
@@ -97,6 +98,7 @@ namespace SaqrAndAqab.Battle
 
             int damage = Mathf.Max(0, Mathf.RoundToInt(Damage * _damageMultiplier));
             int dealt = target.Health.TakeDamage(damage);
+            if (dealt > 0) AudioService.Play("hit");
             if (Anim != null) Anim.Flash();
 
             DamageNumbers.Show(target, dealt, false);

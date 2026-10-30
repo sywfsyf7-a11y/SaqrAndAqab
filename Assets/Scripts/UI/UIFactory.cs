@@ -115,6 +115,7 @@ namespace SaqrAndAqab.UI
 
             var button = go.GetComponent<Button>();
             if (onClick != null) button.onClick.AddListener(onClick);
+            button.onClick.AddListener(delegate { AudioService.Play("ui_click"); });
             return button;
         }
 

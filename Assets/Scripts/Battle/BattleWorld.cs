@@ -83,6 +83,7 @@ namespace SaqrAndAqab.Battle
             float y = (_game.laneMinY + _game.laneMaxY) * 0.5f;
 
             Ally.Create(transform, config, new Vector3(x, y, 0f), _hero, _waves, _game);
+            AudioService.Play("summon");
             return true;
         }
 

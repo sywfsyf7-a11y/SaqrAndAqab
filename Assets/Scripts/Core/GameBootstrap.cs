@@ -32,6 +32,7 @@ namespace SaqrAndAqab.Core
             ConfigService.Load();
             Loc.Load();
             SaveService.Load();
+            AudioService.ApplyVolumes();
             AssetLibrary.WarmCatalog();
             ConfigValidator.Validate();
 

@@ -88,6 +88,7 @@ namespace SaqrAndAqab.Battle
 
             if (distance <= CollectRange)
             {
+                AudioService.Play("coin");
                 _waves.AddDirhams(Value);
                 CoinPickups.Return(this);
             }

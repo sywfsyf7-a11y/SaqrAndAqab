@@ -135,6 +135,7 @@ namespace SaqrAndAqab.Battle
                 DamageNumbers.Show(player, dealt, true);
             }
 
+            AudioService.Play("boss_slam");
             if (Anim != null) Anim.Lunge(Vector2.down);
 
             _slamCooldown = SlamCooldownSeconds;

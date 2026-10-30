@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using SaqrAndAqab.Core;
 using SaqrAndAqab.Data;
 
 namespace SaqrAndAqab.Battle
@@ -23,6 +24,7 @@ namespace SaqrAndAqab.Battle
 
         protected override void OnUse()
         {
+            AudioService.Play("arrow");
             float speed = Config.projectileSpeed;
             if (speed <= 0f)
             {

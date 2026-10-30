@@ -562,6 +562,7 @@ namespace SaqrAndAqab.UI
             if (SaveService.Data == null || SaveService.Data.dateCount <= 0) return;
 
             _hero.Health.Heal(_dateItem.healAmount);
+            AudioService.Play("heal");
 
             SaveService.Data.dateCount--;
             _dateCooldown = _dateItem.cooldown;

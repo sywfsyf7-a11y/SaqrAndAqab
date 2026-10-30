@@ -1,4 +1,5 @@
 using UnityEngine;
+using SaqrAndAqab.Core;
 using SaqrAndAqab.Data;
 
 namespace SaqrAndAqab.Battle
@@ -19,6 +20,7 @@ namespace SaqrAndAqab.Battle
 
         protected override void OnUse()
         {
+            AudioService.Play("slash");
             bool facingRight = Hero.IsFacingRight;
             float direction = facingRight ? 1f : -1f;
             Vector3 origin = Hero.transform.position;

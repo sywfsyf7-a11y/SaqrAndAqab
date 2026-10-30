@@ -39,6 +39,7 @@ namespace SaqrAndAqab.Core
         {
             if (_root == null) _root = Build();
             if (_root != null) _root.gameObject.SetActive(true);
+            AudioService.PlayMusic("menu");
         }
 
         public override void Exit()
@@ -166,6 +167,8 @@ namespace SaqrAndAqab.Core
                 _world.Waves.OnDefeat += HandleDefeat;
                 _world.Waves.StartWave(_setup != null ? _setup.wave : GameFlow.Wave);
             }
+
+            AudioService.PlayMusic(GameFlow.Wave >= 10 ? "boss" : "day");
         }
 
         public override void Exit()
@@ -271,6 +274,8 @@ namespace SaqrAndAqab.Core
             Time.timeScale = 1f;
             if (SaveService.Data == null) SaveService.Load();
 
+            AudioService.Play("win");
+
             int wave = GameFlow.LastWave > 0 ? GameFlow.LastWave : GameFlow.Wave;
             var balance = ConfigService.Balance;
 
@@ -337,6 +342,8 @@ namespace SaqrAndAqab.Core
         {
             Time.timeScale = 1f;
             if (GameBootstrap.UICanvas == null) return;
+
+            AudioService.Play("lose");
 
             _view = DefeatScreenView.Build(GameBootstrap.UICanvas, GameFlow.Wave, GameFlow.DefeatReason,
                 OnRetryPressed, OnMenuPressed);
@@ -479,7 +486,27 @@ namespace SaqrAndAqab.Core
         }
     }
     public class DarkRealmScreen : GameScreen { }
-    public class SettingsScreen : GameScreen { }
+    public class SettingsScreen : GameScreen
+    {
+        SettingsScreenView _view;
+
+        public override void Enter()
+        {
+            Time.timeScale = 1f;
+            if (GameBootstrap.UICanvas == null) return;
+
+            _view = SettingsScreenView.Build(GameBootstrap.UICanvas, delegate { ScreenManager.Show(Screen.Menu); });
+        }
+
+        public override void Exit()
+        {
+            if (_view != null)
+            {
+                _view.Destroy();
+                _view = null;
+            }
+        }
+    }
 
     public static class ScreenManager
     {

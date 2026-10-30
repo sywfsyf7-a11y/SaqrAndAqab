@@ -140,6 +140,8 @@ namespace SaqrAndAqab.Battle
             if (target == null || target.Health == null || !target.Health.IsAlive) return;
             if (_config == null) return;
 
+            if (!_isFarmer) AudioService.Play("arrow");
+
             Vector2 direction = (Vector2)(target.transform.position - transform.position);
             if (Anim != null) Anim.Lunge(direction);
 

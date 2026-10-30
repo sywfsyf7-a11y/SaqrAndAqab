@@ -128,7 +128,12 @@
   - `UI/StoryPlayer.cs`: plays beats (image + Ken Burns zoom, cross-fade, RTL text box, optional speaker), tap to advance, `common.skip` skips all.
   - `Core/ScreenManager.cs`: `MenuScreen` now shows `menu_keyart` behind the title; `OnPlayPressed` shows the intro on first play (saves `introSeen`), then Setup wave 1; `StoryScreen` builds the 8 intro beats and routes to Setup.
   - Verified headless: story player builds, introSeen saves. 0 errors, 0 warnings.
-- [ ] 14 audio + settings
+- [x] 14 audio + settings
+  - `Core/AudioService.cs`: pooled AudioSources, SFX ids (hit, slash, arrow, coin, summon, heal, boss_slam, win, lose, ui_click) with procedural fallback clips; music loops `music_<name>` if present; volume from save.
+  - Hooks: Unit/Projectile hits, crescent slash, arrow volley, ally archer, coin pickup, ally summon, date heal, boss slam, victory/defeat, UI buttons.
+  - `UI/SettingsScreenView.cs`: music/sfx sliders (saved + ApplyVolumes), reset with confirmation (clears save).
+  - `Core/GameBootstrap.cs`: ApplyVolumes on boot; `MenuScreen` plays menu music; `BattleScreen` day/boss music; `DarkRealmStage` dark music.
+  - Verified headless: audio plays, settings view builds, volumes save, reset clears. 0 errors, 0 warnings.
 - [ ] 15 polish + tutorial hints
 - [ ] 16 android build
 - [ ] 17 auto-play balance pass

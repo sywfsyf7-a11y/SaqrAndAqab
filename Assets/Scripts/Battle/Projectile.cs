@@ -89,6 +89,7 @@ namespace SaqrAndAqab.Battle
             if (hit == null) return;
 
             int dealt = hit.Health.TakeDamage(_damage);
+            if (dealt > 0) AudioService.Play("hit");
             DamageNumbers.Show(hit, dealt, false);
             Return();
         }
