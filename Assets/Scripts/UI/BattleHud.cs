@@ -52,6 +52,17 @@ namespace SaqrAndAqab.UI
         HaybahMeter _haybah;
         ItemConfig _dateItem;
 
+        public static BattleHud Current { get; private set; }
+
+        public bool TryUseDate()
+        {
+            if (_dateItem == null || _hero == null || _hero.Health == null || !_hero.Health.IsAlive) return false;
+            if (_dateCooldown > 0f) return false;
+            if (SaveService.Data == null || SaveService.Data.dateCount <= 0) return false;
+            OnDatePressed();
+            return true;
+        }
+
         readonly List<AllyButton> _allyButtons = new List<AllyButton>();
         readonly List<AbilityButton> _abilityButtons = new List<AbilityButton>();
 
@@ -104,6 +115,7 @@ namespace SaqrAndAqab.UI
 
         void Setup(BattleWorld world)
         {
+            Current = this;
             _world = world;
             _hero = world != null ? world.Hero : null;
             _waves = world != null ? world.Waves : null;
@@ -172,6 +184,7 @@ namespace SaqrAndAqab.UI
 
         void OnDestroy()
         {
+            if (Current == this) Current = null;
             if (_waves != null)
             {
                 _waves.OnWaveProgress -= HandleWaveProgress;

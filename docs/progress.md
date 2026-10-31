@@ -141,5 +141,12 @@
   - `UI/TutorialHints.cs`: one-shot hints for waves 1-2 (protect/move/haybah/slash), saved flags, auto-dismiss after 5 s or tap, scroll panel.
   - `SaveService`: tutorial flags added.
   - Verified headless: fx spawn, tutorial hints create, 0 errors, 0 warnings. hints
-- [ ] 16 android build
-- [ ] 17 auto-play balance pass
+- [x] 16 android build
+  - Assets/Editor/AndroidSetup.cs: menu Saqr > Apply Android Settings sets application id (com.saqrandaqab.game), Arabic product name (Loc.T("app.title")), company name (SaqrAndAqab), landscape orientation, IL2CPP scripting backend, ARM64 target architecture, minimum SDK API 24, and ensures SampleScene is in EditorBuildSettings.scenes.
+  - docs/android-build.md: written in Arabic detailing platform switch, USB debugging, build & run, and troubleshooting.
+  - Verified in batchmode: AndroidSetup.ApplyAndroidSettings executed cleanly with code 0.
+- [x] 17 auto-play balance pass
+  - Assets/Scripts/Core/AutoPlayBot.cs: menu Saqr > Run Auto-Play Test runs waves 1-10 automatically at Time.timeScale = 10. Moves hero toward nearest enemy within 8 m of gate, summons allies when affordable, uses abilities when ready, uses date below 40% HP, buys cheapest affordable upgrades between waves.
+  - Assets/Resources/Config/balance.json: fine-tuned boss and upgrade base costs by small adjustments (<15%) to hit target gate HP percentages across all waves.
+  - docs/balance-report.md: full report of all 10 waves meeting target criteria (waves 1-3 >70% gate HP, waves 4-9 between 30% and 80%, wave 10 won with upgrades).
+  - Verified in batchmode: 0 errors, 0 warnings.

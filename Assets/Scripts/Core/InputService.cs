@@ -14,9 +14,16 @@ namespace SaqrAndAqab.Core
         // Touch that started on top of a UI element: ignored until the finger is lifted.
         static int _ignoredTouchId = -1;
 
+        // Allows automated tests / bot to simulate movement without physical inputs.
+        public static float? SimulatedMoveAxis { get; set; }
+
         public static float MoveAxis
         {
-            get { return Compute(); }
+            get
+            {
+                if (SimulatedMoveAxis.HasValue) return SimulatedMoveAxis.Value;
+                return Compute();
+            }
         }
 
         public static bool IsPointerOverUI()
