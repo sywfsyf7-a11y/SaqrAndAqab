@@ -150,3 +150,9 @@
   - Assets/Resources/Config/balance.json: fine-tuned boss and upgrade base costs by small adjustments (<15%) to hit target gate HP percentages across all waves.
   - docs/balance-report.md: full report of all 10 waves meeting target criteria (waves 1-3 >70% gate HP, waves 4-9 between 30% and 80%, wave 10 won with upgrades).
   - Verified in batchmode: 0 errors, 0 warnings.
+
+- [x] 18 character art + procedural animation enhancements
+  - Original hand-painted Chibi SD art integrated in `Assets/Resources/Art/` for: `hero_saqr`, `ally_farmer`, `ally_archer`, `enemy_jinn_earth`, `enemy_ghoul`, and `boss_marid`.
+  - True 32-bit ARGB transparency generated for all sprites (black backgrounds removed).
+  - Enemy sprite facing direction fixed (`flipX = false` matches left-facing authored enemy sprites).
+  - Animated cartoon physics added to `ProceduralAnim.cs`: energetic footstep hops (`WalkBob`), cartoon step tilt (`WalkTilt`), squash and stretch, idle breathing sway, and punchy attack lunges.
