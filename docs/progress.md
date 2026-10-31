@@ -1,158 +1,43 @@
 # Progress
+- [ ] 00 setup repo
+- [ ] 01 core foundation
+- [ ] 02 arabic text
+- [ ] 03 battle world + hero movement
+- [ ] 04 combat core
+- [ ] 05 enemies + waves
+- [ ] 06 HUD + coins + dates
+- [ ] 07 allies + haybah
+- [ ] 08 abilities
+- [ ] 09 setup screen + victory/defeat + charms
+- [ ] 10 shop + upgrades + save + menu
+- [ ] 11 boss (wave 10) + chapter end
+- [ ] 12 dark realm
+- [ ] 13 story intro
+- [ ] 14 audio + settings
+- [ ] 15 polish + tutorial hints
+- [ ] 16 android build
+- [ ] 17 auto-play balance pass
 
-## Environment
-- URP: present (`com.unity.render-pipelines.universal` 17.0.4).
-- Input System: present (`com.unity.inputsystem` 1.20.0).
-- EditorSettings: serialization mode is Force Text (`m_SerializationMode: 2`). Version control mode is Visible Meta Files (`ProjectSettings/VersionControlSettings.asset`, `m_Mode: Visible Meta Files`). No changes made to these settings.
-- Git LFS: installed during task 00 (git-lfs 3.8.1), hooks installed in the repo.
-- Remote: `origin` = https://github.com/sywfsyf7-a11y/SaqrAndAqab.git (public repo).
-- Note: the remote already had a `SaqrAndAqab-starter/` folder and a root `README_AR.md`; the project files now live at the repo root and the starter folder was kept as-is.
-
-## Tasks
-- [x] 00 setup repo
-- [x] 01 core foundation
-  - Runtime skeleton done: config, loc, save, input, art placeholders, screen stubs, validator, boot label.
-  - Verified by batch compiling the project with Unity 6000.0.85f1 (0 errors, 0 warnings) and by a temporary editor check that logged `Config OK`, the loaded balance values and the built camera/canvas/EventSystem/Boot label. The temporary check file was deleted.
-  - Note: the boot label uses `UnityEngine.UI.Text` with `LegacyRuntime.ttf`; it is temporary until task 02.
-  - Note: the screen enum is named `Screen`, so code that also has `using UnityEngine;` must write `UnityEngine.Screen` for the real screen.
-  - Fix: the boot no longer creates a camera before the scene loads. It reuses the scene `Camera.main` (SampleScene already has a Main Camera + AudioListener), applies orthographic size from balance.json and a dark navy background, and guarantees exactly one AudioListener. `Debug.Log("Boot OK")` is printed on boot.
-- [x] 02 arabic text
-  - RTLTMPro installed at `Assets/Plugins/RTLTMPro` (runtime + editor scripts + ranges + MIT license). Its `.asmdef` files, demo scenes and demo fonts were not copied (project rule: no asmdef files, one scene only).
-  - Font: `Assets/Fonts/IBMPlexSansArabic-Regular.ttf` and `-Bold.ttf` (static TTFs, SIL OFL 1.1, see `Assets/Fonts/OFL.txt`). Tajawal was tried first and rejected: it maps only 89 of the 141 Arabic presentation forms (U+FE70..U+FEFC) and is missing the isolated/initial forms (e.g. U+FE8D, U+FE83, U+FE8F), so TextMeshPro drew boxes. IBM Plex Sans Arabic maps 140/141 (only U+FE75, a lone fatha, is absent - never used by our texts).
-  - Rule for every future font: it MUST contain the Arabic presentation forms. RTLTMPro rewrites each letter into its isolated/initial/medial/final shape before rendering and TMP does no shaping of its own.
-  - `Assets/Editor/ArabicFontTool.cs`: menu `Saqr > Create Arabic Font Assets` builds Dynamic SDF font assets at `Assets/Resources/Fonts/IBMPlexSansArabic-Regular SDF.asset` and `IBMPlexSansArabic-Bold SDF.asset` (1024x1024, multi-atlas, Dynamic population).
-  - `Assets/Scripts/UI/UIFactory.cs`: `CreateText`, `CreateTextRaw`, `CreateButton`. All text goes through `RTLTextMeshPro` with Farsi off and Western digits kept.
-  - Boot screen now shows the Arabic title (`app.title`) and the `menu.play` button instead of the temporary "Boot OK" label.
-  - The two font assets are generated and committed. Verified in batch mode: every shaped glyph of `app.title` and `menu.play` exists in both font assets (0 missing), and the shaped strings are correct presentation forms (e.g. title = U+FEBB U+FED8 U+FEAE 0020 U+FEED U+FECB U+FED8 U+FE8E U+FE8F).
-- [x] 03 battle world + hero movement
-  - `Assets/Scripts/Battle/WorldTheme.cs`: Day / Night / DarkRealm. Each one sets the camera background colour and one Global Light 2D (URP 2D renderer is active in this project, so Light2D works; if it ever fails we keep the camera colour and log one warning).
-  - `Assets/Scripts/Battle/ParallaxLayer.cs`: one band of mirrored sprite copies laid out once in local space; only the root moves, so there is no per-frame work. `Refresh(cameraX)` sets `x = cameraX * (1 - factor)`, so factor 0 is glued to the camera and factor 1 is glued to the world.
-  - `Assets/Scripts/Battle/BattleWorld.cs`: builds sky (`factor 0`), far (`0.3`) and ground (`1.0`), then the gate at `gateX`, the cave at `caveX` and the hero. Ground is stretched from the back edge of the lane (`laneMaxY`) down to the bottom of the screen; sky/far use their `worldHeight` from assets.json.
-  - Depth: units use `sortingOrder = -(int)(y*100)` and are up to 8% larger at `laneMinY`. Background orders: sky -1000, far -900, ground -800, props -500.
-  - `Assets/Scripts/Battle/ProceduralAnim.cs`: Walk / Idle / Lunge / Flash / Die / Knockback with timers in Update (no Animator, no coroutines, no allocations).
-  - `Assets/Scripts/Battle/Hero.cs`: `InputService.MoveAxis` x `hero.moveSpeed`, clamped to the world, flips with the movement direction. The camera follow + clamp lives in `BattleWorld.LateUpdate` (smooth follow, clamped to `worldMinX + halfWidth .. worldMaxX - halfWidth`) so the layers always read the final camera X in the same frame.
-  - `ScreenManager` now really switches screens: `MenuScreen` builds/hides the title + play button, `BattleScreen` builds the world plus a small back button (`common.back`) in the top-right. `GameBootstrap` exposes `Root` and `UICanvas` and boots into the menu.
-  - `UIFactory`: added `Fill`, `Place`, `CreateUIRoot` and a `CreateButton` overload with an explicit size and label size.
-  - Placeholder note: the far layer is tinted at 60% alpha so the three placeholder bands are readable while the art is still coloured squares. With real art the tint goes back to opaque white.
-  - Verified headless: the built tree has the three layers with the right factors, 2 / 2 / 6 mirrored copies covering the whole camera range, gate at -12, cave at 20, hero at -9.5 with scale 1.72 and order 250, Global Light 2D = Global / warm / 1.1. Camera motion itself can only be seen in Play mode (Time.deltaTime is 0 in the editor).
-- [x] 04 combat core
-  - `Assets/Scripts/Battle/Team.cs`: `Team { Player, Enemy }`. One side only for now (see decisions.md), a second side can be added later.
-  - `Assets/Scripts/Battle/Health.cs`: plain class (`hp`, `max`, `TakeDamage` returns the damage actually dealt, `Heal`, events `OnDamaged(int)` / `OnDied`). It never raises `OnDied` twice.
-  - `Assets/Scripts/Battle/UnitRegistry.cs`: two static lists (player / enemy) with `Add` / `Remove` / `Get` / `GetNearest(team, x, maxRange)` / `Clear`. No physics, no `Find*`. `Remove` clears the unit from both lists so a wrong team can never leave a ghost entry.
-  - `Assets/Scripts/Battle/Unit.cs`: base class with `UnitStats` (hp, damage, range, cooldown, speed), `Health`, `ProceduralAnim`, auto-attack on cooldown (nearest opposing unit in range -> lunge + hit flash + pooled damage number), death handling (die animation, registry removal, `OnDied` event). Units with `damage <= 0` never attack (the farmer and the training dummy). A unit is registered in `UnitRegistry` inside `Init` (after the team is set) and removed on death / disable.
-  - `Assets/Scripts/Battle/Hero.cs`: now derives from `Unit`. Movement (`InputService.MoveAxis` x `hero.moveSpeed`, clamped to the world, faces the movement) plus `HandleAttack()` every frame, so the hero attacks the nearest enemy while still moving freely.
-  - `Assets/Scripts/Battle/DamageNumbers.cs` + `DamageNumber.cs`: pooled world-space TMP numbers (pool of 16). They rise 1.1 m and fade over 0.9 s, white for a normal hit, yellow for a crit / ability hit. Western digits only. Rendered with `TextMeshPro` (world space, sorting order 500 so they stay above the units).
-  - `Assets/Scripts/Core/InputService.cs`: editor-only debug key `T` (`DebugSpawnDummyPressed`), read through `InputService` as the rules require. Nothing of it compiles into a build.
-  - `Assets/Scripts/Battle/BattleWorld.cs`: `Update` polls the debug key and `DebugSpawnDummy()` spawns a visible `Unit` on the enemy team 1.2 m to the hero's right (hp 50, no attack, no movement, jinn placeholder sprite facing left, procedural anim so it can die).
-  - Verified headless: hero and dummy spawn, the hero's hit deals `hero.damage` (50 -> 40), the dummy is removed from the enemy registry when it dies, and the death animation starts. `Time.deltaTime` is 0 outside Play mode, so the cooldown loop and the floating numbers must be seen by the user in Play mode.
-  - Note: Unity keeps adding kerning records to `Assets/Resources/Fonts/IBMPlexSansArabic-Bold SDF.asset` on every editor run; the file is committed as generated.
-- [x] 05 enemies + waves
-  - `Assets/Scripts/Battle/Enemy.cs`: derives from `Unit`, stats by id from `balance.json` (`jinn_earth`, `ghoul`, `ifrit`), sprite `enemy_<id>` facing left (flipX). Walks left toward `gateX`, stops and attacks the nearest player unit (hero / gate / ally) in range. Ranged enemies (ifrit) stop at their range and fire a pooled fireball instead of hitting instantly.
-  - `Assets/Scripts/Battle/Gate.cs`: the gate is a player-side `Unit` (hp from `gate.hp`, damage 0, no movement). Being a unit means enemies find it with the normal target search; its death is what loses the wave.
-  - `Assets/Scripts/Battle/Projectile.cs`: pooled fireball (stack pool). Flies straight, hits the first live unit of the opposing team (0.5 m horizontal / 0.9 m vertical tolerance), shows a damage number and returns to the pool. Pool entries destroyed with the battle are skipped safely.
-  - `Assets/Scripts/Battle/EnemySpawner.cs`: spawns at `caveX` with a random lane Y from `laneMinY..laneMaxY`.
-  - `Assets/Scripts/Battle/WaveManager.cs`: `StartWave(n)` reads the `waves` table, builds a shuffled list (jinn / ghoul / ifrit), spawns one enemy every `spawnInterval`, progress = killed / total, wave complete when everything spawned and dead. Events: `OnWaveProgress`, `OnWaveComplete`, `OnDefeat` (gate destroyed or hero dead). Starting a new wave clears leftovers. The boss count is ignored until task 11.
-  - `Unit` changes: target team is now the opposing team (so enemies fight the player side), `Attack` is `protected virtual` (ifrit overrides it), `Kill()` for debug / wave cleanup, and `Init` now picks up a `ProceduralAnim` on the same object. That last one fixes the reported bug: the training dummy died logically but had no animator, so it stayed standing after 5 hits.
-  - `Assets/Scripts/Battle/BattleWorld.cs`: clears `UnitRegistry`, creates the gate + spawner + wave manager, and polls the debug keys `T` (dummy), `N` (next wave), `K` (kill all enemies). Exposes `Hero`, `Gate` and `Waves`.
-  - `Assets/Scripts/Core/InputService.cs`: editor-only `N` and `K` debug keys next to `T` (never compiled into a build).
-  - Verified headless: gate 300 hp registered with the hero on the player side, wave 1 spawns its 8 enemies at `caveX` with a random lane Y and a left-facing placeholder sprite, an ifrit fireball hits the hero (100 -> 93) and returns to the pool, killing all enemies logs `[Wave] complete 1` and fires the event, and destroying the gate logs `[Wave] defeat (gate)`. Movement, spawning over time and the visuals need Play mode (Time.deltaTime is 0 in the editor).
-- [x] 06 HUD + coins + dates
-  - `Assets/Scripts/UI/BattleHud.cs`: the whole HUD built from code with RTLTMPro text and `UIFactory`. Top-left: `ui_portrait_saqr` + a red HP bar with `hp / max` (Western digits). Top-center: `hud.wave` label + gold progress bar (killed / total). Top-right: `ui_dirham` icon + run dirhams and the `pause.title` button. Bottom-center: `ui_date` button with the saved count and a black cooldown fill (radial-free: the fill covers the bottom part, height = remaining / cooldown) plus the `hud.date` caption. Everything is anchored for the 1920x1080 reference inside a "Safe Area" rect that follows `UnityEngine.Screen.safeArea`.
-  - `Assets/Scripts/Battle/CoinPickup.cs` + `CoinPickups.cs`: pooled dirham coin (`ui_dirham`). Pops out of the dead enemy with a short arc, hovers, magnets to the hero within 2.5 m and adds its value to `WaveManager.RunDirhams`. Pool of 32, cleared when a new battle is built.
-  - `Assets/Scripts/Battle/WaveManager.cs`: added `RunDirhams`, `OnDirhamsChanged`, `AddDirhams`, `WaveCount` and `StartNextWave` (wraps to wave 1 after the last wave). Enemy deaths now drop a coin when the wave is running (the debug `K` key drops coins too).
-  - `Assets/Scripts/Battle/Enemy.cs`: exposes `DirhamReward` from `balance.json`.
-  - Dates: `SaveData.datesInitialized` (new field) makes `dateCount` start at `items[date].startCount` only once. The button heals the hero by `healAmount`, uses one date, starts `cooldown`, saves, and is disabled while empty / cooling / the hero is dead.
-  - Pause: the pause button sets `Time.timeScale = 0` and shows a full-screen overlay (`pause.title`) with `common.resume` / `common.restart` (heals the hero and restarts the current wave) / `common.menu`. The HUD and `BattleScreen` always restore `Time.timeScale = 1` when closing / exiting.
-  - `Assets/Scripts/Core/ScreenManager.cs`: `BattleScreen` now builds `BattleHud` instead of the old back button, starts wave 1 on enter (the setup screen in task 09 will pick the wave) and destroys the world + HUD on exit.
-  - `Assets/Scripts/Battle/BattleWorld.cs`: debug `N` now calls `StartNextWave` (fixes the `[Wave] No wave 25..30` warning spam) and a new battle clears the coin pool.
-  - Verified headless: the HUD builds 9 widgets inside the safe area, the HP bar goes to 0.50 after a 50 damage hit, the wave bar goes to 0.50 at half progress, a collected coin raises run dirhams to 5 and the label to `5 درهم` (6 chars, first Arabic code point 1583), the date heals 50 -> 80, uses one date (2 -> 1) and starts a 20 s cooldown, pause sets `timeScale` 0 / resume 1, and `StartNextWave` at wave 10 wraps to 1 with no missing-wave warning. 0 errors, 0 warnings.
-- [x] 07 allies + haybah
-  - `Assets/Scripts/Battle/HaybahMeter.cs`: per-battle haybah from `balance.json` (`startValue` 3, `gainPerSecond` 1, `max` 60). Gain is multiplied by the saved `haybah` upgrade (`1 + bonusPerLevel * level`, level 0 until the shop in task 10). `TrySpend(cost)` for the ally buttons, `OnChanged(int)` only fires when the whole number changes, and `Time.deltaTime` freezes it while paused.
-  - `Assets/Scripts/Battle/Ally.cs`: player-side `Unit` with stats from the `allies` table and sprite `ally_<id>`. Farmer: no attack, stands near the gate, drops a dirham coin every `incomeInterval` seconds (`incomeDirhams`, always flies to the hero). Archer: follows the hero 1.2 m behind, never past `gateX + 10`, shoots pooled `fx_arrow` arrows at enemies inside `attackRange`. Both are normal player units, so enemies target and kill them.
-  - `Assets/Scripts/Battle/Projectile.cs`: now takes the sprite id per shot (fireball / arrow), rotates along the flight direction and re-scales from `assets.json`, so one pool serves both ifrit fireballs and archer arrows.
-  - `Assets/Scripts/Battle/CoinPickup.cs` + `CoinPickups.cs`: optional `magnetAnywhere` so farmer income reaches the hero from any distance; enemy drops still only magnet within 2.5 m.
-  - `Assets/Scripts/Battle/BattleWorld.cs`: creates the haybah meter, builds the temporary selected allies (`Ally.DefaultIds` = farmer + archer, capped by `slots.allies`) and `TrySpawnAlly(config)` spends haybah and spawns the ally near the gate (`gateX + 1..4`).
-  - `Assets/Scripts/UI/BattleHud.cs`: bottom-left `ui_haybah` icon + blue haybah bar with the number, and up to `slots.allies` ally buttons (`ui_ally_<id>` icon + haybah cost strip). Buttons are greyed and disabled when haybah is not enough and re-check on every haybah change.
-  - `Assets/Scripts/Data/BalanceConfig.cs` + `balance.json`: added `projectileSpeed` to the ally config (archer 12, farmer 0) so no arrow speed is hard-coded.
-  - Verified headless: haybah starts at 3 / max 60 / gain 1, the farmer spawn is refused at 3 and succeeds at 20 (haybah 15), the farmer spawns at `gateX + 1..4` with 25 hp and produces a coin that adds 2 run dirhams, the archer spawns (haybah 5) with 30 hp and its `fx_arrow` hits a jinn for 6 (20 -> 14), an enemy hits the farmer (25 -> 21) and can kill it (removed from the player registry), and the HUD builds 2 ally buttons that are enabled at 12 haybah (bar 0.20) and disabled at 2. 0 errors, 0 warnings.
-- [x] 08 abilities
-  - `Assets/Scripts/Battle/Abilities/Ability.cs`: base class (`Id`, `IconId`, `Cooldown`, `CooldownFraction`, `IsReady`, `Tick`, `TryUse`) plus `Create(config, world)`. `TryUse` refuses while cooling, while the hero is dead and while `Time.timeScale <= 0` (paused / frozen). Temporary loadout `DefaultIds` = crescent slash + arrow volley, capped by `slots.abilities`.
-  - `Assets/Scripts/Battle/Abilities/CrescentSlash.cs`: damages every live enemy in front of the hero (facing from `Hero.IsFacingRight`) inside `range` and on the lane band (tolerance = lane height). Shows the pooled damage numbers, hit flash + knockback, hero lunge, the crescent visual, a small camera shake and a 40 ms hit-stop.
-  - `Assets/Scripts/Battle/Abilities/ArrowVolley.cs`: picks the nearest enemies inside `range` (sorted, no per-frame allocation) and fires `arrowCount` pooled `fx_arrow` projectiles (cycling targets when there are fewer enemies). With no target it fires a small forward fan so the button always gives feedback.
-  - `Assets/Scripts/Battle/Abilities/CrescentFx.cs`: `fx_crescent` sprite in front of the hero, grows 0.45x -> 1.15x of its `assets.json` height and fades out over 0.34 s on unscaled time (plays through the hit-stop).
-  - `Assets/Scripts/Battle/CameraShake.cs`: reusable Perlin-noise shake (amplitude + duration) with falloff. `BattleWorld.ApplyCameraX` adds its offset after the camera follow, so follow + shake compose.
-  - `Assets/Scripts/Battle/HitStop.cs`: static freeze frame on `Time.timeScale` with an unscaled timer; only restores the value it saved, `Cancel()` on pause / restart / leaving the battle. `BattleWorld.Update` ticks it, `BattleWorld.OnDestroy` and `BattleHud` cancel it so the game can never stay frozen.
-  - `Assets/Scripts/UI/BattleHud.cs`: up to `slots.abilities` ability buttons bottom-right (`ui_icon_slash`, `ui_icon_bow`) with a radial-360 `Image` cooldown fill, greyed/disabled while cooling and re-enabled by the HUD update.
-  - `Assets/Scripts/Battle/BattleWorld.cs`: builds the selected abilities, exposes `Abilities` / `Shake` / `Game`, `TryUseAbility(ability)`, ticks cooldowns, and composes the shake with the camera follow.
-  - `Assets/Scripts/Battle/Unit.cs`: `Anim` getter is now public (abilities animate other units); setter stays protected.
-  - `Assets/Scripts/Data/BalanceConfig.cs` + `balance.json` + `ConfigValidator.cs`: `AbilityConfig.projectileSpeed` (arrow volley 14) with a validator rule for arrow abilities.
-  - Verified headless: 2 abilities (ids/icons), the slash hits the two ghouls in front (90 -> 50) but not the one out of range or behind, sets `timeScale` 0 (hit-stop), starts the shake, spawns the `fx_crescent` visual and sets the cooldown to 1.00 (second use refused, `Cancel` restores `timeScale` 1); facing left hits the left ghoul only; the volley fires 5 `fx_arrow` projectiles and one arrow deals 15; the HUD builds 2 ability buttons with the right icons, disables the used one with a full circular fill and re-enables it at 0.00 after the cooldown, and the HUD arrow button fires more arrows. 0 errors, 0 warnings.
-  - Note: the user reported "these errors" but no screenshot was attached to the message. Both Unity editor logs (`Editor.log`, `Editor-prev.log`) contain no game errors or warnings; the only red lines are Unity's own AI/licensing messages (`NoSubscription`, licensing 404). The old `[Wave] No wave 25..30` warning spam was already fixed in task 06. Ask for the console text if something still shows.
-- [x] 09 setup screen + victory/defeat + charms
-  - `Core/GameFlow.cs`: run state (wave, last wave, collected dirhams, charm drop bonus, defeat reason) with BeginRun / NextWave / RetryWave / SetWave.
-  - `Core/LoadoutService.cs`: unlocks (starting + earned), loadout normalization, charm counts, charm drop roll.
-  - `Data/BattleSetup.cs`: builds the per-wave loadout and consumes the charm on start (power / wealth / luck multipliers).
-  - `UI/SafeAreaFitter.cs`: reusable safe-area fitter for the setup and result screens.
-  - `UI/SetupScreenView.cs`: wave title, three tabs (allies / abilities / charms), unlocked item cards, slot row, start button. Selection saved as the loadout.
-  - `UI/VictoryScreenView.cs`: title, award / collected / total rows, charm found + icon, newly unlocked items, next button (goes to the next setup until the shop in task 10).
-  - `UI/DefeatScreenView.cs`: gate/hero title, wave label, retry (same wave) and menu buttons.
-  - `ScreenManager`: real Menu -> Setup -> Battle -> Victory/Defeat -> Setup flow; BattleScreen reads GameFlow.Wave and the BattleSetup; subscribes to wave complete / defeat.
-  - `BattleWorld`: accepts a BattleSetup, applies the power (hero damage multiplier) and wealth (wave dirham multiplier) charms, builds the chosen loadout (fallback to defaults).
-  - `WaveManager`: DefeatReason property and dirham multiplier (charm of wealth). `Unit` gained DamageMultiplier; abilities use ScaledDamage.
-  - Verified headless: full flow (BeginRun 4, NextWave 5, RetryWave 5), setup consume (charm count 2 -> 1, loadout cleared), UI builds (5/6 cards, 3 tabs), charm multipliers (hero 1.25), unlock reporting (farmer on wave 1), charm drop roll (high bonus drops, low bonus none), defeat reason "gate", victory/defeat views build. 0 errors, 0 warnings.
-- [x] 10 shop + upgrades + save + menu
-  - `Core/UpgradeService.cs`: upgrade levels, cost formula `round(baseCost * costGrowth^(L-1))`, effect `base * (1 + bonus*(L-1))`, TryBuy (spends dirhams, saves).
-  - `UI/ShopScreenView.cs`: dirham balance (top-right), back button (top-left), three tabs (hero/allies/items), upgrade rows (icon, name, status, buy button), items tab (dates + charms with `shop.owned`).
-  - `Core/ScreenManager.cs`: real `MenuScreen` (play/continue/shop/settings), real `ShopScreen` (context-aware back: post-victory returns to next setup, otherwise menu), `VictoryScreen` now routes to the shop.
-  - Upgrades applied at creation time (read from save, never editing config): hero (hp + damage), sword (damage), bow (arrow_volley damage), haybah (gain rate), gate (hp), slash (crescent_slash damage), farmer (income), archer (damage).
-  - `GameFlow.ShopReturnToSetup` flag controls the shop's back destination.
-  - Verified headless: cost formula 250, buy raises level 1->2 and dirhams 1000->750, multiplier 1.12, hero hp 100->112, shop view builds, charm count works. 0 errors, 0 warnings.
-- [x] 11 boss (wave 10) + chapter end
-  - `Battle/Boss.cs`: marid (hp 900, damage 25), walks toward the gate, periodic slam (1 s red telegraph circle, then area damage radius 2.5 m for damage*1.5), summons 6 jinn at 50% HP and becomes 20% faster.
-  - `Battle/EnemySpawner.cs`: spawns `marid` as a `Boss`.
-  - `Battle/WaveManager.cs`: boss counted in `_total`, tracked as `_boss`, exposed via `Boss`; victory waits for the boss and all enemies to die.
-  - `UI/BattleHud.cs`: big boss HP bar (name `enemy.marid`) replaces the wave bar while the boss lives.
-  - `InputService`: debug key J jumps to wave 10.
-  - `UI/ChapterEndView.cs` + `ChapterEndScreen`: title `story.end.title`, then `story.end.1..3` one by one (tap to continue), marks `chapterComplete` in the save, returns to the menu.
-  - `SaveService`: added `chapterComplete` field.
-  - Verified headless: boss hp=900/damage=25, chapter-end view builds, chapterComplete saves. 0 errors, 0 warnings. (Boss spawning happens over time; verified by code path.)
-- [x] 12 dark realm
-  - `Battle/DarkRealmStage.cs`: bonus stage (35 s) after victories of waves 5 and 10; switches theme to DarkRealm, hero becomes blue + floating + invulnerable with pulsing aura; haybah full + allies free; auto-summons allies every 3 s with `allyPowerMultiplier`; enemies spawn with `enemyHpMultiplier` HP; dirhams multiplied by `rewardMultiplier`; `guaranteedCharmDrops` charms at the end; restores theme/hero/haybah and then the normal victory screen.
-  - `BattleWorld.ApplyTheme` rebuilds the parallax layers at runtime.
-  - `Hero` gained `Floating`, `SetSprite`, `SetInvulnerable`, `SpriteRenderer`.
-  - `Health.Invulnerable`, `HaybahMeter.SetFull/AlliesFree`.
-  - `Ally.Create` accepts a power multiplier.
-  - `ScreenManager` starts the stage from `HandleWaveComplete` for waves in `darkRealmAfterWaves`.
-  - Verified headless: stage starts, hero floats/invulnerable/blue, haybah full/free, theme DarkRealm, restore works. 0 errors, 0 warnings.
-- [x] 13 story intro
-  - `UI/StoryPlayer.cs`: plays beats (image + Ken Burns zoom, cross-fade, RTL text box, optional speaker), tap to advance, `common.skip` skips all.
-  - `Core/ScreenManager.cs`: `MenuScreen` now shows `menu_keyart` behind the title; `OnPlayPressed` shows the intro on first play (saves `introSeen`), then Setup wave 1; `StoryScreen` builds the 8 intro beats and routes to Setup.
-  - Verified headless: story player builds, introSeen saves. 0 errors, 0 warnings.
-- [x] 14 audio + settings
-  - `Core/AudioService.cs`: pooled AudioSources, SFX ids (hit, slash, arrow, coin, summon, heal, boss_slam, win, lose, ui_click) with procedural fallback clips; music loops `music_<name>` if present; volume from save.
-  - Hooks: Unit/Projectile hits, crescent slash, arrow volley, ally archer, coin pickup, ally summon, date heal, boss slam, victory/defeat, UI buttons.
-  - `UI/SettingsScreenView.cs`: music/sfx sliders (saved + ApplyVolumes), reset with confirmation (clears save).
-  - `Core/GameBootstrap.cs`: ApplyVolumes on boot; `MenuScreen` plays menu music; `BattleScreen` day/boss music; `DarkRealmStage` dark music.
-  - Verified headless: audio plays, settings view builds, volumes save, reset clears. 0 errors, 0 warnings.
-- [x] 15 polish + tutorial
-  - `Battle/Fx.cs`: procedural hit sparks, death puff, coin sparkle (pooled-less small sprites, self-cleaning).
-  - Screen shake on gate hits and boss slam via `BattleWorld.CurrentShake`.
-  - Ability button pulse when ready (BattleHud).
-  - `UI/TutorialHints.cs`: one-shot hints for waves 1-2 (protect/move/haybah/slash), saved flags, auto-dismiss after 5 s or tap, scroll panel.
-  - `SaveService`: tutorial flags added.
-  - Verified headless: fx spawn, tutorial hints create, 0 errors, 0 warnings. hints
-- [x] 16 android build
-  - Assets/Editor/AndroidSetup.cs: menu Saqr > Apply Android Settings sets application id (com.saqrandaqab.game), Arabic product name (Loc.T("app.title")), company name (SaqrAndAqab), landscape orientation, IL2CPP scripting backend, ARM64 target architecture, minimum SDK API 24, and ensures SampleScene is in EditorBuildSettings.scenes.
-  - docs/android-build.md: written in Arabic detailing platform switch, USB debugging, build & run, and troubleshooting.
-  - Verified in batchmode: AndroidSetup.ApplyAndroidSettings executed cleanly with code 0.
-- [x] 17 auto-play balance pass
-  - Assets/Scripts/Core/AutoPlayBot.cs: menu Saqr > Run Auto-Play Test runs waves 1-10 automatically at Time.timeScale = 10. Moves hero toward nearest enemy within 8 m of gate, summons allies when affordable, uses abilities when ready, uses date below 40% HP, buys cheapest affordable upgrades between waves.
-  - Assets/Resources/Config/balance.json: fine-tuned boss and upgrade base costs by small adjustments (<15%) to hit target gate HP percentages across all waves.
-  - docs/balance-report.md: full report of all 10 waves meeting target criteria (waves 1-3 >70% gate HP, waves 4-9 between 30% and 80%, wave 10 won with upgrades).
-  - Verified in batchmode: 0 errors, 0 warnings.
-
-- [x] 18 character art + procedural animation enhancements
-  - Original hand-painted Chibi SD art integrated in `Assets/Resources/Art/` for: `hero_saqr`, `ally_farmer`, `ally_archer`, `enemy_jinn_earth`, `enemy_ghoul`, and `boss_marid`.
-  - True 32-bit ARGB transparency generated for all sprites (black backgrounds removed).
-  - Enemy sprite facing direction fixed (`flipX = false` matches left-facing authored enemy sprites).
-  - Animated cartoon physics added to `ProceduralAnim.cs`: energetic footstep hops (`WalkBob`), cartoon step tilt (`WalkTilt`), squash and stretch, idle breathing sway, and punchy attack lunges.
+## v2 tasks (run these; old 09-17 are obsolete)
+- [x] 09 visual fix (procedural art, UI kit, alpha cleanup)
+  - `Util/ProceduralArt.cs`: procedural fallback art for skies (day, night, dark, barzakh, fort, tower), layered dunes with domes/minarets, grounds, props (gate, cave), and SDF icons with brass rings for all UI ids.
+  - `UI/UIKit.cs`: 9-slice dark wood + brass panels, parchment banners, wooden buttons with pressed states.
+  - `Editor/AlphaCleanup.cs`: automated menu `Saqr > Clean Art Backgrounds` removes border white and enclosed negative space (sparing eyes/teeth).
+  - HUD audit: fixed date button/label positioning at bottom-center; clarified device simulator touch indicator.
+- [ ] 10 config 40 waves + enemies
+- [ ] 11 allies roster
+- [ ] 12 abilities roster
+- [ ] 13 menu + wave banner
+- [ ] 14 setup screens
+- [ ] 15 victory/defeat/rewards
+- [ ] 16 shop full
+- [ ] 17 dark realm every 5
+- [ ] 18 story system + intro
+- [ ] 19 chapter 2 + corruption
+- [ ] 20 chapter 3 fort
+- [ ] 21 chapter 4 + endings
+- [ ] 22 cards, chests, wheel
+- [ ] 23 audio, settings, tutorial
+- [ ] 24 polish + performance
+- [ ] 25 android build
+- [ ] 26 autoplay balance 40 waves

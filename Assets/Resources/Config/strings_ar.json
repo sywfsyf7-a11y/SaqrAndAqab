@@ -1,100 +1,1056 @@
 {
-  "entries": [
-    {"key":"app.title","value":"صقر وعقاب"},
-    {"key":"menu.play","value":"ابدأ اللعب"},
-    {"key":"menu.continue","value":"متابعة"},
-    {"key":"menu.shop","value":"السوق"},
-    {"key":"menu.settings","value":"الإعدادات"},
-    {"key":"common.ok","value":"حسناً"},
-    {"key":"common.back","value":"رجوع"},
-    {"key":"common.resume","value":"استئناف"},
-    {"key":"common.restart","value":"إعادة"},
-    {"key":"common.menu","value":"القائمة الرئيسية"},
-    {"key":"common.confirm","value":"تأكيد"},
-    {"key":"common.cancel","value":"إلغاء"},
-    {"key":"common.skip","value":"تخطي"},
-    {"key":"common.next","value":"التالي"},
-    {"key":"pause.title","value":"توقف"},
-    {"key":"hud.wave","value":"الموجة {0}"},
-    {"key":"hud.dirham","value":"درهم"},
-    {"key":"hud.haybah","value":"الهيبة"},
-    {"key":"hud.date","value":"تمر"},
-    {"key":"tutorial.move","value":"المس يمين الشاشة أو يسارها للحركة."},
-    {"key":"tutorial.protect","value":"احمِ باب الحصن!"},
-    {"key":"tutorial.slash","value":"المس أيقونة الهلال لتنفيذ ضربة خاصة!"},
-    {"key":"tutorial.haybah","value":"تتجمع الهيبة مع الوقت. استخدمها لاستدعاء الحلفاء."},
-    {"key":"setup.wave","value":"الموجة {0}"},
-    {"key":"setup.allies","value":"الحلفاء"},
-    {"key":"setup.abilities","value":"القدرات"},
-    {"key":"setup.charms","value":"الأحراز"},
-    {"key":"setup.start","value":"إلى المعركة"},
-    {"key":"setup.empty","value":"لا شيء مفتوح بعد"},
-    {"key":"victory.title","value":"انتصار الموجة {0}!"},
-    {"key":"victory.award","value":"مكافأة النصر"},
-    {"key":"victory.collected","value":"ما جمعته"},
-    {"key":"victory.total","value":"المجموع"},
-    {"key":"victory.unlocked","value":"تم فتح:"},
-    {"key":"victory.charm_found","value":"وجدت حرزاً:"},
-    {"key":"defeat.gate","value":"سقط الحصن"},
-    {"key":"defeat.hero","value":"سقط صقر"},
-    {"key":"defeat.retry","value":"أعد المحاولة"},
-    {"key":"shop.title","value":"السوق"},
-    {"key":"shop.tab_hero","value":"البطل"},
-    {"key":"shop.tab_allies","value":"الحلفاء"},
-    {"key":"shop.tab_items","value":"المؤن"},
-    {"key":"shop.level_up","value":"ترقية {0} إلى المستوى {1}"},
-    {"key":"shop.max","value":"أقصى مستوى"},
-    {"key":"shop.not_enough","value":"لا تملك دراهم كافية"},
-    {"key":"shop.owned","value":"لديك: {0}"},
-    {"key":"upgrade.hero","value":"صقر"},
-    {"key":"upgrade.sword","value":"السيف"},
-    {"key":"upgrade.bow","value":"القوس"},
-    {"key":"upgrade.haybah","value":"الهيبة"},
-    {"key":"upgrade.gate","value":"باب الحصن"},
-    {"key":"upgrade.slash","value":"ضربة الهلال"},
-    {"key":"upgrade.farmer","value":"مزارع النخيل"},
-    {"key":"upgrade.archer","value":"الرامي البدوي"},
-    {"key":"ally.farmer","value":"مزارع النخيل"},
-    {"key":"ally.farmer.desc","value":"ضعيف القوة، شديد الوفاء. يجمع لك الدراهم."},
-    {"key":"ally.archer","value":"الرامي البدوي"},
-    {"key":"ally.archer.desc","value":"يرمي السهام من بعيد ويحمي الحصن."},
-    {"key":"ability.crescent_slash","value":"ضربة الهلال"},
-    {"key":"ability.crescent_slash.desc","value":"ضربة قوية تصيب عدة أعداء."},
-    {"key":"ability.arrow_volley","value":"وابل السهام"},
-    {"key":"ability.arrow_volley.desc","value":"يطلق صقر سهاماً على الأعداء القريبين."},
-    {"key":"charm.hirz_power","value":"حرز القوة"},
-    {"key":"charm.hirz_power.desc","value":"يزيد ضررك طوال الموجة."},
-    {"key":"charm.hirz_luck","value":"حرز الحظ"},
-    {"key":"charm.hirz_luck.desc","value":"يرفع فرصة سقوط الأحراز."},
-    {"key":"charm.hirz_wealth","value":"حرز الثروة"},
-    {"key":"charm.hirz_wealth.desc","value":"يزيد الدراهم التي تجمعها في هذه الموجة."},
-    {"key":"item.date","value":"تمرة"},
-    {"key":"item.date.desc","value":"تشفي صقراً وتعيد له قوته."},
-    {"key":"enemy.jinn_earth","value":"جني أرضي"},
-    {"key":"enemy.ghoul","value":"غول"},
-    {"key":"enemy.ifrit","value":"عفريت"},
-    {"key":"enemy.marid","value":"المارد"},
-    {"key":"dark.title","value":"طغيان البرزخ"},
-    {"key":"dark.hint","value":"اسحق الجن! أنت الآن في أوج قوتك."},
-    {"key":"speaker.entity","value":"الكيان الأزرق"},
-    {"key":"speaker.saqr","value":"صقر"},
-    {"key":"story.intro.1","value":"في أعماق السماء، رجلٌ معلّقٌ بحبالٍ من نور..."},
-    {"key":"story.intro.2","value":"تنقطع الحبال، فيسقط صقر في قلب الصحراء، وقد نسي كل شيء."},
-    {"key":"story.intro.3","value":"تلاحقه مخلوقات الجن، تضربه وترميه من بعيد، وهو يهرب بما بقي له من قوة."},
-    {"key":"story.intro.4","value":"يدخل كهفاً مظلماً بصعوبة، وتقترب الوحوش..."},
-    {"key":"story.intro.5","value":"كفى يا فتيان! المخلوقات تتساءل: من هذا؟"},
-    {"key":"story.intro.6","value":"تهجم الجن عليه، فيضرب الكيان الأزرق الأرض ضربةً زلزلت المكان."},
-    {"key":"story.intro.7","value":"أوف يا فتيان... لقد جرحتم مشاعري."},
-    {"key":"story.intro.8","value":"تختفي الجن في لمح البصر، ويبقى صقر وحده يلتقط أنفاسه."},
-    {"key":"story.dark.1","value":"هذه قوتي تسري في عروقك يا صقر. استمتع بها... ما دامت تنفعني."},
-    {"key":"story.end.title","value":"نهاية الفصل الأول"},
-    {"key":"story.end.1","value":"سقط المارد، لكن الكيان الأزرق يراقب من الظلام."},
-    {"key":"story.end.2","value":"أحسنت يا صقر. لكن هذه كانت البداية فقط."},
-    {"key":"story.end.3","value":"يتبع في الفصل الثاني: صحراء البرزخ"},
-    {"key":"settings.title","value":"الإعدادات"},
-    {"key":"settings.music","value":"الموسيقى"},
-    {"key":"settings.sfx","value":"المؤثرات"},
-    {"key":"settings.reset","value":"حذف التقدم"},
-    {"key":"settings.reset_confirm","value":"هل تريد حذف كل تقدمك؟"}
-  ]
+ "entries": [
+  {
+   "key": "app.title",
+   "value": "صقر وعقاب"
+  },
+  {
+   "key": "menu.play",
+   "value": "ابدأ اللعب"
+  },
+  {
+   "key": "menu.continue",
+   "value": "متابعة"
+  },
+  {
+   "key": "menu.shop",
+   "value": "السوق"
+  },
+  {
+   "key": "menu.settings",
+   "value": "الإعدادات"
+  },
+  {
+   "key": "common.ok",
+   "value": "حسناً"
+  },
+  {
+   "key": "common.back",
+   "value": "رجوع"
+  },
+  {
+   "key": "common.resume",
+   "value": "استئناف"
+  },
+  {
+   "key": "common.restart",
+   "value": "إعادة"
+  },
+  {
+   "key": "common.menu",
+   "value": "القائمة الرئيسية"
+  },
+  {
+   "key": "common.confirm",
+   "value": "تأكيد"
+  },
+  {
+   "key": "common.cancel",
+   "value": "إلغاء"
+  },
+  {
+   "key": "common.skip",
+   "value": "تخطي"
+  },
+  {
+   "key": "common.next",
+   "value": "التالي"
+  },
+  {
+   "key": "pause.title",
+   "value": "توقف"
+  },
+  {
+   "key": "hud.wave",
+   "value": "الموجة {0}"
+  },
+  {
+   "key": "hud.dirham",
+   "value": "درهم"
+  },
+  {
+   "key": "hud.haybah",
+   "value": "الهيبة"
+  },
+  {
+   "key": "hud.date",
+   "value": "تمر"
+  },
+  {
+   "key": "tutorial.move",
+   "value": "المس يمين الشاشة أو يسارها للحركة."
+  },
+  {
+   "key": "tutorial.protect",
+   "value": "احمِ باب الحصن!"
+  },
+  {
+   "key": "tutorial.slash",
+   "value": "المس أيقونة الهلال لتنفيذ ضربة خاصة!"
+  },
+  {
+   "key": "tutorial.haybah",
+   "value": "تتجمع الهيبة مع الوقت. استخدمها لاستدعاء الحلفاء."
+  },
+  {
+   "key": "setup.wave",
+   "value": "الموجة {0}"
+  },
+  {
+   "key": "setup.allies",
+   "value": "الحلفاء"
+  },
+  {
+   "key": "setup.abilities",
+   "value": "القدرات"
+  },
+  {
+   "key": "setup.charms",
+   "value": "الأحراز"
+  },
+  {
+   "key": "setup.start",
+   "value": "إلى المعركة"
+  },
+  {
+   "key": "setup.empty",
+   "value": "لا شيء مفتوح بعد"
+  },
+  {
+   "key": "victory.title",
+   "value": "انتصار الموجة {0}!"
+  },
+  {
+   "key": "victory.award",
+   "value": "مكافأة النصر"
+  },
+  {
+   "key": "victory.collected",
+   "value": "ما جمعته"
+  },
+  {
+   "key": "victory.total",
+   "value": "المجموع"
+  },
+  {
+   "key": "victory.unlocked",
+   "value": "تم فتح:"
+  },
+  {
+   "key": "victory.charm_found",
+   "value": "وجدت حرزاً:"
+  },
+  {
+   "key": "defeat.gate",
+   "value": "سقط الحصن"
+  },
+  {
+   "key": "defeat.hero",
+   "value": "سقط صقر"
+  },
+  {
+   "key": "defeat.retry",
+   "value": "أعد المحاولة"
+  },
+  {
+   "key": "shop.title",
+   "value": "السوق"
+  },
+  {
+   "key": "shop.tab_hero",
+   "value": "البطل"
+  },
+  {
+   "key": "shop.tab_allies",
+   "value": "الحلفاء"
+  },
+  {
+   "key": "shop.tab_items",
+   "value": "المؤن"
+  },
+  {
+   "key": "shop.level_up",
+   "value": "ترقية {0} إلى المستوى {1}"
+  },
+  {
+   "key": "shop.max",
+   "value": "أقصى مستوى"
+  },
+  {
+   "key": "shop.not_enough",
+   "value": "لا تملك دراهم كافية"
+  },
+  {
+   "key": "shop.owned",
+   "value": "لديك: {0}"
+  },
+  {
+   "key": "upgrade.hero",
+   "value": "صقر"
+  },
+  {
+   "key": "upgrade.sword",
+   "value": "السيف"
+  },
+  {
+   "key": "upgrade.bow",
+   "value": "القوس"
+  },
+  {
+   "key": "upgrade.haybah",
+   "value": "الهيبة"
+  },
+  {
+   "key": "upgrade.gate",
+   "value": "باب الحصن"
+  },
+  {
+   "key": "upgrade.slash",
+   "value": "ضربة الهلال"
+  },
+  {
+   "key": "upgrade.farmer",
+   "value": "مزارع النخيل"
+  },
+  {
+   "key": "upgrade.archer",
+   "value": "الرامي البدوي"
+  },
+  {
+   "key": "ally.farmer",
+   "value": "مزارع النخيل"
+  },
+  {
+   "key": "ally.farmer.desc",
+   "value": "ضعيف القوة، شديد الوفاء. يجمع لك الدراهم."
+  },
+  {
+   "key": "ally.archer",
+   "value": "الرامي البدوي"
+  },
+  {
+   "key": "ally.archer.desc",
+   "value": "يرمي السهام من بعيد ويحمي الحصن."
+  },
+  {
+   "key": "ability.crescent_slash",
+   "value": "ضربة الهلال"
+  },
+  {
+   "key": "ability.crescent_slash.desc",
+   "value": "ضربة قوية تصيب عدة أعداء."
+  },
+  {
+   "key": "ability.arrow_volley",
+   "value": "وابل السهام"
+  },
+  {
+   "key": "ability.arrow_volley.desc",
+   "value": "يطلق صقر سهاماً على الأعداء القريبين."
+  },
+  {
+   "key": "charm.hirz_power",
+   "value": "حرز القوة"
+  },
+  {
+   "key": "charm.hirz_power.desc",
+   "value": "يزيد ضررك طوال الموجة."
+  },
+  {
+   "key": "charm.hirz_luck",
+   "value": "حرز الحظ"
+  },
+  {
+   "key": "charm.hirz_luck.desc",
+   "value": "يرفع فرصة سقوط الأحراز."
+  },
+  {
+   "key": "charm.hirz_wealth",
+   "value": "حرز الثروة"
+  },
+  {
+   "key": "charm.hirz_wealth.desc",
+   "value": "يزيد الدراهم التي تجمعها في هذه الموجة."
+  },
+  {
+   "key": "item.date",
+   "value": "تمرة"
+  },
+  {
+   "key": "item.date.desc",
+   "value": "تشفي صقراً وتعيد له قوته."
+  },
+  {
+   "key": "enemy.jinn_earth",
+   "value": "جني أرضي"
+  },
+  {
+   "key": "enemy.ghoul",
+   "value": "غول"
+  },
+  {
+   "key": "enemy.ifrit",
+   "value": "عفريت"
+  },
+  {
+   "key": "enemy.marid",
+   "value": "المارد"
+  },
+  {
+   "key": "dark.title",
+   "value": "طغيان البرزخ"
+  },
+  {
+   "key": "dark.hint",
+   "value": "اسحق الجن! أنت الآن في أوج قوتك."
+  },
+  {
+   "key": "speaker.entity",
+   "value": "الكيان الأزرق"
+  },
+  {
+   "key": "speaker.saqr",
+   "value": "صقر"
+  },
+  {
+   "key": "story.intro.1",
+   "value": "في أعماق السماء، رجلٌ معلّقٌ بحبالٍ من نور..."
+  },
+  {
+   "key": "story.intro.2",
+   "value": "تنقطع الحبال، فيسقط صقر في قلب الصحراء، وقد نسي كل شيء."
+  },
+  {
+   "key": "story.intro.3",
+   "value": "تلاحقه مخلوقات الجن، تضربه وترميه من بعيد، وهو يهرب بما بقي له من قوة."
+  },
+  {
+   "key": "story.intro.4",
+   "value": "يدخل كهفاً مظلماً بصعوبة، وتقترب الوحوش..."
+  },
+  {
+   "key": "story.intro.5",
+   "value": "كفى يا فتيان! المخلوقات تتساءل: من هذا؟"
+  },
+  {
+   "key": "story.intro.6",
+   "value": "تهجم الجن عليه، فيضرب الكيان الأزرق الأرض ضربةً زلزلت المكان."
+  },
+  {
+   "key": "story.intro.7",
+   "value": "أوف يا فتيان... لقد جرحتم مشاعري."
+  },
+  {
+   "key": "story.intro.8",
+   "value": "تختفي الجن في لمح البصر، ويبقى صقر وحده يلتقط أنفاسه."
+  },
+  {
+   "key": "story.dark.1",
+   "value": "هذه قوتي تسري في عروقك يا صقر. استمتع بها... ما دامت تنفعني."
+  },
+  {
+   "key": "story.end.title",
+   "value": "نهاية الفصل الأول"
+  },
+  {
+   "key": "story.end.1",
+   "value": "سقط المارد، لكن الكيان الأزرق يراقب من الظلام."
+  },
+  {
+   "key": "story.end.2",
+   "value": "أحسنت يا صقر. لكن هذه كانت البداية فقط."
+  },
+  {
+   "key": "story.end.3",
+   "value": "يتبع في الفصل الثاني: صحراء البرزخ"
+  },
+  {
+   "key": "settings.title",
+   "value": "الإعدادات"
+  },
+  {
+   "key": "settings.music",
+   "value": "الموسيقى"
+  },
+  {
+   "key": "settings.sfx",
+   "value": "المؤثرات"
+  },
+  {
+   "key": "settings.reset",
+   "value": "حذف التقدم"
+  },
+  {
+   "key": "settings.reset_confirm",
+   "value": "هل تريد حذف كل تقدمك؟"
+  },
+  {
+   "key": "story.intro_orb.1",
+   "value": "يلمس الكيان الأزرق صدر صقر بإصبعه، فتدخل جسده كرةٌ زرقاء صغيرة."
+  },
+  {
+   "key": "story.ch2_start.1",
+   "value": "يستيقظ صقر في أرضٍ لا تشبه شيئاً عرفه: رمالٌ رمادية وسماءٌ بلا شمس."
+  },
+  {
+   "key": "story.ch2_start.2",
+   "value": "أين أنا؟ ولماذا تحرقني هذه الكرة الزرقاء في صدري؟"
+  },
+  {
+   "key": "story.ch2_start.3",
+   "value": "يقترب شيخٌ عجوز متّكئ على عصا، وعيناه تلمعان كالجمر."
+  },
+  {
+   "key": "story.ch2_start.4",
+   "value": "هذه صحراء البرزخ يا بني، الأرض الميتة بين عالم البشر وعالم الجن."
+  },
+  {
+   "key": "story.ch2_start.5",
+   "value": "أنا سالم. كنتُ محارباً قبل أن أصير روحاً تائهة، وأعرف ما تحمله في صدرك."
+  },
+  {
+   "key": "story.ch2_start.6",
+   "value": "أتعرف من أنا؟ لا أذكر حتى اسمي!"
+  },
+  {
+   "key": "story.ch2_start.7",
+   "value": "اسمك صقر. أما الباقي فستجده بين الموجات... إن بقيتَ حياً."
+  },
+  {
+   "key": "story.mem_1.1",
+   "value": "يتوهج بصر صقر، فيرى نفسه طفلاً يركض بين النخيل خلف فتىً يشبهه تماماً."
+  },
+  {
+   "key": "story.mem_1.2",
+   "value": "أسرع يا صقر! سأسبقك إلى البئر!"
+  },
+  {
+   "key": "story.mem_1.3",
+   "value": "من هذا الفتى؟ وجهه يتلاشى كلما حاولتُ النظر إليه."
+  },
+  {
+   "key": "story.mem_2.1",
+   "value": "شيخ القبيلة يهمس في ليلةٍ بلا قمر، والتوأمان يصغيان."
+  },
+  {
+   "key": "story.mem_2.2",
+   "value": "في كل جيلٍ يولد توأمان، أحدهما يحمل نار الخلود، ولا تشتعل إلا بفراق أخيه."
+  },
+  {
+   "key": "story.mem_2.3",
+   "value": "فراق أخيه... لماذا يخفق قلبي هكذا؟"
+  },
+  {
+   "key": "story.ch2_end.1",
+   "value": "سقط العملاق، لكن قوتك تكبر يا صقر، وهذا هو الخطر."
+  },
+  {
+   "key": "story.ch2_end.2",
+   "value": "الكرة الزرقاء طاقةٌ ممنوعة. كلما استعملتَها اقتربتَ من أن تصير جنّياً."
+  },
+  {
+   "key": "story.ch2_end.3",
+   "value": "وإن لم أستعملها؟ سأموت في الموجة التالية."
+  },
+  {
+   "key": "story.ch2_end.4",
+   "value": "وهذا هو الفخ الذي نُصب لك. خذ هذه العين، فهي تُنبّهك قبل أن تضيع."
+  },
+  {
+   "key": "story.ch2_end.5",
+   "value": "يضع الشيخ تميمةً في يد صقر، ثم يتلاشى كغبارٍ في الريح."
+  },
+  {
+   "key": "story.ch3_start.1",
+   "value": "يعبر صقر حدود البرزخ، فتظهر له قريةٌ عربيةٌ مهدّمة وأسوارٌ تهاوت."
+  },
+  {
+   "key": "story.ch3_start.2",
+   "value": "قف! من أنت؟ هل أنت منهم؟"
+  },
+  {
+   "key": "story.ch3_start.3",
+   "value": "لا. أنا صقر، ولا أذكر من أكون."
+  },
+  {
+   "key": "story.ch3_start.4",
+   "value": "أنا نورة، ومعي من نجا من القرية. إن أردتَ حمايتنا فأعد بناء الحصن."
+  },
+  {
+   "key": "story.ch3_start.5",
+   "value": "سأبنيه، وسأقف عند بابه حتى آخر نَفَس."
+  },
+  {
+   "key": "story.mem_3.1",
+   "value": "ليلةٌ بلا قمر. صقر يقف وحيداً أمام مارد عظيم متوّج بالنار."
+  },
+  {
+   "key": "story.mem_3.2",
+   "value": "تريد الخلود؟ لكل شيءٍ ثمن: أن تخسر أعزّ ما تملك."
+  },
+  {
+   "key": "story.mem_3.3",
+   "value": "يصمت صقر طويلاً... والتوأم الآخر يراقب من بعيد."
+  },
+  {
+   "key": "story.mem_3.4",
+   "value": "ما هذا الذي فعلتُه؟ لماذا لا أريد أن أتذكر؟"
+  },
+  {
+   "key": "story.ch3_betrayal.1",
+   "value": "تهبط الظلال الزرقاء من سماء الليل، أتباع الكيان الأزرق."
+  },
+  {
+   "key": "story.ch3_betrayal.2",
+   "value": "جئنا نأخذ ما هو لسيدنا. القوة التي في صدرك ليست لك."
+  },
+  {
+   "key": "story.ch3_betrayal.3",
+   "value": "إنها تحرقني، وما زلتُ لا أعرف لمن هي!"
+  },
+  {
+   "key": "story.ch3_betrayal.4",
+   "value": "اثبت يا صقر! الحصن معك!"
+  },
+  {
+   "key": "story.mem_4.1",
+   "value": "حبالٌ من نورٍ تلتفّ حول جسدٍ يصرخ، ثم ترتفع به إلى السماء."
+  },
+  {
+   "key": "story.mem_4.2",
+   "value": "ستبقى معلّقاً سنةً بعد سنة، حتى تتذكر ما فعلتَ بي."
+  },
+  {
+   "key": "story.mem_4.3",
+   "value": "هذه الحبال... هي نفسها التي كنتُ معلّقاً بها!"
+  },
+  {
+   "key": "story.ch3_end.1",
+   "value": "تنهار ملكة السعالي وتتبدد الظلال، وعلى السور حجرٌ منقوشٌ بنورٍ أزرق."
+  },
+  {
+   "key": "story.ch3_end.2",
+   "value": "أحسنتَ يا صقر. يمتعني أن أراك تقاتل. تعالَ إلى برج قاف... إن تجرأتَ."
+  },
+  {
+   "key": "story.ch3_end.3",
+   "value": "برج قاف؟ لا أحد عاد منه."
+  },
+  {
+   "key": "story.ch3_end.4",
+   "value": "سأعود. ولي حسابٌ مع صاحب هذا الصوت."
+  },
+  {
+   "key": "story.ch4_start.1",
+   "value": "جبال قاف تحجب السماء، وفي قمتها برجٌ أزرق يتوهج كقلبٍ ينبض."
+  },
+  {
+   "key": "story.ch4_start.2",
+   "value": "كل خطوةٍ أقرب إليه تُشعل الطاقة في صدري أكثر."
+  },
+  {
+   "key": "story.ch4_start.3",
+   "value": "ومع كل موجة تضعف قبضة النسيان على ذاكرته، وتشتد قبضة الجن عليه."
+  },
+  {
+   "key": "story.mem_5.1",
+   "value": "فتىً يشبه صقراً ينظر إليه نظرةً أخيرة في ضوء النار."
+  },
+  {
+   "key": "story.mem_5.2",
+   "value": "سأنتظرك يا أخي، مهما طال الزمن."
+  },
+  {
+   "key": "story.mem_5.3",
+   "value": "عقاب... اسمه عقاب. أخي!"
+  },
+  {
+   "key": "story.ch4_twist.1",
+   "value": "أخيراً وصلتَ. ألا تعرف وجهي يا صقر؟"
+  },
+  {
+   "key": "story.ch4_twist.2",
+   "value": "ينزع الكيان غطاء رأسه، فإذا هو وجه صقر نفسه بعينين زرقاوين."
+  },
+  {
+   "key": "story.ch4_twist.3",
+   "value": "عقاب... أخي."
+  },
+  {
+   "key": "story.ch4_twist.4",
+   "value": "بعتَني للظلام لأجل خلودك. واليوم أريدك أن تعرف كل ما عرفتُه."
+  },
+  {
+   "key": "story.ch4_twist.5",
+   "value": "كنتُ شاباً أحمق ولم أعرف ما أفعل. سامحني."
+  },
+  {
+   "key": "story.ch4_twist.6",
+   "value": "السماح يحتاج إلى دمٍ يا أخي. قاتل!"
+  },
+  {
+   "key": "story.final_choice.1",
+   "value": "يسقط عقاب على ركبتيه، وتخرج الطاقة الزرقاء من صدر صقر وتدور بينهما."
+  },
+  {
+   "key": "story.final_choice.2",
+   "value": "الطاقة تحتاج إلى مضيف. إما أنا أو أنت."
+  },
+  {
+   "key": "story.final_choice.3",
+   "value": "وعلى صقر أن يختار."
+  },
+  {
+   "key": "story.end_sacrifice.1",
+   "value": "يمدّ صقر يده ويستقبل الطاقة كلها في صدره."
+  },
+  {
+   "key": "story.end_sacrifice.2",
+   "value": "اذهب يا أخي. كفاك ما عانيتَ."
+  },
+  {
+   "key": "story.end_sacrifice.3",
+   "value": "يتحرر عقاب، ويتلاشى صقر في ضوءٍ أزرق هادئ، وتعود الشمس إلى صحراء البرزخ."
+  },
+  {
+   "key": "story.end_sacrifice.4",
+   "value": "ويُحكى في القرى أن صقراً حمى الأرض... وأن عقاباً ما زال يحرس ذكراه."
+  },
+  {
+   "key": "story.end_power.1",
+   "value": "يمسك صقر الطاقة بكلتا يديه ويسحقها في صدره."
+  },
+  {
+   "key": "story.end_power.2",
+   "value": "لا يا أخي... ما كنتَ لتفعلها!"
+  },
+  {
+   "key": "story.end_power.3",
+   "value": "يسقط عقاب رماداً، ويرتفع صقر ملكاً على عرش الجن."
+  },
+  {
+   "key": "story.end_power.4",
+   "value": "وما عاد أحدٌ في القرى يذكر اسمه إلا بالخوف."
+  },
+  {
+   "key": "story.end_brothers.1",
+   "value": "يتذكر صقر كل شيء، وتهدأ الطاقة في صدره ولا تلتهمه."
+  },
+  {
+   "key": "story.end_brothers.2",
+   "value": "لن أختار أحدنا. سنحملها معاً."
+  },
+  {
+   "key": "story.end_brothers.3",
+   "value": "هذا ما كنتُ أنتظره منذ ألف عام."
+  },
+  {
+   "key": "story.end_brothers.4",
+   "value": "وتتحول الطاقة إلى نورٍ أبيض يضيء الصحراء كلها، ويقف التوأمان جنباً إلى جنب."
+  },
+  {
+   "key": "speaker.sage",
+   "value": "الشيخ سالم"
+  },
+  {
+   "key": "speaker.nora",
+   "value": "نورة"
+  },
+  {
+   "key": "speaker.voice",
+   "value": "صوتٌ من الذاكرة"
+  },
+  {
+   "key": "speaker.king",
+   "value": "ملك المردة"
+  },
+  {
+   "key": "speaker.shadows",
+   "value": "ظلٌّ أزرق"
+  },
+  {
+   "key": "speaker.aqab",
+   "value": "عقاب"
+  },
+  {
+   "key": "wave.banner",
+   "value": "الجن قادمون!"
+  },
+  {
+   "key": "chapter.1",
+   "value": "الفصل الأول: السقوط"
+  },
+  {
+   "key": "chapter.2",
+   "value": "الفصل الثاني: صحراء البرزخ"
+  },
+  {
+   "key": "chapter.3",
+   "value": "الفصل الثالث: الحصن المنسي"
+  },
+  {
+   "key": "chapter.4",
+   "value": "الفصل الرابع: برج قاف"
+  },
+  {
+   "key": "hud.dinar",
+   "value": "دينار"
+  },
+  {
+   "key": "hud.corruption",
+   "value": "الطاقة الممنوعة"
+  },
+  {
+   "key": "hud.revive",
+   "value": "شربة الحياة"
+  },
+  {
+   "key": "menu.options",
+   "value": "الخيارات"
+  },
+  {
+   "key": "menu.chests",
+   "value": "صناديق الغنائم"
+  },
+  {
+   "key": "menu.heroes",
+   "value": "الفرسان"
+  },
+  {
+   "key": "menu.wheel",
+   "value": "عجلة الحظ"
+  },
+  {
+   "key": "setup.hint_slots",
+   "value": "اختر حتى {0}"
+  },
+  {
+   "key": "setup.locked",
+   "value": "مقفل"
+  },
+  {
+   "key": "shop.locked_wave",
+   "value": "يُفتح عند الموجة {0}"
+  },
+  {
+   "key": "shop.revive",
+   "value": "شربة ماء الحياة"
+  },
+  {
+   "key": "shop.revive_none",
+   "value": "لا توجد شربات حياة"
+  },
+  {
+   "key": "shop.double_coins",
+   "value": "دراهم مضاعفة للأبد"
+  },
+  {
+   "key": "shop.date_plate",
+   "value": "طبق تمر"
+  },
+  {
+   "key": "shop.coffee_cup",
+   "value": "فنجان قهوة"
+  },
+  {
+   "key": "shop.coffee_pot",
+   "value": "دلّة قهوة"
+  },
+  {
+   "key": "shop.chest_small",
+   "value": "صندوق الغنائم"
+  },
+  {
+   "key": "shop.chest_big",
+   "value": "صندوق الأمراء"
+  },
+  {
+   "key": "shop.spins",
+   "value": "{0} دورات"
+  },
+  {
+   "key": "shop.buy",
+   "value": "شراء"
+  },
+  {
+   "key": "item.coffee_cup",
+   "value": "فنجان قهوة"
+  },
+  {
+   "key": "item.coffee_cup.desc",
+   "value": "يرفع سرعتك لفترة قصيرة."
+  },
+  {
+   "key": "item.coffee_pot",
+   "value": "دلّة قهوة"
+  },
+  {
+   "key": "item.coffee_pot.desc",
+   "value": "ترفع سرعتك وضررك طوال الموجة."
+  },
+  {
+   "key": "item.date_plate",
+   "value": "طبق تمر"
+  },
+  {
+   "key": "item.date_plate.desc",
+   "value": "يشفي صقراً شفاءً كاملاً."
+  },
+  {
+   "key": "item.revive",
+   "value": "شربة ماء الحياة"
+  },
+  {
+   "key": "item.revive.desc",
+   "value": "تُحييك مرة واحدة إذا سقطتَ."
+  },
+  {
+   "key": "ally.guard",
+   "value": "الحارس بالدرع"
+  },
+  {
+   "key": "ally.guard.desc",
+   "value": "يقف في المقدمة ويصدّ الضربات."
+  },
+  {
+   "key": "ally.spearman",
+   "value": "فارس الرمح"
+  },
+  {
+   "key": "ally.spearman.desc",
+   "value": "سريع، يطعن الأعداء من بعيد قليلاً."
+  },
+  {
+   "key": "ally.masked",
+   "value": "المقنّع"
+  },
+  {
+   "key": "ally.masked.desc",
+   "value": "محارب خفيف يضرب بقوة ويختفي."
+  },
+  {
+   "key": "ally.sage",
+   "value": "الشيخ الحكيم"
+  },
+  {
+   "key": "ally.sage.desc",
+   "value": "يشفي الحلفاء ويقوّيهم."
+  },
+  {
+   "key": "ally.vizier",
+   "value": "الوزير"
+  },
+  {
+   "key": "ally.vizier.desc",
+   "value": "يرفع ضرر جميع الحلفاء."
+  },
+  {
+   "key": "ally.cavalry",
+   "value": "فارس الخيل"
+  },
+  {
+   "key": "ally.cavalry.desc",
+   "value": "يخترق صفوف الأعداء بسرعة."
+  },
+  {
+   "key": "ability.sand_hourglass",
+   "value": "ساعة الرمل"
+  },
+  {
+   "key": "ability.sand_hourglass.desc",
+   "value": "تُبطئ كل الأعداء لثوانٍ."
+  },
+  {
+   "key": "ability.barzakh_bell",
+   "value": "جرس البرزخ"
+  },
+  {
+   "key": "ability.barzakh_bell.desc",
+   "value": "يُصعق الأعداء ويشلّهم لحظات."
+  },
+  {
+   "key": "ability.binding_seal",
+   "value": "ختم الأسر"
+  },
+  {
+   "key": "ability.binding_seal.desc",
+   "value": "يأسر عدواً قوياً ويجعله يقاتل معك."
+  },
+  {
+   "key": "ability.desert_rage",
+   "value": "غضب الصحراء"
+  },
+  {
+   "key": "ability.desert_rage.desc",
+   "value": "يضاعف ضرر صقر وسرعته لفترة."
+  },
+  {
+   "key": "ability.sand_tornado",
+   "value": "إعصار الرمال"
+  },
+  {
+   "key": "ability.sand_tornado.desc",
+   "value": "إعصار يجرف الأعداء ويؤذيهم."
+  },
+  {
+   "key": "ability.sun_burst",
+   "value": "انفجار الشمس"
+  },
+  {
+   "key": "ability.sun_burst.desc",
+   "value": "انفجار هائل يصيب كل الأعداء."
+  },
+  {
+   "key": "charm.hirz_haste",
+   "value": "حرز السرعة"
+  },
+  {
+   "key": "charm.hirz_haste.desc",
+   "value": "يرفع سرعة صقر طوال الموجة."
+  },
+  {
+   "key": "charm.hirz_peace",
+   "value": "حرز السلام"
+  },
+  {
+   "key": "charm.hirz_peace.desc",
+   "value": "يمنح الحصن درعاً في بداية الموجة."
+  },
+  {
+   "key": "charm.hirz_brotherhood",
+   "value": "حرز الأخوّة"
+  },
+  {
+   "key": "charm.hirz_brotherhood.desc",
+   "value": "يستدعي حليفاً مجانياً مرة في الموجة."
+  },
+  {
+   "key": "enemy.saalaa",
+   "value": "سعلاة"
+  },
+  {
+   "key": "enemy.shiq",
+   "value": "شِقّ"
+  },
+  {
+   "key": "enemy.nasnas",
+   "value": "نسناس"
+  },
+  {
+   "key": "enemy.shadow",
+   "value": "ظلّ أزرق"
+  },
+  {
+   "key": "enemy.sand_giant",
+   "value": "العملاق الرملي"
+  },
+  {
+   "key": "enemy.saalaa_queen",
+   "value": "ملكة السعالي"
+  },
+  {
+   "key": "enemy.aqab",
+   "value": "عقاب"
+  },
+  {
+   "key": "hero.card_1",
+   "value": "الفارس الجوّال"
+  },
+  {
+   "key": "hero.card_2",
+   "value": "ظلّ الصحراء"
+  },
+  {
+   "key": "hero.card_3",
+   "value": "رامي الواحة"
+  },
+  {
+   "key": "hero.card_4",
+   "value": "الحدّاد"
+  },
+  {
+   "key": "hero.card_5",
+   "value": "صاحب البندقية"
+  },
+  {
+   "key": "hero.find",
+   "value": "اعثر على: {0}"
+  },
+  {
+   "key": "hero.passive",
+   "value": "ميزة: {0}"
+  },
+  {
+   "key": "chest.open",
+   "value": "افتح الصندوق"
+  },
+  {
+   "key": "chest.got",
+   "value": "حصلت على: {0}"
+  },
+  {
+   "key": "wheel.title",
+   "value": "عجلة الحظ"
+  },
+  {
+   "key": "wheel.spin",
+   "value": "أدِر العجلة"
+  },
+  {
+   "key": "corruption.warn",
+   "value": "طاقتك الممنوعة ارتفعت! كلما زادت، اقتربتَ من فقدان بشريتك."
+  },
+  {
+   "key": "fort.upgraded",
+   "value": "ارتفع السور! الحصن أقوى الآن."
+  },
+  {
+   "key": "choice.title",
+   "value": "اختر مصيرك"
+  },
+  {
+   "key": "ending.choice.sacrifice",
+   "value": "أتحمّل الطاقة وأحرّر أخي"
+  },
+  {
+   "key": "ending.choice.power",
+   "value": "أسحق أخي وأحتفظ بالقوة"
+  },
+  {
+   "key": "ending.title.sacrifice",
+   "value": "النهاية: التضحية"
+  },
+  {
+   "key": "ending.title.power",
+   "value": "النهاية: الخلود المظلم"
+  },
+  {
+   "key": "ending.title.brothers",
+   "value": "النهاية السرية: الأخوّة"
+  },
+  {
+   "key": "credits.title",
+   "value": "شكراً لأنك لعبتَ"
+  },
+  {
+   "key": "credits.next",
+   "value": "العودة إلى القائمة"
+  },
+  {
+   "key": "achievement.title",
+   "value": "الإنجازات"
+  },
+  {
+   "key": "pause.sound",
+   "value": "الصوت"
+  },
+  {
+   "key": "ui.free_reward",
+   "value": "مكافأة مجانية"
+  },
+  {
+   "key": "ui.collect",
+   "value": "اجمع"
+  }
+ ]
 }

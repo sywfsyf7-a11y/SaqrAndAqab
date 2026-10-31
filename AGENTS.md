@@ -37,3 +37,14 @@ Read `docs/decisions.md` for every design decision already made. Do not re-decid
 3. Reply to the user IN SIMPLE ARABIC: what you built, which files changed, and "كيف تتأكد": the exact steps to verify in Unity.
 4. Ask the user at most ONE question, and only if you are truly blocked.
 Code and comments stay in English. Talk to the user in Arabic.
+
+## Scope v2 (supersedes the MVP limits)
+- Full game: 40 waves, 4 chapters, 11 enemy types, 8 allies, 8 abilities, 6 charms, 3 endings. Read `docs/v2/decisions-v2.md`, `docs/v2/screens-spec.md`, `docs/v2/story-bible.md`.
+- Tasks to run now are in `docs/prompts-v2/` (09..26). The old `docs/prompts/09..17` are OBSOLETE: do not run them.
+- Before any task: inspect what already exists and extend it. Never duplicate a class or a screen.
+- Story data: `Assets/Resources/Config/story.json` (scenes) + `strings_ar.json` (text). Do not hard-code story text.
+
+## Visual quality bar (every task)
+- No grey squares, no flat blue blocks, no overlapping text. Missing art gets a procedural placeholder that looks intentional (see task 09).
+- Test the layout at 1920x1080, 2400x1080 and 1280x720.
+- Real art (PNG in Resources/Art) always overrides procedural art.

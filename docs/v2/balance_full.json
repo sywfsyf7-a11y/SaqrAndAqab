@@ -1,0 +1,1499 @@
+{
+ "game": {
+  "referenceWidth": 1920,
+  "referenceHeight": 1080,
+  "cameraOrthoSize": 5.4,
+  "worldMinX": -14,
+  "worldMaxX": 22,
+  "gateX": -12,
+  "caveX": 20,
+  "laneMinY": -3.2,
+  "laneMaxY": -1.8,
+  "darkRealmAfterWaves": [
+   5,
+   10,
+   15,
+   20,
+   25,
+   30,
+   35,
+   40
+  ],
+  "totalWaves": 40,
+  "chapters": [
+   {
+    "id": 1,
+    "firstWave": 1,
+    "lastWave": 10,
+    "titleKey": "chapter.1"
+   },
+   {
+    "id": 2,
+    "firstWave": 11,
+    "lastWave": 20,
+    "titleKey": "chapter.2"
+   },
+   {
+    "id": 3,
+    "firstWave": 21,
+    "lastWave": 30,
+    "titleKey": "chapter.3"
+   },
+   {
+    "id": 4,
+    "firstWave": 31,
+    "lastWave": 40,
+    "titleKey": "chapter.4"
+   }
+  ]
+ },
+ "hero": {
+  "hp": 100,
+  "damage": 10,
+  "attackRange": 1.6,
+  "attackCooldown": 0.6,
+  "moveSpeed": 4.5
+ },
+ "gate": {
+  "hp": 300
+ },
+ "enemies": [
+  {
+   "id": "jinn_earth",
+   "hp": 20,
+   "damage": 4,
+   "moveSpeed": 2.2,
+   "attackRange": 0.9,
+   "attackCooldown": 1.0,
+   "dirhamReward": 5,
+   "isRanged": false,
+   "projectileSpeed": 0
+  },
+  {
+   "id": "ghoul",
+   "hp": 90,
+   "damage": 12,
+   "moveSpeed": 1.2,
+   "attackRange": 1.2,
+   "attackCooldown": 1.4,
+   "dirhamReward": 15,
+   "isRanged": false,
+   "projectileSpeed": 0
+  },
+  {
+   "id": "ifrit",
+   "hp": 35,
+   "damage": 7,
+   "moveSpeed": 1.8,
+   "attackRange": 6.0,
+   "attackCooldown": 1.8,
+   "dirhamReward": 10,
+   "isRanged": true,
+   "projectileSpeed": 7
+  },
+  {
+   "id": "saalaa",
+   "hp": 40,
+   "damage": 8,
+   "moveSpeed": 3.2,
+   "attackRange": 1.0,
+   "attackCooldown": 0.9,
+   "dirhamReward": 12,
+   "isRanged": false,
+   "projectileSpeed": 0
+  },
+  {
+   "id": "shiq",
+   "hp": 120,
+   "damage": 15,
+   "moveSpeed": 1.6,
+   "attackRange": 1.3,
+   "attackCooldown": 1.3,
+   "dirhamReward": 25,
+   "isRanged": false,
+   "projectileSpeed": 0
+  },
+  {
+   "id": "nasnas",
+   "hp": 70,
+   "damage": 10,
+   "moveSpeed": 2.4,
+   "attackRange": 5.0,
+   "attackCooldown": 1.6,
+   "dirhamReward": 18,
+   "isRanged": true,
+   "projectileSpeed": 6
+  },
+  {
+   "id": "shadow",
+   "hp": 60,
+   "damage": 12,
+   "moveSpeed": 2.6,
+   "attackRange": 1.0,
+   "attackCooldown": 1.0,
+   "dirhamReward": 20,
+   "isRanged": false,
+   "projectileSpeed": 0
+  },
+  {
+   "id": "marid",
+   "hp": 900,
+   "damage": 25,
+   "moveSpeed": 1.0,
+   "attackRange": 1.8,
+   "attackCooldown": 1.6,
+   "dirhamReward": 200,
+   "isRanged": false,
+   "projectileSpeed": 0
+  },
+  {
+   "id": "sand_giant",
+   "hp": 3500,
+   "damage": 45,
+   "moveSpeed": 0.9,
+   "attackRange": 2.2,
+   "attackCooldown": 1.8,
+   "dirhamReward": 400,
+   "isRanged": false,
+   "projectileSpeed": 0
+  },
+  {
+   "id": "saalaa_queen",
+   "hp": 6500,
+   "damage": 60,
+   "moveSpeed": 1.4,
+   "attackRange": 1.8,
+   "attackCooldown": 1.2,
+   "dirhamReward": 600,
+   "isRanged": false,
+   "projectileSpeed": 0
+  },
+  {
+   "id": "aqab",
+   "hp": 12000,
+   "damage": 80,
+   "moveSpeed": 1.5,
+   "attackRange": 2.0,
+   "attackCooldown": 1.1,
+   "dirhamReward": 1000,
+   "isRanged": false,
+   "projectileSpeed": 0
+  }
+ ],
+ "allies": [
+  {
+   "id": "farmer",
+   "hp": 25,
+   "damage": 0,
+   "moveSpeed": 1.5,
+   "attackRange": 0,
+   "attackCooldown": 0,
+   "haybahCost": 5,
+   "incomeDirhams": 2,
+   "incomeInterval": 4,
+   "role": "income"
+  },
+  {
+   "id": "guard",
+   "hp": 120,
+   "damage": 5,
+   "moveSpeed": 1.3,
+   "attackRange": 1.2,
+   "attackCooldown": 1.2,
+   "haybahCost": 10,
+   "incomeDirhams": 0,
+   "incomeInterval": 0,
+   "role": "tank"
+  },
+  {
+   "id": "archer",
+   "hp": 30,
+   "damage": 6,
+   "moveSpeed": 2.0,
+   "attackRange": 7.0,
+   "attackCooldown": 1.2,
+   "haybahCost": 10,
+   "incomeDirhams": 0,
+   "incomeInterval": 0,
+   "role": "ranged"
+  },
+  {
+   "id": "spearman",
+   "hp": 45,
+   "damage": 9,
+   "moveSpeed": 2.8,
+   "attackRange": 2.0,
+   "attackCooldown": 0.9,
+   "haybahCost": 10,
+   "incomeDirhams": 0,
+   "incomeInterval": 0,
+   "role": "melee"
+  },
+  {
+   "id": "masked",
+   "hp": 50,
+   "damage": 18,
+   "moveSpeed": 3.2,
+   "attackRange": 1.2,
+   "attackCooldown": 0.7,
+   "haybahCost": 30,
+   "incomeDirhams": 0,
+   "incomeInterval": 0,
+   "role": "assassin"
+  },
+  {
+   "id": "sage",
+   "hp": 60,
+   "damage": 0,
+   "moveSpeed": 1.6,
+   "attackRange": 6.0,
+   "attackCooldown": 2.5,
+   "haybahCost": 40,
+   "incomeDirhams": 0,
+   "incomeInterval": 0,
+   "role": "healer",
+   "healAmount": 12
+  },
+  {
+   "id": "vizier",
+   "hp": 70,
+   "damage": 0,
+   "moveSpeed": 1.5,
+   "attackRange": 0,
+   "attackCooldown": 0,
+   "haybahCost": 55,
+   "incomeDirhams": 0,
+   "incomeInterval": 0,
+   "role": "buffer",
+   "damageBuff": 0.25
+  },
+  {
+   "id": "cavalry",
+   "hp": 160,
+   "damage": 22,
+   "moveSpeed": 4.5,
+   "attackRange": 1.8,
+   "attackCooldown": 1.0,
+   "haybahCost": 45,
+   "incomeDirhams": 0,
+   "incomeInterval": 0,
+   "role": "charger"
+  }
+ ],
+ "haybah": {
+  "startValue": 3,
+  "gainPerSecond": 1.0,
+  "max": 60
+ },
+ "abilities": [
+  {
+   "id": "crescent_slash",
+   "damage": 40,
+   "range": 3.0,
+   "cooldown": 12,
+   "durationSeconds": 0,
+   "arrowCount": 0,
+   "multiplier": 0
+  },
+  {
+   "id": "arrow_volley",
+   "damage": 15,
+   "range": 8.0,
+   "cooldown": 15,
+   "durationSeconds": 0,
+   "arrowCount": 5,
+   "multiplier": 0
+  },
+  {
+   "id": "sand_hourglass",
+   "damage": 0,
+   "range": 99,
+   "cooldown": 30,
+   "durationSeconds": 6,
+   "arrowCount": 0,
+   "multiplier": 0.4
+  },
+  {
+   "id": "barzakh_bell",
+   "damage": 25,
+   "range": 7.0,
+   "cooldown": 28,
+   "durationSeconds": 3,
+   "arrowCount": 0,
+   "multiplier": 0
+  },
+  {
+   "id": "binding_seal",
+   "damage": 0,
+   "range": 9.0,
+   "cooldown": 45,
+   "durationSeconds": 20,
+   "arrowCount": 0,
+   "multiplier": 0
+  },
+  {
+   "id": "desert_rage",
+   "damage": 0,
+   "range": 0,
+   "cooldown": 40,
+   "durationSeconds": 10,
+   "arrowCount": 0,
+   "multiplier": 1.6
+  },
+  {
+   "id": "sand_tornado",
+   "damage": 12,
+   "range": 6.0,
+   "cooldown": 35,
+   "durationSeconds": 5,
+   "arrowCount": 0,
+   "multiplier": 0
+  },
+  {
+   "id": "sun_burst",
+   "damage": 300,
+   "range": 99,
+   "cooldown": 90,
+   "durationSeconds": 0,
+   "arrowCount": 0,
+   "multiplier": 0
+  }
+ ],
+ "items": [
+  {
+   "id": "date",
+   "healAmount": 30,
+   "startCount": 2,
+   "cooldown": 20,
+   "priceDirhams": 80
+  },
+  {
+   "id": "date_plate",
+   "healAmount": 9999,
+   "startCount": 0,
+   "cooldown": 30,
+   "priceDirhams": 300
+  },
+  {
+   "id": "coffee_cup",
+   "speedMultiplier": 1.4,
+   "durationSeconds": 12,
+   "startCount": 0,
+   "cooldown": 25,
+   "priceDirhams": 120
+  },
+  {
+   "id": "coffee_pot",
+   "speedMultiplier": 1.4,
+   "damageMultiplier": 1.3,
+   "durationSeconds": 9999,
+   "startCount": 0,
+   "cooldown": 0,
+   "priceDirhams": 400
+  },
+  {
+   "id": "revive",
+   "startCount": 0,
+   "priceDinar": 5
+  }
+ ],
+ "charms": [
+  {
+   "id": "hirz_power",
+   "damageMultiplier": 1.25,
+   "priceDirhams": 150
+  },
+  {
+   "id": "hirz_luck",
+   "charmDropChanceBonus": 0.25,
+   "priceDirhams": 150
+  },
+  {
+   "id": "hirz_wealth",
+   "dirhamMultiplier": 1.5,
+   "priceDirhams": 200
+  },
+  {
+   "id": "hirz_haste",
+   "speedMultiplier": 1.25,
+   "priceDirhams": 150
+  },
+  {
+   "id": "hirz_peace",
+   "gateShield": 150,
+   "priceDirhams": 200
+  },
+  {
+   "id": "hirz_brotherhood",
+   "freeAlly": "guard",
+   "priceDirhams": 250
+  }
+ ],
+ "charmDrop": {
+  "baseChance": 0.15,
+  "startCountEach": 1
+ },
+ "waves": [
+  {
+   "wave": 1,
+   "chapter": 1,
+   "jinn": 8,
+   "ghoul": 0,
+   "ifrit": 0,
+   "saalaa": 0,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 2.5,
+   "victoryAward": 100,
+   "hpMul": 1.0,
+   "dmgMul": 1.0,
+   "theme": "day",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 2,
+   "chapter": 1,
+   "jinn": 10,
+   "ghoul": 0,
+   "ifrit": 0,
+   "saalaa": 0,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 2.4,
+   "victoryAward": 120,
+   "hpMul": 1.0,
+   "dmgMul": 1.0,
+   "theme": "night",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 3,
+   "chapter": 1,
+   "jinn": 12,
+   "ghoul": 2,
+   "ifrit": 0,
+   "saalaa": 0,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 2.3,
+   "victoryAward": 140,
+   "hpMul": 1.0,
+   "dmgMul": 1.0,
+   "theme": "day",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 4,
+   "chapter": 1,
+   "jinn": 14,
+   "ghoul": 3,
+   "ifrit": 0,
+   "saalaa": 0,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 2.2,
+   "victoryAward": 160,
+   "hpMul": 1.0,
+   "dmgMul": 1.0,
+   "theme": "night",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 5,
+   "chapter": 1,
+   "jinn": 12,
+   "ghoul": 4,
+   "ifrit": 3,
+   "saalaa": 0,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 2.1,
+   "victoryAward": 200,
+   "hpMul": 1.0,
+   "dmgMul": 1.0,
+   "theme": "day",
+   "darkRealmAfter": true
+  },
+  {
+   "wave": 6,
+   "chapter": 1,
+   "jinn": 16,
+   "ghoul": 5,
+   "ifrit": 3,
+   "saalaa": 0,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 2.0,
+   "victoryAward": 220,
+   "hpMul": 1.0,
+   "dmgMul": 1.0,
+   "theme": "night",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 7,
+   "chapter": 1,
+   "jinn": 18,
+   "ghoul": 6,
+   "ifrit": 5,
+   "saalaa": 0,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.9,
+   "victoryAward": 250,
+   "hpMul": 1.0,
+   "dmgMul": 1.0,
+   "theme": "day",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 8,
+   "chapter": 1,
+   "jinn": 20,
+   "ghoul": 7,
+   "ifrit": 6,
+   "saalaa": 0,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.8,
+   "victoryAward": 280,
+   "hpMul": 1.0,
+   "dmgMul": 1.0,
+   "theme": "night",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 9,
+   "chapter": 1,
+   "jinn": 22,
+   "ghoul": 9,
+   "ifrit": 7,
+   "saalaa": 0,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.7,
+   "victoryAward": 320,
+   "hpMul": 1.0,
+   "dmgMul": 1.0,
+   "theme": "day",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 10,
+   "chapter": 1,
+   "jinn": 18,
+   "ghoul": 8,
+   "ifrit": 8,
+   "saalaa": 0,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "marid",
+   "spawnInterval": 1.6,
+   "victoryAward": 500,
+   "hpMul": 1.0,
+   "dmgMul": 1.0,
+   "theme": "night",
+   "darkRealmAfter": true
+  },
+  {
+   "wave": 11,
+   "chapter": 2,
+   "jinn": 16,
+   "ghoul": 8,
+   "ifrit": 8,
+   "saalaa": 4,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.58,
+   "victoryAward": 560,
+   "hpMul": 1.15,
+   "dmgMul": 1.1,
+   "theme": "barzakh",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 12,
+   "chapter": 2,
+   "jinn": 17,
+   "ghoul": 9,
+   "ifrit": 8,
+   "saalaa": 5,
+   "shiq": 0,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.56,
+   "victoryAward": 620,
+   "hpMul": 1.3,
+   "dmgMul": 1.2,
+   "theme": "barzakh",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 13,
+   "chapter": 2,
+   "jinn": 17,
+   "ghoul": 9,
+   "ifrit": 9,
+   "saalaa": 5,
+   "shiq": 1,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.54,
+   "victoryAward": 680,
+   "hpMul": 1.45,
+   "dmgMul": 1.3,
+   "theme": "barzakh",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 14,
+   "chapter": 2,
+   "jinn": 18,
+   "ghoul": 10,
+   "ifrit": 9,
+   "saalaa": 6,
+   "shiq": 1,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.52,
+   "victoryAward": 740,
+   "hpMul": 1.6,
+   "dmgMul": 1.4,
+   "theme": "barzakh",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 15,
+   "chapter": 2,
+   "jinn": 18,
+   "ghoul": 10,
+   "ifrit": 9,
+   "saalaa": 6,
+   "shiq": 1,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.5,
+   "victoryAward": 800,
+   "hpMul": 1.75,
+   "dmgMul": 1.5,
+   "theme": "barzakh",
+   "darkRealmAfter": true
+  },
+  {
+   "wave": 16,
+   "chapter": 2,
+   "jinn": 19,
+   "ghoul": 11,
+   "ifrit": 10,
+   "saalaa": 7,
+   "shiq": 2,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.48,
+   "victoryAward": 860,
+   "hpMul": 1.9,
+   "dmgMul": 1.6,
+   "theme": "barzakh",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 17,
+   "chapter": 2,
+   "jinn": 19,
+   "ghoul": 11,
+   "ifrit": 10,
+   "saalaa": 7,
+   "shiq": 2,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.46,
+   "victoryAward": 920,
+   "hpMul": 2.05,
+   "dmgMul": 1.7,
+   "theme": "barzakh",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 18,
+   "chapter": 2,
+   "jinn": 20,
+   "ghoul": 12,
+   "ifrit": 10,
+   "saalaa": 8,
+   "shiq": 2,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.44,
+   "victoryAward": 980,
+   "hpMul": 2.2,
+   "dmgMul": 1.8,
+   "theme": "barzakh",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 19,
+   "chapter": 2,
+   "jinn": 20,
+   "ghoul": 12,
+   "ifrit": 11,
+   "saalaa": 8,
+   "shiq": 3,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.42,
+   "victoryAward": 1040,
+   "hpMul": 2.35,
+   "dmgMul": 1.9,
+   "theme": "barzakh",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 20,
+   "chapter": 2,
+   "jinn": 21,
+   "ghoul": 13,
+   "ifrit": 11,
+   "saalaa": 9,
+   "shiq": 3,
+   "nasnas": 0,
+   "shadow": 0,
+   "bossId": "sand_giant",
+   "spawnInterval": 1.4,
+   "victoryAward": 1100,
+   "hpMul": 2.5,
+   "dmgMul": 2.0,
+   "theme": "barzakh",
+   "darkRealmAfter": true
+  },
+  {
+   "wave": 21,
+   "chapter": 3,
+   "jinn": 21,
+   "ghoul": 13,
+   "ifrit": 11,
+   "saalaa": 9,
+   "shiq": 6,
+   "nasnas": 4,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.38,
+   "victoryAward": 1160,
+   "hpMul": 2.65,
+   "dmgMul": 2.1,
+   "theme": "fort",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 22,
+   "chapter": 3,
+   "jinn": 22,
+   "ghoul": 14,
+   "ifrit": 12,
+   "saalaa": 10,
+   "shiq": 6,
+   "nasnas": 4,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.36,
+   "victoryAward": 1220,
+   "hpMul": 2.8,
+   "dmgMul": 2.2,
+   "theme": "fort",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 23,
+   "chapter": 3,
+   "jinn": 22,
+   "ghoul": 14,
+   "ifrit": 12,
+   "saalaa": 10,
+   "shiq": 6,
+   "nasnas": 4,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.34,
+   "victoryAward": 1280,
+   "hpMul": 2.95,
+   "dmgMul": 2.3,
+   "theme": "fort",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 24,
+   "chapter": 3,
+   "jinn": 23,
+   "ghoul": 15,
+   "ifrit": 12,
+   "saalaa": 11,
+   "shiq": 6,
+   "nasnas": 5,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.32,
+   "victoryAward": 1340,
+   "hpMul": 3.1,
+   "dmgMul": 2.4,
+   "theme": "fort",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 25,
+   "chapter": 3,
+   "jinn": 23,
+   "ghoul": 15,
+   "ifrit": 13,
+   "saalaa": 11,
+   "shiq": 7,
+   "nasnas": 5,
+   "shadow": 8,
+   "bossId": "",
+   "spawnInterval": 1.3,
+   "victoryAward": 1400,
+   "hpMul": 3.25,
+   "dmgMul": 2.5,
+   "theme": "fort",
+   "darkRealmAfter": true
+  },
+  {
+   "wave": 26,
+   "chapter": 3,
+   "jinn": 24,
+   "ghoul": 16,
+   "ifrit": 13,
+   "saalaa": 12,
+   "shiq": 7,
+   "nasnas": 5,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.28,
+   "victoryAward": 1460,
+   "hpMul": 3.4,
+   "dmgMul": 2.6,
+   "theme": "fort",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 27,
+   "chapter": 3,
+   "jinn": 24,
+   "ghoul": 16,
+   "ifrit": 13,
+   "saalaa": 12,
+   "shiq": 7,
+   "nasnas": 5,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.26,
+   "victoryAward": 1520,
+   "hpMul": 3.55,
+   "dmgMul": 2.7,
+   "theme": "fort",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 28,
+   "chapter": 3,
+   "jinn": 25,
+   "ghoul": 17,
+   "ifrit": 14,
+   "saalaa": 13,
+   "shiq": 7,
+   "nasnas": 6,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.24,
+   "victoryAward": 1580,
+   "hpMul": 3.7,
+   "dmgMul": 2.8,
+   "theme": "fort",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 29,
+   "chapter": 3,
+   "jinn": 25,
+   "ghoul": 17,
+   "ifrit": 14,
+   "saalaa": 13,
+   "shiq": 7,
+   "nasnas": 6,
+   "shadow": 0,
+   "bossId": "",
+   "spawnInterval": 1.22,
+   "victoryAward": 1640,
+   "hpMul": 3.85,
+   "dmgMul": 2.9,
+   "theme": "fort",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 30,
+   "chapter": 3,
+   "jinn": 26,
+   "ghoul": 18,
+   "ifrit": 14,
+   "saalaa": 14,
+   "shiq": 8,
+   "nasnas": 6,
+   "shadow": 8,
+   "bossId": "saalaa_queen",
+   "spawnInterval": 1.2,
+   "victoryAward": 1700,
+   "hpMul": 4.0,
+   "dmgMul": 3.0,
+   "theme": "fort",
+   "darkRealmAfter": true
+  },
+  {
+   "wave": 31,
+   "chapter": 4,
+   "jinn": 26,
+   "ghoul": 18,
+   "ifrit": 15,
+   "saalaa": 14,
+   "shiq": 8,
+   "nasnas": 6,
+   "shadow": 6,
+   "bossId": "",
+   "spawnInterval": 1.18,
+   "victoryAward": 1760,
+   "hpMul": 4.15,
+   "dmgMul": 3.1,
+   "theme": "tower",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 32,
+   "chapter": 4,
+   "jinn": 27,
+   "ghoul": 19,
+   "ifrit": 15,
+   "saalaa": 14,
+   "shiq": 8,
+   "nasnas": 7,
+   "shadow": 7,
+   "bossId": "",
+   "spawnInterval": 1.16,
+   "victoryAward": 1820,
+   "hpMul": 4.3,
+   "dmgMul": 3.2,
+   "theme": "tower",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 33,
+   "chapter": 4,
+   "jinn": 27,
+   "ghoul": 19,
+   "ifrit": 15,
+   "saalaa": 14,
+   "shiq": 8,
+   "nasnas": 7,
+   "shadow": 7,
+   "bossId": "",
+   "spawnInterval": 1.14,
+   "victoryAward": 1880,
+   "hpMul": 4.45,
+   "dmgMul": 3.3,
+   "theme": "tower",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 34,
+   "chapter": 4,
+   "jinn": 28,
+   "ghoul": 20,
+   "ifrit": 16,
+   "saalaa": 14,
+   "shiq": 8,
+   "nasnas": 7,
+   "shadow": 8,
+   "bossId": "",
+   "spawnInterval": 1.12,
+   "victoryAward": 1940,
+   "hpMul": 4.6,
+   "dmgMul": 3.4,
+   "theme": "tower",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 35,
+   "chapter": 4,
+   "jinn": 28,
+   "ghoul": 20,
+   "ifrit": 16,
+   "saalaa": 14,
+   "shiq": 9,
+   "nasnas": 7,
+   "shadow": 8,
+   "bossId": "",
+   "spawnInterval": 1.1,
+   "victoryAward": 2000,
+   "hpMul": 4.75,
+   "dmgMul": 3.5,
+   "theme": "tower",
+   "darkRealmAfter": true
+  },
+  {
+   "wave": 36,
+   "chapter": 4,
+   "jinn": 29,
+   "ghoul": 20,
+   "ifrit": 16,
+   "saalaa": 14,
+   "shiq": 9,
+   "nasnas": 8,
+   "shadow": 9,
+   "bossId": "",
+   "spawnInterval": 1.08,
+   "victoryAward": 2060,
+   "hpMul": 4.9,
+   "dmgMul": 3.6,
+   "theme": "tower",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 37,
+   "chapter": 4,
+   "jinn": 29,
+   "ghoul": 20,
+   "ifrit": 16,
+   "saalaa": 14,
+   "shiq": 9,
+   "nasnas": 8,
+   "shadow": 9,
+   "bossId": "",
+   "spawnInterval": 1.06,
+   "victoryAward": 2120,
+   "hpMul": 5.05,
+   "dmgMul": 3.7,
+   "theme": "tower",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 38,
+   "chapter": 4,
+   "jinn": 30,
+   "ghoul": 20,
+   "ifrit": 16,
+   "saalaa": 14,
+   "shiq": 9,
+   "nasnas": 8,
+   "shadow": 10,
+   "bossId": "",
+   "spawnInterval": 1.04,
+   "victoryAward": 2180,
+   "hpMul": 5.2,
+   "dmgMul": 3.8,
+   "theme": "tower",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 39,
+   "chapter": 4,
+   "jinn": 30,
+   "ghoul": 20,
+   "ifrit": 16,
+   "saalaa": 14,
+   "shiq": 9,
+   "nasnas": 8,
+   "shadow": 10,
+   "bossId": "",
+   "spawnInterval": 1.02,
+   "victoryAward": 2240,
+   "hpMul": 5.35,
+   "dmgMul": 3.9,
+   "theme": "tower",
+   "darkRealmAfter": false
+  },
+  {
+   "wave": 40,
+   "chapter": 4,
+   "jinn": 30,
+   "ghoul": 20,
+   "ifrit": 16,
+   "saalaa": 14,
+   "shiq": 10,
+   "nasnas": 9,
+   "shadow": 11,
+   "bossId": "aqab",
+   "spawnInterval": 1.0,
+   "victoryAward": 2300,
+   "hpMul": 5.5,
+   "dmgMul": 4.0,
+   "theme": "tower",
+   "darkRealmAfter": true
+  }
+ ],
+ "upgrades": [
+  {
+   "id": "hero",
+   "maxLevel": 15,
+   "baseCost": 250,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.12
+  },
+  {
+   "id": "sword",
+   "maxLevel": 15,
+   "baseCost": 250,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.15
+  },
+  {
+   "id": "bow",
+   "maxLevel": 15,
+   "baseCost": 250,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.15
+  },
+  {
+   "id": "haybah",
+   "maxLevel": 15,
+   "baseCost": 300,
+   "costGrowth": 1.6,
+   "bonusPerLevel": 0.15
+  },
+  {
+   "id": "gate",
+   "maxLevel": 15,
+   "baseCost": 1000,
+   "costGrowth": 1.6,
+   "bonusPerLevel": 0.2
+  },
+  {
+   "id": "slash",
+   "maxLevel": 15,
+   "baseCost": 350,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.2
+  },
+  {
+   "id": "farmer",
+   "maxLevel": 15,
+   "baseCost": 275,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.2
+  },
+  {
+   "id": "guard",
+   "maxLevel": 15,
+   "baseCost": 300,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.12
+  },
+  {
+   "id": "archer",
+   "maxLevel": 15,
+   "baseCost": 300,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.15
+  },
+  {
+   "id": "spearman",
+   "maxLevel": 15,
+   "baseCost": 300,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.12
+  },
+  {
+   "id": "masked",
+   "maxLevel": 15,
+   "baseCost": 450,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.12
+  },
+  {
+   "id": "sage",
+   "maxLevel": 15,
+   "baseCost": 500,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.12
+  },
+  {
+   "id": "vizier",
+   "maxLevel": 15,
+   "baseCost": 600,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.12
+  },
+  {
+   "id": "cavalry",
+   "maxLevel": 15,
+   "baseCost": 550,
+   "costGrowth": 1.5,
+   "bonusPerLevel": 0.12
+  }
+ ],
+ "unlocks": [
+  {
+   "afterWave": 1,
+   "type": "ally",
+   "id": "farmer"
+  },
+  {
+   "afterWave": 2,
+   "type": "ability",
+   "id": "arrow_volley"
+  },
+  {
+   "afterWave": 4,
+   "type": "ally",
+   "id": "guard"
+  },
+  {
+   "afterWave": 5,
+   "type": "ally",
+   "id": "archer"
+  },
+  {
+   "afterWave": 6,
+   "type": "ally",
+   "id": "spearman"
+  },
+  {
+   "afterWave": 7,
+   "type": "ability",
+   "id": "sand_hourglass"
+  },
+  {
+   "afterWave": 11,
+   "type": "ability",
+   "id": "barzakh_bell"
+  },
+  {
+   "afterWave": 12,
+   "type": "ability",
+   "id": "binding_seal"
+  },
+  {
+   "afterWave": 13,
+   "type": "ability",
+   "id": "desert_rage"
+  },
+  {
+   "afterWave": 14,
+   "type": "ally",
+   "id": "masked"
+  },
+  {
+   "afterWave": 15,
+   "type": "ally",
+   "id": "sage"
+  },
+  {
+   "afterWave": 17,
+   "type": "ally",
+   "id": "vizier"
+  },
+  {
+   "afterWave": 20,
+   "type": "ability",
+   "id": "sand_tornado"
+  },
+  {
+   "afterWave": 23,
+   "type": "ally",
+   "id": "cavalry"
+  },
+  {
+   "afterWave": 40,
+   "type": "ability",
+   "id": "sun_burst"
+  }
+ ],
+ "startingUnlocks": {
+  "abilities": [
+   "crescent_slash"
+  ],
+  "allies": []
+ },
+ "slots": {
+  "allies": 5,
+  "abilities": 2,
+  "charms": 1
+ },
+ "darkRealm": {
+  "durationSeconds": 35,
+  "heroInvulnerable": true,
+  "enemyHpMultiplier": 0.3,
+  "allyPowerMultiplier": 3,
+  "rewardMultiplier": 3,
+  "guaranteedCharmDrops": 2,
+  "spawnInterval": 0.5,
+  "instantHaybah": true
+ },
+ "corruption": {
+  "startsAtChapter": 2,
+  "perDarkRealmPercent": 10,
+  "eyeBlueThreshold": 30,
+  "secretEndingMaxPercent": 30
+ },
+ "fort": {
+  "stages": [
+   {
+    "stage": 1,
+    "wave": 21,
+    "gateHpBonus": 0,
+    "wallSprite": "prop_fort_1"
+   },
+   {
+    "stage": 2,
+    "wave": 24,
+    "gateHpBonus": 200,
+    "wallSprite": "prop_fort_2"
+   },
+   {
+    "stage": 3,
+    "wave": 27,
+    "gateHpBonus": 500,
+    "wallSprite": "prop_fort_3"
+   },
+   {
+    "stage": 4,
+    "wave": 30,
+    "gateHpBonus": 900,
+    "wallSprite": "prop_fort_4"
+   }
+  ],
+  "repairCostDirhams": [
+   0,
+   600,
+   1200,
+   2000
+  ]
+ },
+ "heroCards": [
+  {
+   "id": "hero_card_1",
+   "passive": "damage",
+   "value": 0.05
+  },
+  {
+   "id": "hero_card_2",
+   "passive": "speed",
+   "value": 0.08
+  },
+  {
+   "id": "hero_card_3",
+   "passive": "arrows",
+   "value": 0.1
+  },
+  {
+   "id": "hero_card_4",
+   "passive": "gate_hp",
+   "value": 0.1
+  },
+  {
+   "id": "hero_card_5",
+   "passive": "dirhams",
+   "value": 0.1
+  }
+ ],
+ "chests": [
+  {
+   "id": "chest_small",
+   "priceDirhams": 400,
+   "loot": [
+    "charm",
+    "date",
+    "dirhams",
+    "hero_card"
+   ],
+   "heroCardChance": 0.05
+  },
+  {
+   "id": "chest_big",
+   "priceDinar": 25,
+   "loot": [
+    "charm",
+    "charm",
+    "hero_card",
+    "date_plate"
+   ],
+   "heroCardChance": 0.35
+  }
+ ],
+ "wheel": {
+  "spinsPerWave": 1,
+  "rewards": [
+   {
+    "type": "dirhams",
+    "amount": 100,
+    "weight": 30
+   },
+   {
+    "type": "dirhams",
+    "amount": 300,
+    "weight": 15
+   },
+   {
+    "type": "charm",
+    "id": "random",
+    "weight": 20
+   },
+   {
+    "type": "item",
+    "id": "date",
+    "weight": 20
+   },
+   {
+    "type": "dinar",
+    "amount": 2,
+    "weight": 10
+   },
+   {
+    "type": "hero_card",
+    "id": "random",
+    "weight": 5
+   }
+  ]
+ },
+ "dinar": {
+  "perBossKill": 5,
+  "perDarkRealm": 3
+ },
+ "endings": [
+  {
+   "id": "sacrifice"
+  },
+  {
+   "id": "power"
+  },
+  {
+   "id": "brothers",
+   "requiresCorruptionMax": 30,
+   "requiresMemories": 5
+  }
+ ]
+}

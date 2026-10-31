@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SaqrAndAqab.Data;
+using SaqrAndAqab.Util;
 
 namespace SaqrAndAqab.Core
 {
@@ -108,6 +109,9 @@ namespace SaqrAndAqab.Core
 
         static Sprite CreatePlaceholder(string id)
         {
+            var procSprite = ProceduralArt.GetSprite(id, PivotFor(id), PixelsPerUnit);
+            if (procSprite != null) return procSprite;
+
             var entry = GetEntry(id);
             string category = entry != null && !string.IsNullOrEmpty(entry.category) ? entry.category : "ui";
 

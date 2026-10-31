@@ -14,7 +14,7 @@ namespace SaqrAndAqab.UI
         const string BoldFontResource = "Fonts/IBMPlexSansArabic-Bold SDF";
 
         static readonly Color ButtonColor = new Color(0.85f, 0.66f, 0.28f, 1f);
-        static readonly Color ButtonTextColor = new Color(0.12f, 0.09f, 0.05f, 1f);
+        static readonly Color ButtonTextColor = new Color(0.98f, 0.94f, 0.85f, 1f);
 
         static TMP_FontAsset _regularFont;
         static TMP_FontAsset _boldFont;
@@ -104,7 +104,8 @@ namespace SaqrAndAqab.UI
             go.transform.SetParent(parent, false);
 
             var image = go.GetComponent<Image>();
-            image.color = ButtonColor;
+            var button = go.GetComponent<Button>();
+            UIKit.ApplyButton(button, image);
 
             var rect = go.GetComponent<RectTransform>();
             rect.sizeDelta = size;
@@ -113,10 +114,20 @@ namespace SaqrAndAqab.UI
             var labelRect = label.rectTransform;
             Fill(labelRect);
 
-            var button = go.GetComponent<Button>();
             if (onClick != null) button.onClick.AddListener(onClick);
             button.onClick.AddListener(delegate { AudioService.Play("ui_click"); });
             return button;
+        }
+
+        public static Image CreatePanel(Transform parent, Vector2 size)
+        {
+            var go = new GameObject("Panel", typeof(RectTransform), typeof(Image));
+            go.transform.SetParent(parent, false);
+            var rect = go.GetComponent<RectTransform>();
+            rect.sizeDelta = size;
+            var image = go.GetComponent<Image>();
+            UIKit.ApplyPanel(image);
+            return image;
         }
 
         static TMP_FontAsset LoadFont(string resourcePath)

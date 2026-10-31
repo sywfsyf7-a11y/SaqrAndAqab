@@ -21,8 +21,8 @@ namespace SaqrAndAqab.Battle
 
         // Placeholder-era haze so the three placeholder bands are easy to tell apart.
         // With real art the far layer tint goes back to opaque white.
-        static readonly Color FarTint = new Color(0.78f, 0.84f, 0.96f, 0.60f);
-        static readonly Color GroundTint = new Color(1f, 0.93f, 0.80f, 1f);
+        static readonly Color FarTint = Color.white;
+        static readonly Color GroundTint = Color.white;
 
         Camera _camera;
         Hero _hero;

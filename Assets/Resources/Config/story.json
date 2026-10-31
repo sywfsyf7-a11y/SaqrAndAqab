@@ -1,0 +1,487 @@
+{
+ "scenes": [
+  {
+   "id": "intro_orb",
+   "trigger": {
+    "event": "intro",
+    "after": "story.intro.7"
+   },
+   "beats": [
+    {
+     "image": "story_07b_orb",
+     "speaker": "",
+     "textKey": "story.intro_orb.1"
+    }
+   ]
+  },
+  {
+   "id": "ch2_start",
+   "trigger": {
+    "event": "beforeWave",
+    "wave": 11
+   },
+   "beats": [
+    {
+     "image": "story_ch2_01_barzakh",
+     "speaker": "",
+     "textKey": "story.ch2_start.1"
+    },
+    {
+     "image": "story_ch2_01_barzakh",
+     "speaker": "speaker.saqr",
+     "textKey": "story.ch2_start.2"
+    },
+    {
+     "image": "story_ch2_02_sage",
+     "speaker": "",
+     "textKey": "story.ch2_start.3"
+    },
+    {
+     "image": "story_ch2_02_sage",
+     "speaker": "speaker.sage",
+     "textKey": "story.ch2_start.4"
+    },
+    {
+     "image": "story_ch2_02_sage",
+     "speaker": "speaker.sage",
+     "textKey": "story.ch2_start.5"
+    },
+    {
+     "image": "story_ch2_02_sage",
+     "speaker": "speaker.saqr",
+     "textKey": "story.ch2_start.6"
+    },
+    {
+     "image": "story_ch2_02_sage",
+     "speaker": "speaker.sage",
+     "textKey": "story.ch2_start.7"
+    }
+   ]
+  },
+  {
+   "id": "mem_1",
+   "trigger": {
+    "event": "afterDarkRealm",
+    "wave": 15
+   },
+   "beats": [
+    {
+     "image": "story_mem_01_twins",
+     "speaker": "",
+     "textKey": "story.mem_1.1"
+    },
+    {
+     "image": "story_mem_01_twins",
+     "speaker": "speaker.voice",
+     "textKey": "story.mem_1.2"
+    },
+    {
+     "image": "story_mem_01_twins",
+     "speaker": "speaker.saqr",
+     "textKey": "story.mem_1.3"
+    }
+   ]
+  },
+  {
+   "id": "mem_2",
+   "trigger": {
+    "event": "afterDarkRealm",
+    "wave": 20
+   },
+   "beats": [
+    {
+     "image": "story_mem_02_elder",
+     "speaker": "",
+     "textKey": "story.mem_2.1"
+    },
+    {
+     "image": "story_mem_02_elder",
+     "speaker": "speaker.voice",
+     "textKey": "story.mem_2.2"
+    },
+    {
+     "image": "story_mem_02_elder",
+     "speaker": "speaker.saqr",
+     "textKey": "story.mem_2.3"
+    }
+   ]
+  },
+  {
+   "id": "ch2_end",
+   "trigger": {
+    "event": "afterBoss",
+    "wave": 20
+   },
+   "beats": [
+    {
+     "image": "story_ch2_03_amulet",
+     "speaker": "speaker.sage",
+     "textKey": "story.ch2_end.1"
+    },
+    {
+     "image": "story_ch2_03_amulet",
+     "speaker": "speaker.sage",
+     "textKey": "story.ch2_end.2"
+    },
+    {
+     "image": "story_ch2_03_amulet",
+     "speaker": "speaker.saqr",
+     "textKey": "story.ch2_end.3"
+    },
+    {
+     "image": "story_ch2_03_amulet",
+     "speaker": "speaker.sage",
+     "textKey": "story.ch2_end.4"
+    },
+    {
+     "image": "story_ch2_03_amulet",
+     "speaker": "",
+     "textKey": "story.ch2_end.5"
+    }
+   ]
+  },
+  {
+   "id": "ch3_start",
+   "trigger": {
+    "event": "beforeWave",
+    "wave": 21
+   },
+   "beats": [
+    {
+     "image": "story_ch3_01_village",
+     "speaker": "",
+     "textKey": "story.ch3_start.1"
+    },
+    {
+     "image": "story_ch3_01_village",
+     "speaker": "speaker.nora",
+     "textKey": "story.ch3_start.2"
+    },
+    {
+     "image": "story_ch3_01_village",
+     "speaker": "speaker.saqr",
+     "textKey": "story.ch3_start.3"
+    },
+    {
+     "image": "story_ch3_01_village",
+     "speaker": "speaker.nora",
+     "textKey": "story.ch3_start.4"
+    },
+    {
+     "image": "story_ch3_01_village",
+     "speaker": "speaker.saqr",
+     "textKey": "story.ch3_start.5"
+    }
+   ]
+  },
+  {
+   "id": "mem_3",
+   "trigger": {
+    "event": "afterDarkRealm",
+    "wave": 25
+   },
+   "beats": [
+    {
+     "image": "story_mem_03_bargain",
+     "speaker": "",
+     "textKey": "story.mem_3.1"
+    },
+    {
+     "image": "story_mem_03_bargain",
+     "speaker": "speaker.king",
+     "textKey": "story.mem_3.2"
+    },
+    {
+     "image": "story_mem_03_bargain",
+     "speaker": "",
+     "textKey": "story.mem_3.3"
+    },
+    {
+     "image": "story_mem_03_bargain",
+     "speaker": "speaker.saqr",
+     "textKey": "story.mem_3.4"
+    }
+   ]
+  },
+  {
+   "id": "ch3_betrayal",
+   "trigger": {
+    "event": "beforeWave",
+    "wave": 25
+   },
+   "beats": [
+    {
+     "image": "story_ch3_02_shadows",
+     "speaker": "",
+     "textKey": "story.ch3_betrayal.1"
+    },
+    {
+     "image": "story_ch3_02_shadows",
+     "speaker": "speaker.shadows",
+     "textKey": "story.ch3_betrayal.2"
+    },
+    {
+     "image": "story_ch3_02_shadows",
+     "speaker": "speaker.saqr",
+     "textKey": "story.ch3_betrayal.3"
+    },
+    {
+     "image": "story_ch3_02_shadows",
+     "speaker": "speaker.nora",
+     "textKey": "story.ch3_betrayal.4"
+    }
+   ]
+  },
+  {
+   "id": "mem_4",
+   "trigger": {
+    "event": "afterDarkRealm",
+    "wave": 30
+   },
+   "beats": [
+    {
+     "image": "story_mem_04_ropes",
+     "speaker": "",
+     "textKey": "story.mem_4.1"
+    },
+    {
+     "image": "story_mem_04_ropes",
+     "speaker": "speaker.voice",
+     "textKey": "story.mem_4.2"
+    },
+    {
+     "image": "story_mem_04_ropes",
+     "speaker": "speaker.saqr",
+     "textKey": "story.mem_4.3"
+    }
+   ]
+  },
+  {
+   "id": "ch3_end",
+   "trigger": {
+    "event": "afterBoss",
+    "wave": 30
+   },
+   "beats": [
+    {
+     "image": "story_ch3_03_message",
+     "speaker": "",
+     "textKey": "story.ch3_end.1"
+    },
+    {
+     "image": "story_ch3_03_message",
+     "speaker": "speaker.entity",
+     "textKey": "story.ch3_end.2"
+    },
+    {
+     "image": "story_ch3_03_message",
+     "speaker": "speaker.nora",
+     "textKey": "story.ch3_end.3"
+    },
+    {
+     "image": "story_ch3_03_message",
+     "speaker": "speaker.saqr",
+     "textKey": "story.ch3_end.4"
+    }
+   ]
+  },
+  {
+   "id": "ch4_start",
+   "trigger": {
+    "event": "beforeWave",
+    "wave": 31
+   },
+   "beats": [
+    {
+     "image": "story_ch4_01_climb",
+     "speaker": "",
+     "textKey": "story.ch4_start.1"
+    },
+    {
+     "image": "story_ch4_01_climb",
+     "speaker": "speaker.saqr",
+     "textKey": "story.ch4_start.2"
+    },
+    {
+     "image": "story_ch4_01_climb",
+     "speaker": "",
+     "textKey": "story.ch4_start.3"
+    }
+   ]
+  },
+  {
+   "id": "mem_5",
+   "trigger": {
+    "event": "afterDarkRealm",
+    "wave": 35
+   },
+   "beats": [
+    {
+     "image": "story_mem_05_last",
+     "speaker": "",
+     "textKey": "story.mem_5.1"
+    },
+    {
+     "image": "story_mem_05_last",
+     "speaker": "speaker.voice",
+     "textKey": "story.mem_5.2"
+    },
+    {
+     "image": "story_mem_05_last",
+     "speaker": "speaker.saqr",
+     "textKey": "story.mem_5.3"
+    }
+   ]
+  },
+  {
+   "id": "ch4_twist",
+   "trigger": {
+    "event": "beforeWave",
+    "wave": 40
+   },
+   "beats": [
+    {
+     "image": "story_ch4_02_tower",
+     "speaker": "speaker.entity",
+     "textKey": "story.ch4_twist.1"
+    },
+    {
+     "image": "story_ch4_02_tower",
+     "speaker": "",
+     "textKey": "story.ch4_twist.2"
+    },
+    {
+     "image": "story_ch4_02_tower",
+     "speaker": "speaker.saqr",
+     "textKey": "story.ch4_twist.3"
+    },
+    {
+     "image": "story_ch4_02_tower",
+     "speaker": "speaker.aqab",
+     "textKey": "story.ch4_twist.4"
+    },
+    {
+     "image": "story_ch4_02_tower",
+     "speaker": "speaker.saqr",
+     "textKey": "story.ch4_twist.5"
+    },
+    {
+     "image": "story_ch4_02_tower",
+     "speaker": "speaker.aqab",
+     "textKey": "story.ch4_twist.6"
+    }
+   ]
+  },
+  {
+   "id": "final_choice",
+   "trigger": {
+    "event": "afterBoss",
+    "wave": 40
+   },
+   "beats": [
+    {
+     "image": "story_ch4_03_choice",
+     "speaker": "",
+     "textKey": "story.final_choice.1"
+    },
+    {
+     "image": "story_ch4_03_choice",
+     "speaker": "speaker.aqab",
+     "textKey": "story.final_choice.2"
+    },
+    {
+     "image": "story_ch4_03_choice",
+     "speaker": "",
+     "textKey": "story.final_choice.3"
+    }
+   ]
+  },
+  {
+   "id": "end_sacrifice",
+   "trigger": {
+    "event": "ending",
+    "id": "sacrifice"
+   },
+   "beats": [
+    {
+     "image": "story_end_sacrifice",
+     "speaker": "",
+     "textKey": "story.end_sacrifice.1"
+    },
+    {
+     "image": "story_end_sacrifice",
+     "speaker": "speaker.saqr",
+     "textKey": "story.end_sacrifice.2"
+    },
+    {
+     "image": "story_end_sacrifice",
+     "speaker": "",
+     "textKey": "story.end_sacrifice.3"
+    },
+    {
+     "image": "story_end_sacrifice",
+     "speaker": "",
+     "textKey": "story.end_sacrifice.4"
+    }
+   ]
+  },
+  {
+   "id": "end_power",
+   "trigger": {
+    "event": "ending",
+    "id": "power"
+   },
+   "beats": [
+    {
+     "image": "story_end_power",
+     "speaker": "",
+     "textKey": "story.end_power.1"
+    },
+    {
+     "image": "story_end_power",
+     "speaker": "speaker.aqab",
+     "textKey": "story.end_power.2"
+    },
+    {
+     "image": "story_end_power",
+     "speaker": "",
+     "textKey": "story.end_power.3"
+    },
+    {
+     "image": "story_end_power",
+     "speaker": "",
+     "textKey": "story.end_power.4"
+    }
+   ]
+  },
+  {
+   "id": "end_brothers",
+   "trigger": {
+    "event": "ending",
+    "id": "brothers"
+   },
+   "beats": [
+    {
+     "image": "story_end_brothers",
+     "speaker": "",
+     "textKey": "story.end_brothers.1"
+    },
+    {
+     "image": "story_end_brothers",
+     "speaker": "speaker.saqr",
+     "textKey": "story.end_brothers.2"
+    },
+    {
+     "image": "story_end_brothers",
+     "speaker": "speaker.aqab",
+     "textKey": "story.end_brothers.3"
+    },
+    {
+     "image": "story_end_brothers",
+     "speaker": "",
+     "textKey": "story.end_brothers.4"
+    }
+   ]
+  }
+ ]
+}

@@ -293,16 +293,8 @@ namespace SaqrAndAqab.UI
 
         void BuildDateButton()
         {
-            var caption = UIFactory.CreateText(_safeArea, "hud.date", 26, TextColor, TextAlignmentOptions.Center, true);
-            var captionRect = caption.rectTransform;
-            captionRect.anchorMin = new Vector2(0.5f, 0f);
-            captionRect.anchorMax = new Vector2(0.5f, 0f);
-            captionRect.pivot = new Vector2(0.5f, 0f);
-            captionRect.anchoredPosition = new Vector2(0f, 192f);
-            captionRect.sizeDelta = new Vector2(240f, 34f);
-
             var buttonRect = CreateRect(_safeArea, "Date Button", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
-                new Vector2(0f, 36f), new Vector2(150f, 150f));
+                new Vector2(0f, 54f), new Vector2(100f, 100f));
 
             var image = buttonRect.gameObject.AddComponent<Image>();
             image.sprite = AssetLibrary.GetSprite(DateSprite);
@@ -313,6 +305,14 @@ namespace SaqrAndAqab.UI
             _dateButton.targetGraphic = image;
             _dateButton.onClick.AddListener(OnDatePressed);
 
+            var caption = UIFactory.CreateText(_safeArea, "hud.date", 22, TextColor, TextAlignmentOptions.Center, true);
+            var captionRect = caption.rectTransform;
+            captionRect.anchorMin = new Vector2(0.5f, 0f);
+            captionRect.anchorMax = new Vector2(0.5f, 0f);
+            captionRect.pivot = new Vector2(0.5f, 0f);
+            captionRect.anchoredPosition = new Vector2(0f, 16f);
+            captionRect.sizeDelta = new Vector2(140f, 30f);
+
             _dateCooldownFill = CreateRect(buttonRect, "Cooldown", Vector2.zero, new Vector2(0.5f, 0.5f),
                 Vector2.zero, Vector2.zero);
             var cooldown = _dateCooldownFill.gameObject.AddComponent<Image>();
@@ -320,13 +320,13 @@ namespace SaqrAndAqab.UI
             cooldown.raycastTarget = false;
             SetCooldown(0f);
 
-            _dateCount = UIFactory.CreateTextRaw(buttonRect, "0", 30, TextColor, TextAlignmentOptions.Center, true);
+            _dateCount = UIFactory.CreateTextRaw(buttonRect, "0", 26, TextColor, TextAlignmentOptions.Center, true);
             var countRect = _dateCount.rectTransform;
             countRect.anchorMin = new Vector2(1f, 0f);
             countRect.anchorMax = new Vector2(1f, 0f);
             countRect.pivot = new Vector2(1f, 0f);
-            countRect.anchoredPosition = new Vector2(-6f, 6f);
-            countRect.sizeDelta = new Vector2(64f, 40f);
+            countRect.anchoredPosition = new Vector2(-4f, 4f);
+            countRect.sizeDelta = new Vector2(40f, 30f);
         }
 
         // ---- bottom-left: haybah meter + ally buttons ----
