@@ -37,7 +37,7 @@ namespace SaqrAndAqab.Battle
                 return;
             }
 
-            string spriteId = "enemy_" + config.id;
+            string spriteId = config.id == "marid" ? "boss_marid" : ("enemy_" + config.id);
             var sprite = AssetLibrary.GetSprite(spriteId);
             float worldHeight = AssetLibrary.GetWorldHeight(spriteId);
             float spriteHeight = sprite != null && sprite.bounds.size.y > 0f ? sprite.bounds.size.y : 1f;
@@ -48,7 +48,7 @@ namespace SaqrAndAqab.Battle
 
             _renderer = child.GetComponent<SpriteRenderer>();
             _renderer.sprite = sprite;
-            _renderer.flipX = true; // enemies face left, toward the gate
+            _renderer.flipX = false; // enemy art is authored facing left toward the gate
             _renderer.sortingOrder = Hero.SortingOrderFor(transform.position.y);
 
             Anim = child.GetComponent<ProceduralAnim>();

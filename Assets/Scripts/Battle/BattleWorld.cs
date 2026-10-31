@@ -133,7 +133,7 @@ namespace SaqrAndAqab.Battle
             var sprite = AssetLibrary.GetSprite(DummySpriteId);
             var renderer = go.GetComponent<SpriteRenderer>();
             renderer.sprite = sprite;
-            renderer.flipX = true;
+            renderer.flipX = false;
             renderer.sortingOrder = Hero.SortingOrderFor(go.transform.position.y);
 
             float spriteHeight = sprite != null && sprite.bounds.size.y > 0f ? sprite.bounds.size.y : 1f;

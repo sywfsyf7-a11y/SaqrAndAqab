@@ -2,21 +2,24 @@ using UnityEngine;
 
 namespace SaqrAndAqab.Battle
 {
-    // Code-only animation for a single static sprite: bob, squash, lunge, hit flash, death, knockback.
-    // No Animator and no sprite sheets. Put it on the sprite child of a unit, never on the unit root,
-    // because the root holds the gameplay position.
+    // Enhanced code-only cartoon animation for single-sprite characters:
+    // energetic walk hop, body tilt, cartoon squash & stretch, breathing sway, and snappy lunges.
     public class ProceduralAnim : MonoBehaviour
     {
-        const float WalkBob = 0.06f;
-        const float WalkFrequency = 9f;
-        const float WalkSquash = 0.06f;
+        const float WalkBob = 0.16f;
+        const float WalkFrequency = 8.5f;
+        const float WalkSquash = 0.10f;
+        const float WalkTilt = 7.5f;
 
-        const float IdleBob = 0.015f;
-        const float IdleFrequency = 1.8f;
-        const float IdleBreath = 0.02f;
+        const float IdleBob = 0.04f;
+        const float IdleFrequency = 2.4f;
+        const float IdleBreath = 0.05f;
+        const float IdleSway = 2.2f;
 
-        const float LungeDuration = 0.22f;
-        const float LungeDistance = 0.35f;
+        const float LungeDuration = 0.24f;
+        const float LungeDistance = 0.50f;
+        const float LungeTilt = 14f;
+
         const float KnockDuration = 0.28f;
         const float KnockDistance = 0.45f;
         const float FlashDuration = 0.12f;
@@ -49,7 +52,6 @@ namespace SaqrAndAqab.Battle
             if (_renderer != null) _baseColor = _renderer.color;
         }
 
-        // Depth scaling is owned by the unit, so it tells the animator what the neutral scale is.
         public void SetBaseScale(Vector3 scale)
         {
             _baseScale = scale;
@@ -104,41 +106,60 @@ namespace SaqrAndAqab.Battle
             float bob;
             float squashX;
             float squashY;
+            float tilt = 0f;
 
             if (_walking)
             {
-                float phase = _time * WalkFrequency * Mathf.Clamp(_walkSpeed, 0.4f, 1.6f);
+                float phase = _time * WalkFrequency * Mathf.Clamp(_walkSpeed, 0.5f, 1.5f);
                 bob = Mathf.Abs(Mathf.Sin(phase)) * WalkBob;
                 float squash = Mathf.Sin(phase * 2f) * WalkSquash;
-                squashX = 1f + squash;
-                squashY = 1f - squash;
+                squashX = 1f - squash * 0.5f;
+                squashY = 1f + squash;
+                tilt = Mathf.Sin(phase) * WalkTilt;
             }
             else
             {
-                bob = Mathf.Sin(_time * IdleFrequency) * IdleBob;
-                float breath = Mathf.Sin(_time * IdleFrequency) * IdleBreath;
+                float phase = _time * IdleFrequency;
+                bob = Mathf.Sin(phase) * IdleBob;
+                float breath = Mathf.Sin(phase) * IdleBreath;
                 squashX = 1f - breath;
                 squashY = 1f + breath;
+                tilt = Mathf.Sin(phase * 0.7f) * IdleSway;
             }
 
             var offset = new Vector3(0f, bob, 0f);
-            float tilt = 0f;
             float alpha = 1f;
 
             if (_lungeTime >= 0f)
             {
                 _lungeTime += dt;
                 float progress = _lungeTime / LungeDuration;
-                if (progress >= 1f) _lungeTime = -1f;
-                else offset += (Vector3)(_lungeDir * (Mathf.Sin(progress * Mathf.PI) * LungeDistance));
+                if (progress >= 1f)
+                {
+                    _lungeTime = -1f;
+                }
+                else
+                {
+                    float curve = Mathf.Sin(progress * Mathf.PI);
+                    offset += (Vector3)(_lungeDir * (curve * LungeDistance));
+                    tilt += (_lungeDir.x > 0 ? -1f : 1f) * (curve * LungeTilt);
+                }
             }
 
             if (_knockTime >= 0f)
             {
                 _knockTime += dt;
                 float progress = _knockTime / KnockDuration;
-                if (progress >= 1f) _knockTime = -1f;
-                else offset += (Vector3)(_knockDir * (Mathf.Sin(progress * Mathf.PI) * KnockDistance));
+                if (progress >= 1f)
+                {
+                    _knockTime = -1f;
+                }
+                else
+                {
+                    float curve = Mathf.Sin(progress * Mathf.PI);
+                    offset += (Vector3)(_knockDir * (curve * KnockDistance));
+                    tilt += (_knockDir.x > 0 ? -1f : 1f) * (curve * 12f);
+                }
             }
 
             if (_dieTime >= 0f)
